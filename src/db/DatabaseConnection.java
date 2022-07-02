@@ -13,7 +13,7 @@ public class DatabaseConnection {
     String username = "jbank";
     String password = "Lambton2022S";
     // private constructor
-    private DatabaseConnection() throws SQLException {
+    private DatabaseConnection() {
         System.out.println("Connecting database...");
 
         try {
