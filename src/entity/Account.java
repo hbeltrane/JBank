@@ -11,6 +11,16 @@ public class Account {
 	private int customerId;
 	private Date openDate;
 	
+	public Account() {
+		this.accNumber = null;
+		this.accType = 0;
+		this.balance = 0;
+		this.transferAmount = 0;
+		this.transferQuantity = 0;
+		this.customerId = 0;
+		this.openDate = null;
+	}
+	
 	public Account(String accNumber, int accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
 		this.accNumber = accNumber;
 		this.accType = accType;
@@ -21,31 +31,59 @@ public class Account {
 		this.openDate = openDate;
 	}
 	
-	private String getAccNumber() {
+	public void setAccNumber(String accNumber) {
+		this.accNumber = accNumber;
+	}
+	
+	public void setAccType(int accType) {
+		this.accType = accType;
+	}
+	
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	
+	public void setTransferAmount(double transferAmount) {
+		this.transferAmount = transferAmount;
+	}
+	
+	public void setTransferQuantity(int transferQuantity) {
+		this.transferQuantity = transferQuantity;
+	}
+	
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+	
+	public void setOpenDate(Date openDate) {
+		this.openDate = openDate;
+	}
+	
+	public String getAccNumber() {
 		return accNumber;
 	}
 	
-	private int getAccType() {
+	public int getAccType() {
 		return accType;
 	}
 	
-	private double getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 	
-	private double getTransferAmount() {
+	public double getTransferAmount() {
 		return transferAmount;
 	}
 	
-	private int getTransferQuantity() {
+	public int getTransferQuantity() {
 		return transferQuantity;
 	}
 	
-	private int getCustomerId() {
+	public int getCustomerId() {
 		return customerId;
 	}
 	
-	private Date getOpenDate() {
+	public Date getOpenDate() {
 		return openDate;
 	}
 }
