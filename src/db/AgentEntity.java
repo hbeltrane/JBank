@@ -86,4 +86,35 @@ public class AgentEntity {
             }
         }
     }
+    
+    public static void searchAccounts(String searchString, ArrayList<Account> accountsResult) {
+        try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM accounts WHERE acc_number like %?%");
+            statement.setString(1, searchString);
+            resultSet = statement.executeQuery();
+            System.out.println("Querying accounts table\n");
+            while (resultSet.next()) {
+            	Account result = new Account(resultSet.getString("account_number"), resultSet.getInt("account_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
+            	accountsResult.add(result);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }
