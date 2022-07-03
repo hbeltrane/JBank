@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import db.AgentEntity;
 
 public class Agent {
@@ -75,5 +76,10 @@ public class Agent {
 		}
 		else
 			return status;
+	}
+	
+	public static void agentSearch(String searchString, ArrayList<Customer> customersResult, ArrayList<Account> accountsResult) {
+		AgentEntity.searchCustomers(searchString, customersResult);
+		AgentEntity.searchAccounts(searchString, accountsResult);
 	}
 }

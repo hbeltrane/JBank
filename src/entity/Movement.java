@@ -12,7 +12,18 @@ public class Movement {
 	private Date movementDate;
 	private int transactionId;
 	
-	private Movement(int movementId, String sourceAccount, String destinationAccount, double amount, double previousBalance, double newBalance, Date movementDate, int transactionId) {
+	public Movement() {
+		this.movementId = 0;
+		this.sourceAccount = null;
+		this.destinationAccount = null;
+		this.amount = 0;
+		this.previousBalance = 0;
+		this.newBalance = 0;
+		this.movementDate = null;
+		this.transactionId = 0;
+	}
+	
+	public Movement(int movementId, String sourceAccount, String destinationAccount, double amount, double previousBalance, double newBalance, Date movementDate, int transactionId) {
 		this.movementId = movementId;
 		this.sourceAccount = sourceAccount;
 		this.destinationAccount = destinationAccount;
@@ -23,35 +34,67 @@ public class Movement {
 		this.transactionId = transactionId;
 	}
 	
-	private int getMovementId() {
+	public void setMovementId(int movementId) {
+		this.movementId = movementId;
+	}
+	
+	public void setSourceAccount(String sourceAccount) {
+		this.sourceAccount = sourceAccount;
+	}
+	
+	public void setDestinationAccount(String destinationAccount) {
+		this.destinationAccount = destinationAccount;
+	}
+	
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	
+	public void setPreviousBalance(double previousBalance) {
+		this.previousBalance = previousBalance;
+	}
+	
+	public void setNewBalance(double newBalance) {
+		this.newBalance = newBalance;
+	}
+	
+	public void setMovementDate(Date movementDate) {
+		this.movementDate = movementDate;
+	}
+	
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
+	
+	public int getMovementId() {
 		return movementId;
 	}
 	
-	private String getSourceAccount() {
+	public String getSourceAccount() {
 		return sourceAccount;
 	}
 	
-	private String getDestinationAccount() {
+	public String getDestinationAccount() {
 		return destinationAccount;
 	}
 	
-	private double getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	
-	private double getPreviousBalance() {
+	public double getPreviousBalance() {
 		return previousBalance;
 	}
 	
-	private double getNewBalance() {
+	public double getNewBalance() {
 		return newBalance;
 	}
 	
-	private Date getMovementDate() {
+	public Date getMovementDate() {
 		return movementDate;
 	}
 	
-	private int getTransactionId() {
+	public int getTransactionId() {
 		return transactionId;
 	}
 }
