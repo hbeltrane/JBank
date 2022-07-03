@@ -1,5 +1,7 @@
 package entity;
 
+import db.AgentEntity;
+
 public class Agent {
 	private String username;
 	private String password;
@@ -7,7 +9,15 @@ public class Agent {
 	private String lastName;
 	private int positionId;
 	
-	private Agent(String username, String password, String firstName, String lastName, int positionId) {
+	public Agent() {
+		this.username = null;
+		this.password = null;
+		this.firstName = null;
+		this.lastName = null;
+		this.positionId = 0;
+	}
+	
+	public Agent(String username, String password, String firstName, String lastName, int positionId) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -15,31 +25,55 @@ public class Agent {
 		this.positionId = positionId;
 	}
 
-	private String getUsername() {
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public void setPositionId(int positionId) {
+		this.positionId = positionId;
+	}
+
+	public String getUsername() {
 		return username;
 	}
 	
-	private String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 	
-	private String getFirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 	
-	private String getLastName() {
+	public String getLastName() {
 		return lastName;
 	}
 	
-	private int getPositionId() {
+	public int getPositionId() {
 		return positionId;
 	}
 	
-	public static int agentLogin(String username, String password) {
-		int login = AgentEntity.validateAgent(username, password);
-		if (login == 0) {
-			Agent activeAgent = New Agent("SELECT * ");
+	public static int agentLogin(String username, String password, Agent activeAgent) {
+		int status = AgentEntity.validateAgent(username, activeAgent);
+		if (status == 0) {
+			if (password.equals(activeAgent.getPassword()))
+				return 0;
+			else
+				return 2;
 		}
-		return login;
+		else
+			return status;
 	}
 }

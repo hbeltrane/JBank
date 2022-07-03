@@ -3,6 +3,9 @@ package db;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import entity.Agent;
+
 import java.sql.PreparedStatement;
 
 public class AgentEntity {
@@ -12,28 +15,32 @@ public class AgentEntity {
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
-    public static void validateAgent() {
+    public static int validateAgent(String inUsername, Agent activeAgent) {
         try {
             // Connect to the database
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
 
             // Execute a SELECT statement
-            statement = connection.prepareStatement("SELECT customer_id, first_name, last_name  \n" +
-                    "FROM customers WHERE agent_id = ?");
-            statement.setString(1, "jmisk5");
+            statement = connection.prepareStatement("SELECT * FROM agents WHERE username = ?");
+            statement.setString(1, inUsername);
 
             resultSet = statement.executeQuery();
 
             // Display the results of a SELECT statement
-            System.out.println("Bank Customers created by Jonie Misk:\n");
+            System.out.println("Querying agents table\n");
             while (resultSet.next()) {
-                System.out.println(resultSet.getInt("customer_id") + " " +
-                        resultSet.getString("first_name") + " " +
-                        resultSet.getString("last_name"));
+            	activeAgent.setUsername(resultSet.getString("username"));
+            	activeAgent.setPassword(resultSet.getString("password"));
+            	activeAgent.setFirstName(resultSet.getString("first_name"));
+            	activeAgent.setLastName(resultSet.getString("last_name"));
+            	activeAgent.setPositionId(Integer.valueOf(resultSet.getString("position_id")));
+            	return 0;
             }
+            return 1;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+            return 99;
         } finally {
             try {
                 if (resultSet != null) {
