@@ -34,12 +34,7 @@ public class SearchPanel extends JPanel {
         testButton.setFocusable(false);
         testButton.addActionListener(event -> {
             /* Basic Database Connection using Connection Manager Class */
-            AgentEntity.validateAgent();
 
-            /* Database connection using a Single Connection Class Instance */
-            // CustomersDBConn.getCustomers();
-
-            /* Database Connection using Connection Manager Class */
         });
     }
 }
