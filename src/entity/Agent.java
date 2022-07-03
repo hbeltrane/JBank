@@ -34,4 +34,12 @@ public class Agent {
 	private int getPositionId() {
 		return positionId;
 	}
+	
+	public static int agentLogin(String username, String password) {
+		int login = AgentEntity.validateAgent(username, password);
+		if (login == 0) {
+			Agent activeAgent = New Agent("SELECT * ");
+		}
+		return login;
+	}
 }

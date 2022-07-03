@@ -2,9 +2,11 @@ package db;
 
 import java.sql.*;
 
+import entity.Agent;
+
 public class test {
 
-	public static void main(String[] args) {
+	public static ResultSet main(String[] args) {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
@@ -21,6 +23,8 @@ public class test {
 				String last_name = result.getString("last_name");
 				System.out.println("Name: " + first_name + "\nLast name: " + last_name);
 			}
+			Agent activeAgent = New agent();
+			return activeAgent;
 		}
 		catch (SQLException e) {
 			System.out.println(e);
