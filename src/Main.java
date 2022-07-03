@@ -6,8 +6,8 @@ public class Main {
 
 	public static void main(String[] args) {
         /* This code creates a Java Frame */
-        //MainFrame mainFrame = new MainFrame();  // Instantiate a MainFrame (JFrame) object
-        //mainFrame.setVisible(true);
+        MainFrame mainFrame = new MainFrame();  // Instantiate a MainFrame (JFrame) object
+        /*
         Agent testAgent = new Agent();
         int status = Agent.agentLogin("agent1", "agentpass", testAgent);
         switch (status) {
@@ -24,6 +24,6 @@ public class Main {
         default:
         	System.out.println("Login failed\nUnknown error");
         	break;
-        }
+        }*/
     }
 }
