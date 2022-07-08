@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Account {
 	private String accNumber;
-	private int accType;
+	private String accType;
 	private double balance;
 	private double transferAmount;
 	private int transferQuantity;
@@ -13,7 +13,7 @@ public class Account {
 	
 	public Account() {
 		this.accNumber = null;
-		this.accType = 0;
+		this.accType = null;
 		this.balance = 0;
 		this.transferAmount = 0;
 		this.transferQuantity = 0;
@@ -21,7 +21,7 @@ public class Account {
 		this.openDate = null;
 	}
 	
-	public Account(String accNumber, int accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
+	public Account(String accNumber, String accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
 		this.accNumber = accNumber;
 		this.accType = accType;
 		this.balance = balance;
@@ -35,7 +35,7 @@ public class Account {
 		this.accNumber = accNumber;
 	}
 	
-	public void setAccType(int accType) {
+	public void setAccType(String accType) {
 		this.accType = accType;
 	}
 	
@@ -63,7 +63,7 @@ public class Account {
 		return accNumber;
 	}
 	
-	public int getAccType() {
+	public String getAccType() {
 		return accType;
 	}
 	
