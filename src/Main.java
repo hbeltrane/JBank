@@ -7,23 +7,17 @@ public class Main {
 	public static void main(String[] args) {
         /* This code creates a Java Frame */
         MainFrame mainFrame = new MainFrame();  // Instantiate a MainFrame (JFrame) object
-        /*
-        Agent testAgent = new Agent();
-        int status = Agent.agentLogin("agent1", "agentpass", testAgent);
-        switch (status) {
-        case 0:
-        	System.out.println("Login OK\nWelcome " + testAgent.getFirstName() + " " + testAgent.getLastName());
-        	break;
-        case 1:
-        case 2:
-        	System.out.println("Login failed\nInvalid username or password");
-        	break;
-        case 99:
-        	System.out.println("Login failed\nDatabase error");
-        	break;
-        default:
-        	System.out.println("Login failed\nUnknown error");
-        	break;
-        }*/
+        /* ArrayList<Customer> resultCustomers = new ArrayList<Customer>();
+        ArrayList<Account> resultAccounts = new ArrayList<Account>();
+        testAgent.agentSearch("0", resultCustomers, resultAccounts);
+        System.out.println("Customers");
+        for(int i=0; i<resultCustomers.size(); i++) {
+        	System.out.print(resultCustomers.get(i).getFirstName() + "\n");
+        }
+        System.out.println("Accounts");
+        for(int i=0; i<resultAccounts.size(); i++) {
+        	System.out.print(resultAccounts.get(i).getAccNumber() + " " + resultAccounts.get(i).getAccType() + "\n");
+        } */
+
     }
 }
