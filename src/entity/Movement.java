@@ -10,7 +10,7 @@ public class Movement {
 	private double previousBalance;
 	private double newBalance;
 	private Date movementDate;
-	private int transactionId;
+	private String description;
 	
 	public Movement() {
 		this.movementId = 0;
@@ -20,10 +20,10 @@ public class Movement {
 		this.previousBalance = 0;
 		this.newBalance = 0;
 		this.movementDate = null;
-		this.transactionId = 0;
+		this.description = null;
 	}
 	
-	public Movement(int movementId, String sourceAccount, String destinationAccount, double amount, double previousBalance, double newBalance, Date movementDate, int transactionId) {
+	public Movement(int movementId, String sourceAccount, String destinationAccount, double amount, double previousBalance, double newBalance, Date movementDate, String description) {
 		this.movementId = movementId;
 		this.sourceAccount = sourceAccount;
 		this.destinationAccount = destinationAccount;
@@ -31,7 +31,7 @@ public class Movement {
 		this.previousBalance = previousBalance;
 		this.newBalance = newBalance;
 		this.movementDate = movementDate;
-		this.transactionId = transactionId;
+		this.description = description;
 	}
 	
 	public void setMovementId(int movementId) {
@@ -62,8 +62,8 @@ public class Movement {
 		this.movementDate = movementDate;
 	}
 	
-	public void setTransactionId(int transactionId) {
-		this.transactionId = transactionId;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public int getMovementId() {
@@ -94,7 +94,7 @@ public class Movement {
 		return movementDate;
 	}
 	
-	public int getTransactionId() {
-		return transactionId;
+	public String getDescription() {
+		return description;
 	}
 }

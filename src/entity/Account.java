@@ -1,6 +1,10 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+import db.AccountEntity;
+import db.CustomerEntity;
 
 public class Account {
 	private String accNumber;
@@ -29,6 +33,16 @@ public class Account {
 		this.transferQuantity = transferQuantity;
 		this.customerId = customerId;
 		this.openDate = openDate;
+	}
+	
+	public Account(Account inAccount) {
+		this.accNumber = inAccount.accNumber;
+		this.accType = inAccount.accType;
+		this.balance = inAccount.balance;
+		this.transferAmount = inAccount.transferAmount;
+		this.transferQuantity = inAccount.transferQuantity;
+		this.customerId = inAccount.customerId;
+		this.openDate = inAccount.openDate;
 	}
 	
 	public void setAccNumber(String accNumber) {
@@ -85,5 +99,9 @@ public class Account {
 	
 	public Date getOpenDate() {
 		return openDate;
+	}
+	
+	public void viewAccount(Account inAccount, ArrayList<Movement> accountMovements) {
+		AccountEntity.viewAccount(inAccount, accountMovements);
 	}
 }

@@ -1,6 +1,9 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+import db.CustomerEntity;
 
 public class Customer {
 	private int customerId;
@@ -32,6 +35,17 @@ public class Customer {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.creationDate = creationDate;
+	}
+	
+	public Customer(Customer inCustomer) {
+		this.customerId = inCustomer.customerId;
+		this.pin = inCustomer.pin;
+		this.firstName = inCustomer.firstName;
+		this.lastName = inCustomer.lastName;
+		this.address = inCustomer.address;
+		this.phoneNumber = inCustomer.phoneNumber;
+		this.email = inCustomer.email;
+		this.creationDate = inCustomer.creationDate;
 	}
 	
 	public void setCustomerId(int customerId) {
@@ -96,5 +110,9 @@ public class Customer {
 	
 	public Date getCreationDate() {
 		return creationDate;
+	}
+	
+	public void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts) {
+		CustomerEntity.viewCustomer(inCustomer, customerAccounts);
 	}
 }
