@@ -66,7 +66,7 @@ public class Agent {
 		return positionId;
 	}
 	
-	public static int agentLogin(String username, String password, Agent activeAgent) {
+	public int agentLogin(String username, String password, Agent activeAgent) {
 		int status = AgentEntity.validateAgent(username, activeAgent);
 		if (status == 0) {
 			if (password.equals(activeAgent.getPassword()))
@@ -78,7 +78,7 @@ public class Agent {
 			return status;
 	}
 	
-	public static void agentSearch(String searchString, ArrayList<Customer> customersResult, ArrayList<Account> accountsResult) {
+	public void agentSearch(String searchString, ArrayList<Customer> customersResult, ArrayList<Account> accountsResult) {
 		AgentEntity.searchCustomers(searchString, customersResult);
 		AgentEntity.searchAccounts(searchString, accountsResult);
 	}
