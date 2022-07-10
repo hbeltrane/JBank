@@ -1,5 +1,7 @@
 package ui;
 
+import entity.*;
+
 import javax.sound.midi.*;
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +39,7 @@ public class LoginFrame extends JFrame {
         loginButton.setBounds(70,170,240,40);
         setLoginAction();
         messageLabel = new JLabel("");
-        messageLabel.setBounds(70,220,240,40);
+        messageLabel.setBounds(60,220,250,40);
         messageLabel.setHorizontalAlignment(JLabel.CENTER);
         messageLabel.setForeground(RED_COLOR);
         contentPane.add(loginLabel, null);
@@ -57,11 +59,31 @@ public class LoginFrame extends JFrame {
         return passwordString.toString();
     }
     private void setLoginAction() {
+        Agent loginAgent = new Agent();
         loginButton.setFocusable(false);
         loginButton.addActionListener(event -> {
             // Login agent
-            System.out.println("Login agent...");
-            System.out.println(userTextField.getText() + " " + getPasswordText());
+            int status = loginAgent.agentLogin(userTextField.getText(),  getPasswordText(), loginAgent);
+            System.out.println("Login status: " + status);
+            System.out.println("Agent: " + loginAgent.getUsername());
+            switch (status) {
+                case 0:
+                    System.out.println("Login OK\nWelcome " + loginAgent.getFirstName() + " " + loginAgent.getLastName());
+                    break;
+                case 1:
+                case 2:
+                    System.out.println("Login failed\nInvalid username or password");
+                    messageLabel.setText("Login failed: Invalid username or password");
+                    break;
+                case 99:
+                    System.out.println("Login failed\nDatabase error");
+                    messageLabel.setText("Login failed: Database error");
+                    break;
+                default:
+                    System.out.println("Login failed\nUnknown error");
+                    messageLabel.setText("Login failed: Unknown error");
+                    break;
+            }
         });
     }
 }
