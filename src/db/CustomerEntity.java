@@ -46,4 +46,41 @@ public class CustomerEntity {
             }
         }
     }
+
+    public static void getCustomerById(Customer inCustomer, int customerId) {
+        try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "SELECT * "
+            		+ "FROM customers "
+            		+ "WHERE customer_id = ?");
+            statement.setInt(1, customerId);
+            System.out.println("\nQuerying customers table\n");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+            	inCustomer.setCustomerId(resultSet.getInt("customer_id"));
+            	inCustomer.setPin(resultSet.getString("pin"));
+            	inCustomer.setFirstName(resultSet.getString("first_name"));
+            	inCustomer.setLastName(resultSet.getString("last_name"));
+            	inCustomer.setAddress(resultSet.getString("address"));
+            	inCustomer.setPhoneNumber(resultSet.getString("phone_number"));
+            	inCustomer.setEmail(resultSet.getString("email"));
+            	inCustomer.setCreationDate(resultSet.getDate("creation_date"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

@@ -15,6 +15,7 @@ public class Main {
         
         Agent activeAgent = new Agent();
         // Login Test
+        System.out.println("\n\n***** LOGIN TEST *****");
         int status = activeAgent.agentLogin("fboxe0", "ua8w6WmM", activeAgent);
         switch (status) {
         case 0:
@@ -33,34 +34,39 @@ public class Main {
         }
         
         // Search test
+        System.out.println("\n\n***** SEARCH TEST *****");
         ArrayList<Customer> resultCustomers = new ArrayList<Customer>();
         ArrayList<Account> resultAccounts = new ArrayList<Account>();
         activeAgent.agentSearch("0", resultCustomers, resultAccounts);
-        System.out.println("\nCustomers");
+        System.out.println("\nCUSTOMERS:");
         for(int i=0; i<resultCustomers.size(); i++) {
         	System.out.print(resultCustomers.get(i).getFirstName() + "\n");
         }
-        System.out.println("\nAccounts");
+        System.out.println("\nACCOUNTS:");
         for(int i=0; i<resultAccounts.size(); i++) {
         	System.out.print(resultAccounts.get(i).getAccNumber() + " " + resultAccounts.get(i).getAccType() + "\n");
         }
         
         // View customer test
+        System.out.println("\n\n***** VIEW CUSTOMER TEST *****");
         Customer activeCustomer = new Customer(resultCustomers.get(0));
         ArrayList<Account> customerAccounts = new ArrayList<Account>();
         activeCustomer.viewCustomer(activeCustomer, customerAccounts);
         System.out.print("Customer ID: " + activeCustomer.getCustomerId() + "\nName: " + activeCustomer.getFirstName() + " " + activeCustomer.getLastName());
-        System.out.println("\nCustomer accounts");
+        System.out.println("\nCUSTOMER ACCOUNTS");
         for(int i=0; i<customerAccounts.size(); i++) {
         	System.out.print("\nAccount: " + customerAccounts.get(i).getAccNumber() + "\nAccount Type: " + customerAccounts.get(i).getAccType() + "\nBalance: " + customerAccounts.get(i).getBalance());
         }
         
-        // View accounts test
+        // View account test
+        System.out.println("\n\n***** VIEW ACCOUNT TEST *****");
+        Customer activeCustomer2 = new Customer();
         Account activeAccount = new Account(customerAccounts.get(0));
         ArrayList<Movement> accountMovements = new ArrayList<Movement>();
-        activeAccount.viewAccount(activeAccount, accountMovements);
-        System.out.print("Account: " + activeAccount.getAccNumber() + "\nAccount Type: " + activeAccount.getAccType() + "\nBalance " + activeAccount.getBalance());
-        System.out.println("\nAccount movements");
+        activeAccount.viewAccount(activeCustomer2, activeAccount, accountMovements);
+        System.out.print("Customer ID: " + activeCustomer2.getCustomerId() + "\nName: " + activeCustomer2.getFirstName() + " " + activeCustomer2.getLastName());
+        System.out.print("\nAccount: " + activeAccount.getAccNumber() + "\nAccount Type: " + activeAccount.getAccType() + "\nBalance " + activeAccount.getBalance());
+        System.out.println("\nACCOUNT MOVEMENTS");
         for(int i=0; i<accountMovements.size(); i++) {
         	System.out.print("\nDate: " + accountMovements.get(i).getMovementDate() + "\nDescription: " + accountMovements.get(i).getDescription() + "\nAmount: " + accountMovements.get(i).getAmount());
         }

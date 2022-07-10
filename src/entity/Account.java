@@ -101,7 +101,8 @@ public class Account {
 		return openDate;
 	}
 	
-	public void viewAccount(Account inAccount, ArrayList<Movement> accountMovements) {
+	public void viewAccount(Customer inCustomer, Account inAccount, ArrayList<Movement> accountMovements) {
+		CustomerEntity.getCustomerById(inCustomer, inAccount.getCustomerId());
 		AccountEntity.viewAccount(inAccount, accountMovements);
 	}
 }
