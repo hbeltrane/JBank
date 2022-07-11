@@ -15,9 +15,14 @@ public class LoginFrame extends JFrame {
     private JButton loginButton;
     private JLabel messageLabel;
     private final Color RED_COLOR = new Color(255,0,0);
+    // Class properties
+    Agent bankAgent;
+    MainFrame mainFrame;
 
-    LoginFrame() {
-        super("Login - JBank");
+    LoginFrame(MainFrame mainFrame) {
+        super("JBank - Login");
+        this.mainFrame = mainFrame;
+        bankAgent = mainFrame.bankAgent;  // Pass the reference to the local Agent field
         this.setSize(380, 320);
         loginPanel = getLoginPanel();
         this.setResizable(false);
@@ -39,7 +44,7 @@ public class LoginFrame extends JFrame {
         loginButton.setBounds(70,170,240,40);
         setLoginAction();
         messageLabel = new JLabel("");
-        messageLabel.setBounds(60,220,250,40);
+        messageLabel.setBounds(65,220,255,40);
         messageLabel.setHorizontalAlignment(JLabel.CENTER);
         messageLabel.setForeground(RED_COLOR);
         contentPane.add(loginLabel, null);
@@ -59,28 +64,22 @@ public class LoginFrame extends JFrame {
         return passwordString.toString();
     }
     private void setLoginAction() {
-        Agent loginAgent = new Agent();
         loginButton.setFocusable(false);
         loginButton.addActionListener(event -> {
             // Login agent
-            int status = loginAgent.agentLogin(userTextField.getText(),  getPasswordText(), loginAgent);
-            System.out.println("Login status: " + status);
-            System.out.println("Agent: " + loginAgent.getUsername());
+            int status = bankAgent.agentLogin(userTextField.getText(),  getPasswordText(), bankAgent);
             switch (status) {
                 case 0:
-                    System.out.println("Login OK\nWelcome " + loginAgent.getFirstName() + " " + loginAgent.getLastName());
-                    break;
+                    mainFrame.getSearchPanel();
+                    this.dispose();
                 case 1:
                 case 2:
-                    System.out.println("Login failed\nInvalid username or password");
                     messageLabel.setText("Login failed: Invalid username or password");
                     break;
                 case 99:
-                    System.out.println("Login failed\nDatabase error");
                     messageLabel.setText("Login failed: Database error");
                     break;
                 default:
-                    System.out.println("Login failed\nUnknown error");
                     messageLabel.setText("Login failed: Unknown error");
                     break;
             }

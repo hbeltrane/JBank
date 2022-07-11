@@ -11,9 +11,9 @@ public class Main {
 
 	public static void main(String[] args) {
         /* This code creates a Java Frame */
-        //MainFrame mainFrame = new MainFrame();  // Instantiate a MainFrame (JFrame) object
+        MainFrame mainFrame = new MainFrame();  // Instantiate a MainFrame (JFrame) object
         
-        Agent activeAgent = new Agent();
+        /* Agent activeAgent = new Agent();
         // Login Test
         int status = activeAgent.agentLogin("fboxe0", "ua8w6WmM", activeAgent);
         switch (status) {
@@ -63,6 +63,6 @@ public class Main {
         System.out.println("\nAccount movements");
         for(int i=0; i<accountMovements.size(); i++) {
         	System.out.print("\nDate: " + accountMovements.get(i).getMovementDate() + "\nDescription: " + accountMovements.get(i).getDescription() + "\nAmount: " + accountMovements.get(i).getAmount());
-        }
+        }*/
     }
 }
