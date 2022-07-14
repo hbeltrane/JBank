@@ -1,9 +1,12 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame {
+    // Graphical User Interface components
     SearchPanel searchPanel;
     CustomerPanel customerPanel;
     AccountPanel accountPanel;
@@ -14,22 +17,28 @@ public class MainFrame extends JFrame {
     TransferOthersPanel transferOthersPanel;
     DeleteCustomerPanel deleteCustomerPanel;
     DeleteAccountPanel deleteAccountPanel;
+    // Class properties
+    Agent bankAgent;
     public MainFrame() {
         super("JBank"); // Initialize parent and sets title to the window
         this.setSize(960,640);
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ends program when exit the window
-        this.setContentPane(getDeleteAccountPanel());
-
         this.setVisible(true);
-//        LoginFrame loginFrame = new LoginFrame();
-//        loginFrame.setVisible(true);
 
+        bankAgent = new Agent();
+        getLoginPanel();
     }
-
-    private JPanel getSearchPanel() {
+    public void getLoginPanel() {
+        LoginFrame loginFrame = new LoginFrame(this);
+        loginFrame.setVisible(true);
+    }
+    public void getSearchPanel() {
         searchPanel = new SearchPanel();
-        return searchPanel;
+        add(searchPanel);
+        revalidate();
+        repaint();
+
     }
     private JPanel getCustomerPanel() {
         customerPanel = new CustomerPanel();

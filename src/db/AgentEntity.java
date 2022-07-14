@@ -35,7 +35,7 @@ public class AgentEntity {
             	return 0;
             }
             return 1;
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
             return 99;
         } finally {
@@ -46,9 +46,8 @@ public class AgentEntity {
                 if (statement != null) {
                     statement.close();
                 }
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                return 99;
             }
         }
     }
@@ -76,7 +75,7 @@ public class AgentEntity {
             	Customer result = new Customer(resultSet.getInt("customer_id"), resultSet.getString("pin"), resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("address"), resultSet.getString("phone_number"), resultSet.getString("email"), resultSet.getDate("creation_date"));
             	customersResult.add(result);
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
         } finally {
             try {
@@ -109,7 +108,7 @@ public class AgentEntity {
             	Account result = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
             	accountsResult.add(result);
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
         } finally {
             try {
