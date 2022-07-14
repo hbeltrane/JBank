@@ -48,7 +48,6 @@ public class AgentEntity {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                return 99;
             }
         }
     }
