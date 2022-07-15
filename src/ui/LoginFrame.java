@@ -8,8 +8,6 @@ import java.awt.*;
 
 
 public class LoginFrame extends JFrame {
-    // Login Frame Components
-    private JPanel loginPanel;
     private JTextField userTextField;
     private JPasswordField passwordField;
     private JButton loginButton;
@@ -24,7 +22,8 @@ public class LoginFrame extends JFrame {
         this.mainFrame = mainFrame;
         bankAgent = mainFrame.bankAgent;  // Pass the reference to the local Agent field
         this.setSize(380, 320);
-        loginPanel = getLoginPanel();
+        // Login Frame Components
+        JPanel loginPanel = getLoginPanel();
         this.setResizable(false);
         this.setContentPane(loginPanel);
         this.setLocationRelativeTo(loginPanel);

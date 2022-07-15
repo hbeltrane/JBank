@@ -1,5 +1,7 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,8 +17,12 @@ public class SearchPanel extends JPanel {
     JTable customerTable;
     JTable accountTable;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    public SearchPanel() {
+    Agent bankAgent;
+    MainFrame mainFrame;
+    public SearchPanel(MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.mainFrame = mainFrame;
+        this.bankAgent = mainFrame.bankAgent;
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
         getAgentIdLabel();
@@ -29,7 +35,7 @@ public class SearchPanel extends JPanel {
 
     /* Initialize the Search Panel components */
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
@@ -55,7 +61,7 @@ public class SearchPanel extends JPanel {
         searchButton.setFocusable(false);
         // Search action for the button click event
         searchButton.addActionListener(event -> {
-            /* Basic Database Connection using Connection Manager Class */
+            /* Search customers or accounts */
 
         });
     }

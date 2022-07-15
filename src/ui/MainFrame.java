@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
         loginFrame.setVisible(true);
     }
     public void getSearchPanel() {
-        searchPanel = new SearchPanel();
+        searchPanel = new SearchPanel(this);
         add(searchPanel);
         revalidate();
         repaint();
