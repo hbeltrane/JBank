@@ -8,13 +8,14 @@ import java.util.ArrayList;
 
 import entity.Account;
 import entity.Customer;
+import entity.Return;
 
 public class CustomerEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
-    public static void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts) {
+    public static void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -28,11 +29,13 @@ public class CustomerEntity {
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	Account result = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
-            	customerAccounts.add(result);
+            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
+            	customerAccounts.add(queryResult);
             }
-        } catch (SQLException ex) {
+            result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
+            result.setCode("99");
         } finally {
             try {
                 if (resultSet != null) {
@@ -47,7 +50,7 @@ public class CustomerEntity {
         }
     }
 
-    public static void getCustomerById(Customer inCustomer, int customerId) {
+    public static void getCustomerById(Customer inCustomer, int customerId, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -68,8 +71,10 @@ public class CustomerEntity {
             	inCustomer.setEmail(resultSet.getString("email"));
             	inCustomer.setCreationDate(resultSet.getDate("creation_date"));
             }
-        } catch (SQLException ex) {
+            result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
+            result.setCode("99");
         } finally {
             try {
                 if (resultSet != null) {

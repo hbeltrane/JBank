@@ -112,7 +112,7 @@ public class Customer {
 		return creationDate;
 	}
 	
-	public void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts) {
-		CustomerEntity.viewCustomer(inCustomer, customerAccounts);
+	public void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts, Return result) {
+		CustomerEntity.viewCustomer(inCustomer, customerAccounts, result);
 	}
 }

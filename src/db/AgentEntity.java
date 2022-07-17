@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import entity.Account;
 import entity.Agent;
 import entity.Customer;
+import entity.Return;
 
 public class AgentEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
-    public static int validateAgent(String inUsername, Agent activeAgent) {
+    public static void validateAgent(String inUsername, Agent activeAgent, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -26,18 +27,20 @@ public class AgentEntity {
             statement.setString(1, inUsername);
             System.out.println("\nQuerying agents table\n");
             resultSet = statement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
             	activeAgent.setUsername(resultSet.getString("username"));
             	activeAgent.setPassword(resultSet.getString("password"));
             	activeAgent.setFirstName(resultSet.getString("first_name"));
             	activeAgent.setLastName(resultSet.getString("last_name"));
             	activeAgent.setPositionId(resultSet.getInt("position_id"));
-            	return 0;
+            	result.setCode("00");
             }
-            return 1;
+            else {
+            	result.setCode("01");
+            }
         } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
-            return 99;
+            result.setCode("99");
         } finally {
             try {
                 if (resultSet != null) {
@@ -52,7 +55,7 @@ public class AgentEntity {
         }
     }
     
-    public static void searchCustomers(String searchString, ArrayList<Customer> customersResult) {
+    public static void searchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -72,11 +75,13 @@ public class AgentEntity {
             System.out.println("\nQuerying customers table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	Customer result = new Customer(resultSet.getInt("customer_id"), resultSet.getString("pin"), resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("address"), resultSet.getString("phone_number"), resultSet.getString("email"), resultSet.getDate("creation_date"));
-            	customersResult.add(result);
+            	Customer queryResult = new Customer(resultSet.getInt("customer_id"), resultSet.getString("pin"), resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("address"), resultSet.getString("phone_number"), resultSet.getString("email"), resultSet.getDate("creation_date"));
+            	customersResult.add(queryResult);
             }
+        	result.setCode("00");
         } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
+            result.setCode("99");
         } finally {
             try {
                 if (resultSet != null) {
@@ -91,7 +96,7 @@ public class AgentEntity {
         }
     }
     
-    public static void searchAccounts(String searchString, ArrayList<Account> accountsResult) {
+    public static void searchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -105,11 +110,13 @@ public class AgentEntity {
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	Account result = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
-            	accountsResult.add(result);
+            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
+            	accountsResult.add(queryResult);
             }
+        	result.setCode("00");
         } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
+        	result.setCode("99");
         } finally {
             try {
                 if (resultSet != null) {
