@@ -101,7 +101,10 @@ public class Account {
 		return openDate;
 	}
 	
-	public void viewAccount(Account inAccount, ArrayList<Movement> accountMovements) {
-		AccountEntity.viewAccount(inAccount, accountMovements);
+	public void viewAccount(Customer inCustomer, Account inAccount, ArrayList<Movement> accountMovements, Return result) {
+		CustomerEntity.getCustomerById(inCustomer, inAccount.getCustomerId(), result);
+		if (result.getCode() == "00") {
+			AccountEntity.viewAccount(inAccount, accountMovements, result);
+		}
 	}
 }

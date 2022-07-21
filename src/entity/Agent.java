@@ -64,24 +64,27 @@ public class Agent {
 
 	public String getFullName() { return firstName + " " + lastName; }
 	
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+	
 	public int getPositionId() {
 		return positionId;
 	}
 	
-	public int agentLogin(String username, String password, Agent activeAgent) {
-		int status = AgentEntity.validateAgent(username, activeAgent);
-		if (status == 0) {
-			if (password.equals(activeAgent.getPassword()))
-				return 0;
-			else
-				return 2;
+	public void agentLogin(String username, String password, Agent activeAgent, Return result) {
+		AgentEntity.validateAgent(username, activeAgent, result);
+		if (result.getCode().equals("00")) {
+			if (!password.equals(activeAgent.getPassword()))
+				result.setCode("02");
 		}
-		else
-			return status;
 	}
 	
-	public void agentSearch(String searchString, ArrayList<Customer> customersResult, ArrayList<Account> accountsResult) {
-		AgentEntity.searchCustomers(searchString, customersResult);
-		AgentEntity.searchAccounts(searchString, accountsResult);
+	public void agentSearchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
+		AgentEntity.searchCustomers(searchString, customersResult, result);
+	}
+	
+	public void agentSearchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
+		AgentEntity.searchAccounts(searchString, accountsResult, result);
 	}
 }
