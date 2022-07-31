@@ -13,6 +13,7 @@ public class Main {
 	public static void main(String[] args) {
         /* This code creates a Java Frame */
         //MainFrame mainFrame = new MainFrame();  // Instantiate a MainFrame (JFrame) object
+		
         // Login Test
         Agent activeAgent = new Agent();
         Return operation = new Return();
@@ -24,6 +25,7 @@ public class Main {
         else {
         	System.out.println(operation.getCode() + " - " + operation.getMessage());
         }
+        
         // Search test
         operation = new Return();
         System.out.println("\n\n***** SEARCH TEST *****");
@@ -82,6 +84,41 @@ public class Main {
         	for(int i=0; i<accountMovements.size(); i++) {
         		System.out.print("\nDate: " + accountMovements.get(i).getMovementDate() + "\nDescription: " + accountMovements.get(i).getDescription() + "\nAmount: " + accountMovements.get(i).getAmount());
         	}
+        }
+        else {
+        	System.out.println(operation.getCode() + " - " + operation.getMessage());
+        }
+        
+        // Create customer test
+        operation = new Return();
+        System.out.println("\n\n***** CREATE CUSTOMER TEST *****");
+        activeCustomer = new Customer();
+        activeCustomer.setPin("1234");
+        activeCustomer.setFirstName("Test1");
+        activeCustomer.setLastName("Test1");
+        activeCustomer.setAddress("Test1 Test1 Test1");
+        activeCustomer.setPhoneNumber("9999999999");
+        activeCustomer.setEmail("test1@test.test1");
+        activeAgent.agentCreateCustomer(activeCustomer, activeAgent, operation);
+        if (operation.getCode() == "00") {
+        	System.out.print("New Customer ID: " + activeCustomer.getCustomerId() + "\nName: " + activeCustomer.getFirstName() + " " + activeCustomer.getLastName());
+        }
+        else {
+        	System.out.println(operation.getCode() + " - " + operation.getMessage());
+        }
+        
+        // Update customer test
+        operation = new Return();
+        System.out.println("\n\n***** UPDATE CUSTOMER TEST *****");
+        activeCustomer.setPin("1234");
+        activeCustomer.setFirstName("newTest1");
+        activeCustomer.setLastName("newTest1");
+        activeCustomer.setAddress("Test1 Test1 Test1");
+        activeCustomer.setPhoneNumber("9999999999");
+        activeCustomer.setEmail("test1@test.test1");
+        activeCustomer.updateCustomer(activeCustomer, operation);
+        if (operation.getCode() == "00") {
+        	System.out.print("New Customer ID: " + activeCustomer.getCustomerId() + "\nName: " + activeCustomer.getFirstName() + " " + activeCustomer.getLastName());
         }
         else {
         	System.out.println(operation.getCode() + " - " + operation.getMessage());

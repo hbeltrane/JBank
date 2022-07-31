@@ -115,4 +115,8 @@ public class Customer {
 	public void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts, Return result) {
 		CustomerEntity.viewCustomer(inCustomer, customerAccounts, result);
 	}
+	
+	public void updateCustomer(Customer inCustomer, Return result) {
+		CustomerEntity.updateCustomer(inCustomer, result);
+	}
 }

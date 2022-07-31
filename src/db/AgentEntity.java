@@ -15,6 +15,7 @@ public class AgentEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
+    static ResultSet keys = null;
 
     public static void validateAgent(String inUsername, Agent activeAgent, Return result) {
         try {
@@ -50,6 +51,41 @@ public class AgentEntity {
                     statement.close();
                 }
             } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public static void createCustomer(Customer newCustomer, Agent activeAgent, Return result) {
+        try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "INSERT INTO customers "
+            		+ "(customer_id, pin, first_name, last_name, address, phone_number, email, creation_date, agent_id) "
+            		+ "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, SYSDATE, ?) ", new String[] { "customer_id" });
+            statement.setString(1, newCustomer.getPin());
+            statement.setString(2, newCustomer.getFirstName());
+            statement.setString(3, newCustomer.getLastName());
+            statement.setString(4, newCustomer.getAddress());
+            statement.setString(5, newCustomer.getPhoneNumber());
+            statement.setString(6, newCustomer.getEmail());
+            statement.setString(7, activeAgent.getUsername());
+            System.out.println("\nInserting customers table\n");
+            statement.executeUpdate();
+            keys = statement.getGeneratedKeys();
+            keys.next();
+            newCustomer.setCustomerId(keys.getInt(1));
+        	result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            result.setCode("99");
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
