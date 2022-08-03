@@ -64,10 +64,6 @@ public class Agent {
 
 	public String getFullName() { return firstName + " " + lastName; }
 	
-	public String getFullName() {
-		return firstName + " " + lastName;
-	}
-	
 	public int getPositionId() {
 		return positionId;
 	}
