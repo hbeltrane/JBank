@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entity.Account;
+import entity.Agent;
 import entity.Customer;
 import entity.Return;
 
@@ -80,6 +81,43 @@ public class CustomerEntity {
                 if (resultSet != null) {
                     resultSet.close();
                 }
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public static void updateCustomer(Customer inCustomer, Return result) {
+    	try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "UPDATE customers SET "
+            		+ "pin = ?, "
+            		+ "first_name = ?, "
+            		+ "last_name = ?, "
+            		+ "address = ?, "
+            		+ "phone_number = ?, "
+            		+ "email = ? "
+            		+ "WHERE customer_id = ? ");
+            statement.setString(1, inCustomer.getPin());
+            statement.setString(2, inCustomer.getFirstName());
+            statement.setString(3, inCustomer.getLastName());
+            statement.setString(4, inCustomer.getAddress());
+            statement.setString(5, inCustomer.getPhoneNumber());
+            statement.setString(6, inCustomer.getEmail());
+            statement.setInt(7, inCustomer.getCustomerId());
+            System.out.println("\nUpdating customers table\n");
+            statement.executeUpdate();
+        	result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            result.setCode("99");
+        } finally {
+            try {
                 if (statement != null) {
                     statement.close();
                 }

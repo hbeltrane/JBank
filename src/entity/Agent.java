@@ -80,6 +80,10 @@ public class Agent {
 		}
 	}
 	
+	public void agentCreateCustomer(Customer inCustomer, Agent activeAgent, Return result) {
+		AgentEntity.createCustomer(inCustomer, activeAgent, result);
+	}
+	
 	public void agentSearchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
 		AgentEntity.searchCustomers(searchString, customersResult, result);
 	}
