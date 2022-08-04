@@ -103,7 +103,7 @@ public class Account {
 	}
 	
 	public void viewAccount(Customer activeCustomer, Account activeAccount, ArrayList<Movement> accountMovements, Return result) {
-		accountMovements = new ArrayList<Movement>();
+		accountMovements.clear();
 		CustomerEntity.getCustomerById(activeCustomer, activeAccount.getCustomerId(), result);
 		if (result.getCode() == "00") {
 			AccountEntity.viewAccount(activeAccount, accountMovements, result);

@@ -114,7 +114,7 @@ public class Customer {
 	}
 	
 	public void viewCustomer(Customer activeCustomer, ArrayList<Account> customerAccounts, Return result) {
-		customerAccounts = new ArrayList<Account>();
+		customerAccounts.clear();
 		CustomerEntity.viewCustomer(activeCustomer, customerAccounts, result);
 	}
 	

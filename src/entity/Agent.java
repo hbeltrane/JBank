@@ -84,12 +84,12 @@ public class Agent {
 	}
 	
 	public void agentSearchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
-		customersResult = new ArrayList<Customer>();
+		customersResult.clear();
 		AgentEntity.searchCustomers(searchString, customersResult, result);
 	}
 	
 	public void agentSearchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
-		accountsResult = new ArrayList<Account>();
+		accountsResult.clear();
 		AgentEntity.searchAccounts(searchString, accountsResult, result);
 	}
 	
