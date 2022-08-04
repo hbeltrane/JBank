@@ -129,7 +129,78 @@ public class Account {
 			activeMovement.setAmount(activeMovement.getAmount() - fee);
 			activeMovement.setPreviousBalance(activeAccount.getBalance());
 			activeMovement.setNewBalance(activeAccount.getBalance() + activeMovement.getAmount());
+			activeAccount.setBalance(activeMovement.getNewBalance());
 			MovementEntity.createTransaction(txId, activeMovement, activeAgent, result);
+			AccountEntity.updateAccount(activeAccount, result);
+		}
+	}
+	
+	public void withdraw(Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
+		Product activeProduct = new Product();
+		result = new Return();
+		int txId = 9;
+		double fee = MovementEntity.checkFee(txId, activeMovement, result);
+		if (result.getCode() == "00") {
+			AccountEntity.checkLimits(activeAccount, activeProduct, result);
+			if (result.getCode() == "00") {
+				activeMovement.setAmount(activeMovement.getAmount() - fee);
+				activeMovement.setPreviousBalance(activeAccount.getBalance());
+				activeMovement.setNewBalance(activeAccount.getBalance() + activeMovement.getAmount());
+				if (activeMovement.getNewBalance() < activeProduct.getMinimumBalance()) {
+					result.setCode("06");
+				}
+				else if (result.getCode() == "00") {
+					activeAccount.setTransferAmount(activeAccount.getTransferAmount() + activeMovement.getAmount());
+					activeAccount.setTransferQuantity(activeAccount.getTransferQuantity() + 1);
+					activeAccount.setBalance(activeMovement.getNewBalance());
+					MovementEntity.createTransaction(txId, activeMovement, activeAgent, result);
+					AccountEntity.updateAccount(activeAccount, result);
+				}
+			}
+		}
+	}
+	
+	public void transfer(boolean transferOwn, Movement activeMovement, Account activeAccount, String destinationAccount, Agent activeAgent, Return result) {
+		result = new Return();
+		if ((activeAccount.getCustomerId() == AccountEntity.searchAccount(destinationAccount, result) && transferOwn) || (activeAccount.getCustomerId() != AccountEntity.searchAccount(destinationAccount, result) && !transferOwn)) {
+			if (result.getCode() == "00") {
+				activeMovement.setDestinationAccount(destinationAccount);
+			}
+		}
+		else if (transferOwn) {
+			result.setCode("06");
+		}
+		else if (!transferOwn) {
+			result.setCode("06");
+		}
+		if (result.getCode() == "00") {
+			Product activeProduct = new Product();
+			int txId = 9;
+			double fee = MovementEntity.checkFee(txId, activeMovement, result);
+			if (result.getCode() == "00") {
+				AccountEntity.checkLimits(activeAccount, activeProduct, result);
+				if (result.getCode() == "00") {
+					activeMovement.setAmount(activeMovement.getAmount() - fee);
+					activeMovement.setPreviousBalance(activeAccount.getBalance());
+					activeMovement.setNewBalance(activeAccount.getBalance() + activeMovement.getAmount());
+					if (activeMovement.getNewBalance() < activeProduct.getMinimumBalance()) {
+						result.setCode("06");
+					}
+					else if (activeAccount.getTransferQuantity() > activeProduct.getAmountLimit()) {
+						result.setCode("07");
+					}
+					else if (activeAccount.getTransferAmount() + activeMovement.getAmount() > activeProduct.getAmountLimit()) {
+						result.setCode("08");
+					}
+					else if (result.getCode() == "00") {
+						activeAccount.setTransferAmount(activeAccount.getTransferAmount() + activeMovement.getAmount());
+						activeAccount.setTransferQuantity(activeAccount.getTransferQuantity() + 1);
+						activeAccount.setBalance(activeMovement.getNewBalance());
+						MovementEntity.createTransaction(txId, activeMovement, activeAgent, result);
+						AccountEntity.updateAccount(activeAccount, result);
+					}
+				}
+			}
 		}
 	}
 }

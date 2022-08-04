@@ -58,12 +58,13 @@ public class MovementEntity {
             statement = connection.prepareStatement(""
             		+ "INSERT INTO movements "
             		+ "(movement_id, source_account, destination_account, amount, prev_balance, new_balance, creation_date, transaction_id, agent_id) "
-            		+ "VALUES (DEFAULT, ?, ?, ?, ?, ?, SYSDATE, ?) ");
+            		+ "VALUES (DEFAULT, ?, ?, ?, ?, ?, SYSDATE, ?, ?) ");
             statement.setString(1, activeMovement.getSourceAccount());
             statement.setString(2, activeMovement.getDestinationAccount());
             statement.setDouble(3, activeMovement.getAmount());
             statement.setDouble(4, activeMovement.getPreviousBalance());
             statement.setDouble(5, activeMovement.getNewBalance());
+            statement.setInt(6, txId);
             statement.setString(7, activeAgent.getUsername());
             System.out.println("\nInserting into movements table\n");
             statement.executeUpdate();
