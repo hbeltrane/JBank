@@ -15,7 +15,7 @@ public class Return {
 	}
 	
 	private void createErrorTable() {
-		errorTable.put("00", new String[] {"OK", "Operation succesfull"});
+		errorTable.put("00", new String[] {"OK", "Operation successful"});
 		errorTable.put("01", new String[] {"Agent username nof found", "Invalid username or password"});
 		errorTable.put("02", new String[] {"Agent password incorrect", "Invalid username or password"});
 		errorTable.put("99", new String[] {"Unknown error", "Try again or contact system administrator"});

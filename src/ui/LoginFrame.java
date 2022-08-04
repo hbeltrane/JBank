@@ -2,14 +2,11 @@ package ui;
 
 import entity.*;
 
-import javax.sound.midi.*;
 import javax.swing.*;
 import java.awt.*;
 
 
 public class LoginFrame extends JFrame {
-    // Login Frame Components
-    private JPanel loginPanel;
     private JTextField userTextField;
     private JPasswordField passwordField;
     private JButton loginButton;
@@ -17,14 +14,17 @@ public class LoginFrame extends JFrame {
     private final Color RED_COLOR = new Color(255,0,0);
     // Class properties
     Agent bankAgent;
+    Return result;
     MainFrame mainFrame;
 
     LoginFrame(MainFrame mainFrame) {
         super("JBank - Login");
         this.mainFrame = mainFrame;
         bankAgent = mainFrame.bankAgent;  // Pass the reference to the local Agent field
+        result = new Return();
         this.setSize(380, 320);
-        loginPanel = getLoginPanel();
+        // Login Frame Components
+        JPanel loginPanel = getLoginPanel();
         this.setResizable(false);
         this.setContentPane(loginPanel);
         this.setLocationRelativeTo(loginPanel);
@@ -67,17 +67,17 @@ public class LoginFrame extends JFrame {
         loginButton.setFocusable(false);
         loginButton.addActionListener(event -> {
             // Login agent
-            int status = bankAgent.agentLogin(userTextField.getText(),  getPasswordText(), bankAgent);
-            switch (status) {
-                case 0:
+            bankAgent.agentLogin(userTextField.getText(),  getPasswordText(), bankAgent, result);
+            switch (result.getCode()) {
+                case "00":
                     mainFrame.getSearchPanel();
                     this.dispose();
-                case 1:
-                case 2:
-                    messageLabel.setText("Login failed: Invalid username or password");
+                case "01":
+                case "02":
+                    messageLabel.setText(result.getMessage());
                     break;
-                case 99:
-                    messageLabel.setText("Login failed: Database error");
+                case "99":
+                    messageLabel.setText(result.getMessage());
                     break;
                 default:
                     messageLabel.setText("Login failed: Unknown error");
