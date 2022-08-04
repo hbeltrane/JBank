@@ -103,7 +103,6 @@ public class Account {
 	}
 	
 	public void viewAccount(Customer activeCustomer, Account activeAccount, ArrayList<Movement> accountMovements, Return result) {
-		result = new Return();
 		accountMovements = new ArrayList<Movement>();
 		CustomerEntity.getCustomerById(activeCustomer, activeAccount.getCustomerId(), result);
 		if (result.getCode() == "00") {
@@ -112,7 +111,6 @@ public class Account {
 	}
 	
 	public void deleteAccount(Account activeAccount, Agent activeAgent, Return result) {
-		result = new Return();
 		if (activeAccount.getBalance() == 0) {
 			AccountEntity.deleteAccount(activeAccount, activeAgent, result);
 		}
@@ -122,7 +120,6 @@ public class Account {
 	}
 	
 	public void deposit(Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
-		result = new Return();
 		int txId = 7;
 		double fee = MovementEntity.checkFee(txId, activeMovement, result);
 		if (result.getCode() == "00") {
@@ -137,7 +134,6 @@ public class Account {
 	
 	public void withdraw(Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
 		Product activeProduct = new Product();
-		result = new Return();
 		int txId = 9;
 		double fee = MovementEntity.checkFee(txId, activeMovement, result);
 		if (result.getCode() == "00") {
@@ -161,7 +157,6 @@ public class Account {
 	}
 	
 	public void transfer(boolean transferOwn, Movement activeMovement, Account activeAccount, String destinationAccount, Agent activeAgent, Return result) {
-		result = new Return();
 		if ((activeAccount.getCustomerId() == AccountEntity.searchAccount(destinationAccount, result) && transferOwn) || (activeAccount.getCustomerId() != AccountEntity.searchAccount(destinationAccount, result) && !transferOwn)) {
 			if (result.getCode() == "00") {
 				activeMovement.setDestinationAccount(destinationAccount);

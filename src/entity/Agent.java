@@ -72,33 +72,28 @@ public class Agent {
 	}
 	
 	public void agentLogin(String username, String password, Agent activeAgent, Return result) {
-		result = new Return();
 		AgentEntity.validateAgent(username, activeAgent, result);
-		if (result.getCode().equals("00")) {
+		if (result.getCode() == "00") {
 			if (!password.equals(activeAgent.getPassword()))
 				result.setCode("02");
 		}
 	}
 	
 	public void agentCreateCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
-		result = new Return();
 		AgentEntity.createCustomer(activeCustomer, activeAgent, result);
 	}
 	
 	public void agentSearchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
-		result = new Return();
 		customersResult = new ArrayList<Customer>();
 		AgentEntity.searchCustomers(searchString, customersResult, result);
 	}
 	
 	public void agentSearchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
-		result = new Return();
 		accountsResult = new ArrayList<Account>();
 		AgentEntity.searchAccounts(searchString, accountsResult, result);
 	}
 	
 	public void openAccount(Account activeAccount, Agent activeAgent, Return result) {
-		result = new Return();
 		int accTypeA = 0;
 		int accTypeB = 0;
 		int accTypeC = 0;
