@@ -56,7 +56,7 @@ public class AgentEntity {
         }
     }
     
-    public static void createCustomer(Customer newCustomer, Agent activeAgent, Return result) {
+    public static void createCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -64,26 +64,113 @@ public class AgentEntity {
             		+ "INSERT INTO customers "
             		+ "(customer_id, pin, first_name, last_name, address, phone_number, email, creation_date, agent_id) "
             		+ "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, SYSDATE, ?) ", new String[] { "customer_id" });
-            statement.setString(1, newCustomer.getPin());
-            statement.setString(2, newCustomer.getFirstName());
-            statement.setString(3, newCustomer.getLastName());
-            statement.setString(4, newCustomer.getAddress());
-            statement.setString(5, newCustomer.getPhoneNumber());
-            statement.setString(6, newCustomer.getEmail());
+            statement.setString(1, activeCustomer.getPin());
+            statement.setString(2, activeCustomer.getFirstName());
+            statement.setString(3, activeCustomer.getLastName());
+            statement.setString(4, activeCustomer.getAddress());
+            statement.setString(5, activeCustomer.getPhoneNumber());
+            statement.setString(6, activeCustomer.getEmail());
             statement.setString(7, activeAgent.getUsername());
             System.out.println("\nInserting customers table\n");
             statement.executeUpdate();
             keys = statement.getGeneratedKeys();
             keys.next();
-            newCustomer.setCustomerId(keys.getInt(1));
+            activeCustomer.setCustomerId(keys.getInt(1));
+        	result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
+        	if (((SQLException)ex).getErrorCode() == 1) {
+                result.setCode("03");
+        	}
+        	else {
+                System.out.println(ex.getMessage());
+                result.setCode("99");
+        	}
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public static void checkExistingAccounts(Account activeAccount, ArrayList<String> existingAccounts, String likeA, String likeB, String likeC, Return result) {
+    	try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "SELECT acc_number FROM accounts "
+            		+ "WHERE acc_type like ? "
+            		+ "OR acc_type like ? "
+            		+ "OR acc_type like ? ");
+            statement.setString(1, likeA + "%");
+            statement.setString(2, likeB + "%");
+            statement.setString(3, likeC + "%");
+            System.out.println("\nQuerying accounts table\n");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+            	existingAccounts.add(resultSet.getString("acc_number"));
+            }
+            statement = connection.prepareStatement(""
+            		+ "SELECT acc_number FROM accounts_hist "
+            		+ "WHERE acc_type like ? "
+            		+ "OR acc_type like ? "
+            		+ "OR acc_type like ? ");
+            statement.setString(1, likeA + "%");
+            statement.setString(2, likeB + "%");
+            statement.setString(3, likeC + "%");
+            System.out.println("\nQuerying accounts_hist table\n");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+            	existingAccounts.add(resultSet.getString("acc_number"));
+            }
         	result.setCode("00");
         } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
             result.setCode("99");
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+        
+    public static void openAccount(Account activeAccount, Agent activeAgent, Return result) {
+    	try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "INSERT INTO accounts "
+            		+ "(acc_number, acc_type, balance, transfer_amount, transfer_quantity, customer_id, open_date, agent_id) "
+            		+ "VALUES (?, ?, ?, ?, ?, ?, SYSDATE, ?) ");
+            statement.setString(1, activeAccount.getAccNumber());
+            statement.setString(2, activeAccount.getAccType());
+            statement.setDouble(3, activeAccount.getBalance());
+            statement.setDouble(4, activeAccount.getTransferAmount());
+            statement.setInt(5, activeAccount.getTransferQuantity());
+            statement.setInt(6, activeAccount.getCustomerId());
+            statement.setString(7, activeAgent.getUsername());
+            System.out.println("\nInserting into accounts table\n");
+            statement.executeUpdate();
+        	result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
+        	if (((SQLException)ex).getErrorCode() == 1) {
+                result.setCode("03");
+        	}
+        	else {
+                System.out.println(ex.getMessage());
+                result.setCode("99");
+        	}
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -98,11 +185,11 @@ public class AgentEntity {
             statement = connection.prepareStatement(""
             		+ "SELECT * "
             		+ "FROM customers "
-            		+ "WHERE first_name like ? "
-            		+ "OR last_name like ? "
-            		+ "OR address like ? "
+            		+ "WHERE LOWER(first_name) like LOWER(?) "
+            		+ "OR LOWER (last_name) like (?) "
+            		+ "OR LOWER (address) like (?) "
             		+ "OR phone_number like ? "
-            		+ "OR email like ?");
+            		+ "OR LOWER(email) like (?)");
             statement.setString(1, "%" + searchString + "%");
             statement.setString(2, "%" + searchString + "%");
             statement.setString(3, "%" + searchString + "%");
