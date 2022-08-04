@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class CustomerEntity {
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
-    public static void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts, Return result) {
+    public static void viewCustomer(Customer activeCustomer, ArrayList<Account> customerAccounts, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -26,7 +27,7 @@ public class CustomerEntity {
             		+ "JOIN products "
             		+ "ON accounts.acc_type = products.product_id "
             		+ "WHERE accounts.customer_id = ?");
-            statement.setInt(1, inCustomer.getCustomerId());
+            statement.setInt(1, activeCustomer.getCustomerId());
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -51,7 +52,7 @@ public class CustomerEntity {
         }
     }
 
-    public static void getCustomerById(Customer inCustomer, int customerId, Return result) {
+    public static void getCustomerById(Customer activeCustomer, int customerId, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -63,14 +64,14 @@ public class CustomerEntity {
             System.out.println("\nQuerying customers table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	inCustomer.setCustomerId(resultSet.getInt("customer_id"));
-            	inCustomer.setPin(resultSet.getString("pin"));
-            	inCustomer.setFirstName(resultSet.getString("first_name"));
-            	inCustomer.setLastName(resultSet.getString("last_name"));
-            	inCustomer.setAddress(resultSet.getString("address"));
-            	inCustomer.setPhoneNumber(resultSet.getString("phone_number"));
-            	inCustomer.setEmail(resultSet.getString("email"));
-            	inCustomer.setCreationDate(resultSet.getDate("creation_date"));
+            	activeCustomer.setCustomerId(resultSet.getInt("customer_id"));
+            	activeCustomer.setPin(resultSet.getString("pin"));
+            	activeCustomer.setFirstName(resultSet.getString("first_name"));
+            	activeCustomer.setLastName(resultSet.getString("last_name"));
+            	activeCustomer.setAddress(resultSet.getString("address"));
+            	activeCustomer.setPhoneNumber(resultSet.getString("phone_number"));
+            	activeCustomer.setEmail(resultSet.getString("email"));
+            	activeCustomer.setCreationDate(resultSet.getDate("creation_date"));
             }
             result.setCode("00");
         } catch (SQLException | NullPointerException ex) {
@@ -90,7 +91,7 @@ public class CustomerEntity {
         }
     }
     
-    public static void updateCustomer(Customer inCustomer, Return result) {
+    public static void updateCustomer(Customer activeCustomer, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
@@ -103,19 +104,61 @@ public class CustomerEntity {
             		+ "phone_number = ?, "
             		+ "email = ? "
             		+ "WHERE customer_id = ? ");
-            statement.setString(1, inCustomer.getPin());
-            statement.setString(2, inCustomer.getFirstName());
-            statement.setString(3, inCustomer.getLastName());
-            statement.setString(4, inCustomer.getAddress());
-            statement.setString(5, inCustomer.getPhoneNumber());
-            statement.setString(6, inCustomer.getEmail());
-            statement.setInt(7, inCustomer.getCustomerId());
+            statement.setString(1, activeCustomer.getPin());
+            statement.setString(2, activeCustomer.getFirstName());
+            statement.setString(3, activeCustomer.getLastName());
+            statement.setString(4, activeCustomer.getAddress());
+            statement.setString(5, activeCustomer.getPhoneNumber());
+            statement.setString(6, activeCustomer.getEmail());
+            statement.setInt(7, activeCustomer.getCustomerId());
             System.out.println("\nUpdating customers table\n");
             statement.executeUpdate();
         	result.setCode("00");
         } catch (SQLException | NullPointerException ex) {
-            System.out.println(ex.getMessage());
-            result.setCode("99");
+        	if (((SQLException)ex).getErrorCode() == 1) {
+                result.setCode("03");
+        	}
+        	else {
+                System.out.println(ex.getMessage());
+                result.setCode("99");
+        	}
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public static void deleteCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
+    	try {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "INSERT INTO customers_hist "
+            		+ "(customer_id, first_name, last_name, creation_date, delete_date, agent_id) " 
+            		+ "VALUES "
+            		+ "(?, ?, ?, ?, SYSDATE, ?)");
+            statement.setInt(1, activeCustomer.getCustomerId());
+            statement.setString(2, activeCustomer.getFirstName());
+            statement.setString(3, activeCustomer.getLastName());
+            statement.setDate(4,  (Date)activeCustomer.getCreationDate());
+            statement.setString(5, activeAgent.getUsername());
+            System.out.println("\nInserting into customers_hist table\n");
+            statement.executeUpdate();
+            statement = connection.prepareStatement(""
+            		+ "DELETE FROM customers "
+            		+ "WHERE customer_id = ? ");
+            statement.setInt(1, activeCustomer.getCustomerId());
+            System.out.println("\nDeleting from customers table\n");
+            statement.executeUpdate();
+        	result.setCode("00");
+        } catch (SQLException | NullPointerException ex) {
+        	System.out.println(ex.getMessage());
+        	result.setCode("99");
         } finally {
             try {
                 if (statement != null) {

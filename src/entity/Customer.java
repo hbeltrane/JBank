@@ -113,11 +113,26 @@ public class Customer {
 		return creationDate;
 	}
 	
-	public void viewCustomer(Customer inCustomer, ArrayList<Account> customerAccounts, Return result) {
-		CustomerEntity.viewCustomer(inCustomer, customerAccounts, result);
+	public void viewCustomer(Customer activeCustomer, ArrayList<Account> customerAccounts, Return result) {
+		result = new Return();
+		customerAccounts = new ArrayList<Account>();
+		CustomerEntity.viewCustomer(activeCustomer, customerAccounts, result);
 	}
 	
-	public void updateCustomer(Customer inCustomer, Return result) {
-		CustomerEntity.updateCustomer(inCustomer, result);
+	public void updateCustomer(Customer activeCustomer, Return result) {
+		result = new Return();
+		CustomerEntity.updateCustomer(activeCustomer, result);
+	}
+	
+	public void deleteCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
+		result = new Return();
+		ArrayList<Account> customerAccounts = new ArrayList<Account>();
+		CustomerEntity.viewCustomer(activeCustomer, customerAccounts, result);
+		if (customerAccounts.size() > 0) {
+			result.setCode("04");
+		}
+		else {
+			CustomerEntity.deleteCustomer(activeCustomer, activeAgent, result);
+		}
 	}
 }

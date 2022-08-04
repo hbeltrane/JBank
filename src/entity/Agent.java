@@ -1,6 +1,9 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+
 import db.AgentEntity;
 
 public class Agent {
@@ -69,6 +72,7 @@ public class Agent {
 	}
 	
 	public void agentLogin(String username, String password, Agent activeAgent, Return result) {
+		result = new Return();
 		AgentEntity.validateAgent(username, activeAgent, result);
 		if (result.getCode().equals("00")) {
 			if (!password.equals(activeAgent.getPassword()))
@@ -76,15 +80,64 @@ public class Agent {
 		}
 	}
 	
-	public void agentCreateCustomer(Customer inCustomer, Agent activeAgent, Return result) {
-		AgentEntity.createCustomer(inCustomer, activeAgent, result);
+	public void agentCreateCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
+		result = new Return();
+		AgentEntity.createCustomer(activeCustomer, activeAgent, result);
 	}
 	
 	public void agentSearchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
+		result = new Return();
+		customersResult = new ArrayList<Customer>();
 		AgentEntity.searchCustomers(searchString, customersResult, result);
 	}
 	
 	public void agentSearchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
+		result = new Return();
+		accountsResult = new ArrayList<Account>();
 		AgentEntity.searchAccounts(searchString, accountsResult, result);
+	}
+	
+	public void openAccount(Account activeAccount, Agent activeAgent, Return result) {
+		result = new Return();
+		int accTypeA = 0;
+		int accTypeB = 0;
+		int accTypeC = 0;
+		switch (activeAccount.getAccType()) {
+		case ("Checking"):
+			accTypeA = 1;
+			accTypeB = 2;
+			accTypeC = 3;
+			break;
+		case ("Saving"):
+			accTypeA = 4;
+			accTypeB = 5;
+			accTypeC = 6;
+			break;
+		case ("Investing"):
+			accTypeA = 7;
+			accTypeB = 8;
+			accTypeC = 9;
+			break;
+		}
+		ArrayList<String> existingAccounts = new ArrayList<String>();
+		AgentEntity.checkExistingAccounts(activeAccount, existingAccounts, Integer.toString(accTypeA), Integer.toString(accTypeB), Integer.toString(accTypeC), result);
+		if (result.getCode() == "00") {
+			Collections.sort(existingAccounts);
+			Integer tempAccountNumber = (accTypeA * 1000000000) + (1 + (int) (Math.random() * 100000000));
+			while (existingAccounts.contains(tempAccountNumber)) {
+				Random randNum = new Random();
+				if (randNum.nextBoolean()) {
+					tempAccountNumber = (accTypeB * 1000000000) + (1 + (int) (Math.random() * 100000000));
+				}
+				else {
+					tempAccountNumber = (accTypeC * 1000000000) + (1 + (int) (Math.random() * 100000000));
+				}
+			}
+			activeAccount.setAccNumber(Integer.toString(tempAccountNumber));
+			activeAccount.setBalance(0);
+			activeAccount.setTransferAmount(0);
+			activeAccount.setTransferQuantity(0);
+			AgentEntity.openAccount(activeAccount, activeAgent, result);
+		}
 	}
 }

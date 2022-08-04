@@ -5,6 +5,7 @@ import java.util.Date;
 
 import db.AccountEntity;
 import db.CustomerEntity;
+import db.MovementEntity;
 
 public class Account {
 	private String accNumber;
@@ -101,10 +102,34 @@ public class Account {
 		return openDate;
 	}
 	
-	public void viewAccount(Customer inCustomer, Account inAccount, ArrayList<Movement> accountMovements, Return result) {
-		CustomerEntity.getCustomerById(inCustomer, inAccount.getCustomerId(), result);
+	public void viewAccount(Customer activeCustomer, Account activeAccount, ArrayList<Movement> accountMovements, Return result) {
+		result = new Return();
+		accountMovements = new ArrayList<Movement>();
+		CustomerEntity.getCustomerById(activeCustomer, activeAccount.getCustomerId(), result);
 		if (result.getCode() == "00") {
-			AccountEntity.viewAccount(inAccount, accountMovements, result);
+			AccountEntity.viewAccount(activeAccount, accountMovements, result);
+		}
+	}
+	
+	public void deleteAccount(Account activeAccount, Agent activeAgent, Return result) {
+		result = new Return();
+		if (activeAccount.getBalance() == 0) {
+			AccountEntity.deleteAccount(activeAccount, activeAgent, result);
+		}
+		else {
+			result.setCode("05");
+		}
+	}
+	
+	public void deposit(Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
+		result = new Return();
+		int txId = 7;
+		double fee = MovementEntity.checkFee(txId, activeMovement, result);
+		if (result.getCode() == "00") {
+			activeMovement.setAmount(activeMovement.getAmount() - fee);
+			activeMovement.setPreviousBalance(activeAccount.getBalance());
+			activeMovement.setNewBalance(activeAccount.getBalance() + activeMovement.getAmount());
+			MovementEntity.createTransaction(txId, activeMovement, activeAgent, result);
 		}
 	}
 }
