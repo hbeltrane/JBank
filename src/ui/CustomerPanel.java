@@ -1,13 +1,19 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.*;
+import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 
 
 public class CustomerPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel customerIdLabel;
     JTextField customerIdTextField;
@@ -26,10 +32,20 @@ public class CustomerPanel extends JPanel {
     JButton openAccountButton;
     JTable accountTable;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    public CustomerPanel() {
+    Agent bankAgent;
+    Customer bankCustomer;
+    ArrayList<Account> customerAccounts;
+    Return result;
+    MainFrame mainFrame;
+    public CustomerPanel(Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.bankCustomer = bankCustomer;
+        this.mainFrame = mainFrame;
+        this.bankAgent = mainFrame.bankAgent;
+        getCustomerData();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAgentIdLabel();
         getCustomerIdLabel();
         getCustomerIdTextField();
@@ -51,8 +67,14 @@ public class CustomerPanel extends JPanel {
     }
 
     /* Initialize the Customer Panel components */
+    private void getPanelLabel() {
+        agentIdLabel = new JLabel("CUSTOMER");
+        agentIdLabel.setBounds(100,0,200,30);
+        agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(agentIdLabel,null);
+    }
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
@@ -65,7 +87,8 @@ public class CustomerPanel extends JPanel {
         this.add(customerIdLabel,null);
     }
     private void getCustomerIdTextField() {
-        customerIdTextField = new JTextField();
+        String customerId = String.valueOf(bankCustomer.getCustomerId());
+        customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(200,50,200,30);
         this.add(customerIdTextField,null);
     }
@@ -77,7 +100,8 @@ public class CustomerPanel extends JPanel {
         this.add(customerFirstNameLabel,null);
     }
     private void getCustomerFirstNameTextField() {
-        customerFirstNameTextField = new JTextField();
+        String firstName = bankCustomer.getFirstName();
+        customerFirstNameTextField = new JTextField(firstName);
         customerFirstNameTextField.setBounds(200,100,200,30);
         this.add(customerFirstNameTextField,null);
     }
@@ -89,7 +113,8 @@ public class CustomerPanel extends JPanel {
         this.add(customerLastNameLabel,null);
     }
     private void getCustomerLastNameTextField() {
-        customerLastNameTextField = new JTextField();
+        String lastName = bankCustomer.getLastName();
+        customerLastNameTextField = new JTextField(lastName);
         customerLastNameTextField.setBounds(675,100,200,30);
         this.add(customerLastNameTextField,null);
     }
@@ -101,7 +126,8 @@ public class CustomerPanel extends JPanel {
         this.add(customerAddressLabel,null);
     }
     private void getCustomerAddressTextField() {
-        customerAddressTextField = new JTextField();
+        String address = bankCustomer.getAddress();
+        customerAddressTextField = new JTextField(address);
         customerAddressTextField.setBounds(200,150,200,30);
         this.add(customerAddressTextField,null);
     }
@@ -113,7 +139,8 @@ public class CustomerPanel extends JPanel {
         this.add(customerPhoneNumberLabel,null);
     }
     private void getCustomerPhoneNumberTextField() {
-        customerPhoneNumberTextField = new JTextField();
+        String phoneNumber = bankCustomer.getPhoneNumber();
+        customerPhoneNumberTextField = new JTextField(phoneNumber);
         customerPhoneNumberTextField.setBounds(675,150,200,30);
         this.add(customerPhoneNumberTextField,null);
     }
@@ -125,7 +152,8 @@ public class CustomerPanel extends JPanel {
         this.add(customerEmailLabel,null);
     }
     private void getCustomerEmailTextField() {
-        customerEmailTextField = new JTextField();
+        String email = bankCustomer.getEmail();
+        customerEmailTextField = new JTextField(email);
         customerEmailTextField.setBounds(675,50,200,30);
         this.add(customerEmailTextField,null);
     }
@@ -163,17 +191,45 @@ public class CustomerPanel extends JPanel {
 
         });
     }
-
+    private void getCustomerData() {
+        customerAccounts = new ArrayList<>();
+        result = new Return();
+        bankCustomer.viewCustomer(bankCustomer, customerAccounts, result);
+    }
     private void getAccountTable() {
         String [] columnNames = {
-                "Account Number", "Account Type", "Balance", "Transfer Amount", "Transfer Quantity"
+                "Account Number", "Account Type", "Balance", "Transfer Amount",
+                "Transfer Quantity", "Customer ID", "Open Date"
         };
-        Object[][] data = {
-                {"843592944", 1, 7698.17, 7710.6, 3},
-                {"196191617", 2, 20327.59, 2899.12, 5},
-                {"955291079", 3, 16100.18, 5783.88, 4}
+        String[][] data = new String[customerAccounts.size()][columnNames.length];
+
+        for (int i = 0; i < data.length ; i++) {
+            data[i][0] = String.valueOf(customerAccounts.get(i).getAccNumber());
+            data[i][1] = customerAccounts.get(i).getAccType();
+            data[i][2] = String.valueOf(customerAccounts.get(i).getBalance());
+            data[i][3] = String.valueOf(customerAccounts.get(i).getTransferAmount());
+            data[i][4] = String.valueOf(customerAccounts.get(i).getTransferQuantity());
+            data[i][5] = String.valueOf(customerAccounts.get(i).getCustomerId());
+            data[i][6] = String.valueOf(customerAccounts.get(i).getOpenDate());
+        }
+
+        DefaultTableModel tableModel = new DefaultTableModel(data, columnNames);
+        accountTable = new JTable(tableModel) {
+            public boolean isCellEditable(int data, int columnNames) {
+                return false;
+            }
         };
-        accountTable = new JTable(data,columnNames);
+        accountTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent event) {
+                JTable table = (JTable)event.getSource();
+                if (event.getClickCount() == 2) {
+                    int row = table.rowAtPoint(event.getPoint());
+                    Account searchedAccount = customerAccounts.get(row);
+                    mainFrame.getAccountPanel(searchedAccount);
+                }
+            }
+        });
+        accountTable.setRowHeight(25);
         accountTable.setPreferredScrollableViewportSize(new Dimension(500,100));
         accountTable.setFillsViewportHeight(true);
     }

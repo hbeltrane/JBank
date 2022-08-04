@@ -4,6 +4,7 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 
 public class LoginFrame extends JFrame {
@@ -43,6 +44,13 @@ public class LoginFrame extends JFrame {
         loginButton = new JButton("SIGN IN");
         loginButton.setBounds(70,170,240,40);
         setLoginAction();
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                event.getWindow().dispose();
+                mainFrame.disposeLoginFrame(LoginFrame.this);
+            }
+        });
         messageLabel = new JLabel("");
         messageLabel.setBounds(65,220,255,40);
         messageLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -72,6 +80,7 @@ public class LoginFrame extends JFrame {
                 case "00":
                     mainFrame.getSearchPanel();
                     this.dispose();
+                    mainFrame.disposeLoginFrame(LoginFrame.this);
                 case "01":
                 case "02":
                     messageLabel.setText(result.getMessage());

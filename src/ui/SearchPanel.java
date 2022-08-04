@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class SearchPanel extends JPanel {
@@ -29,8 +31,8 @@ public class SearchPanel extends JPanel {
         this.mainFrame = mainFrame;
         this.bankAgent = mainFrame.bankAgent;
         result = new Return();
-        resultCustomers = new ArrayList<Customer>();
-        resultAccounts = new ArrayList<Account>();
+        resultCustomers = new ArrayList<>();
+        resultAccounts = new ArrayList<>();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
         getAgentIdLabel();
@@ -58,7 +60,7 @@ public class SearchPanel extends JPanel {
 
     private void getSearchTextField() {
         searchTextField = new JTextField();
-        searchTextField.setBounds(400,50,250,30);
+        searchTextField.setBounds(375,50,250,30);
         this.add(searchTextField,null);
     }
 
@@ -73,10 +75,6 @@ public class SearchPanel extends JPanel {
             System.out.println("\n\n***** SEARCH TEST *****");
             bankAgent.agentSearchCustomers(searchTextField.getText(), resultCustomers, result);
             if (Objects.equals(result.getCode(), "00")) {
-                System.out.println("\nCUSTOMERS:");
-                for (Customer resultCustomer : resultCustomers) {
-                    System.out.print(resultCustomer.getFirstName() + "\n");
-                }
                 updateCustomerTable();
             }
             else {
@@ -85,10 +83,6 @@ public class SearchPanel extends JPanel {
             result = new Return();
             bankAgent.agentSearchAccounts(searchTextField.getText(), resultAccounts, result);
             if (Objects.equals(result.getCode(), "00")) {
-                System.out.println("\nACCOUNTS:");
-                for (Account resultAccount : resultAccounts) {
-                    System.out.print(resultAccount.getAccNumber() + " " + resultAccount.getAccType() + "\n");
-                }
                 updateAccountTable();
             }
             else {
@@ -103,8 +97,22 @@ public class SearchPanel extends JPanel {
         };
         String[][] data = new String[0][];
         TableModel tableModel = new DefaultTableModel(data, columnNames);
-
-        customerTable = new JTable(tableModel);
+        customerTable = new JTable(tableModel) {
+            public boolean isCellEditable(int data, int columnNames) {
+                return false;
+            }
+        };
+        customerTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent event) {
+                JTable table = (JTable)event.getSource();
+                if (event.getClickCount() == 2) {
+                    int row = table.rowAtPoint(event.getPoint());
+                    Customer searchedCustomer = resultCustomers.get(row);
+                    mainFrame.getCustomerPanel(searchedCustomer);
+                }
+            }
+        });
+        customerTable.setRowHeight(25);
         customerTable.setPreferredScrollableViewportSize(new Dimension(500,100));
         customerTable.setFillsViewportHeight(true);
     }
@@ -142,7 +150,22 @@ public class SearchPanel extends JPanel {
         Object[][] data = new String[0][];
         TableModel tableModel = new DefaultTableModel(data, columnNames);
 
-        accountTable = new JTable(tableModel);
+        accountTable = new JTable(tableModel) {
+            public boolean isCellEditable(int data, int columnNames) {
+                return false;
+            }
+        };
+        accountTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent event) {
+                JTable table = (JTable)event.getSource();
+                if (event.getClickCount() == 2) {
+                    int row = table.rowAtPoint(event.getPoint());
+                    Account searchedAccount = resultAccounts.get(row);
+                    mainFrame.getAccountPanel(searchedAccount);
+                }
+            }
+        });
+        accountTable.setRowHeight(25);
         accountTable.setPreferredScrollableViewportSize(new Dimension(500,100));
         accountTable.setFillsViewportHeight(true);
     }
