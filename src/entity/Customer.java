@@ -25,7 +25,15 @@ public class Customer {
 		this.email = null;
 		this.creationDate = null;
 	}
-	
+	public Customer(String pin, String firstName, String lastName, String address, String phoneNumber, String email, Date creationDate) {
+		this.pin = pin;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.creationDate = creationDate;
+	}
 	public Customer(int customerId, String pin, String firstName, String lastName, String address, String phoneNumber, String email, Date creationDate) {
 		this.customerId = customerId;
 		this.pin = pin;

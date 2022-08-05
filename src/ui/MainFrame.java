@@ -85,7 +85,16 @@ public class MainFrame extends JFrame {
         });
         JMenuItem newCustomerMenuItem = new JMenuItem("New Customer");
         newCustomerMenuItem.addActionListener(event -> {
-            // TODO
+            if (createCustomerPanel == null) {
+                getCreateCustomerPanel();
+            } else {
+                if (createCustomerPanel.getParent() == null) {
+                    getContentPane().removeAll();
+                    add(createCustomerPanel);
+                    revalidate();
+                    repaint();
+                }
+            }
         });
         customerMenu.add(searchMenuItem);
         customerMenu.add(newCustomerMenuItem);
@@ -129,7 +138,7 @@ public class MainFrame extends JFrame {
     }
     public void getCustomerPanel(Customer searchedCustomer) {
         customerPanel = new CustomerPanel(searchedCustomer, this);
-        remove(searchPanel);
+        getContentPane().removeAll();
         add(customerPanel);
         revalidate();
         repaint();
@@ -141,9 +150,12 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
     }
-    public JPanel getCreateCustomerPanel(){
-        createCustomerPanel = new CreateCustomerPanel();
-        return createCustomerPanel;
+    public void getCreateCustomerPanel(){
+        createCustomerPanel = new CreateCustomerPanel(this);
+        getContentPane().removeAll();
+        add(createCustomerPanel);
+        revalidate();
+        repaint();
     }
     public JPanel getOpenAccountPanel(){
         openAccountPanel = new OpenAccountPanel();

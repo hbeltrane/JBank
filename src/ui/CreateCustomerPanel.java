@@ -1,13 +1,19 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.*;
 import java.awt.*;
+import java.time.*;
+import java.util.*;
+import java.util.regex.*;
 
 
 public class CreateCustomerPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel customerFirstNameLabel;
     JTextField customerFirstNameTextField;
@@ -20,13 +26,23 @@ public class CreateCustomerPanel extends JPanel {
     JLabel customerEmailLabel;
     JTextField customerEmailTextField;
     JLabel customerPinLabel;
-    JTextField customerPinTextField;
+    JPasswordField customerPinTextField;
     JButton createCustomerButton;
+    JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    public CreateCustomerPanel() {
+    ZoneId defaultZoneId;
+    Customer newCustomer;
+    Agent bankAgent;
+    Return result;
+    MainFrame mainFrame;
+    public CreateCustomerPanel(MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.mainFrame = mainFrame;
+        this.bankAgent = mainFrame.bankAgent;
+        defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAgentIdLabel();
         getCustomerPinLabel();
         getCustomerPinTextField();
@@ -40,12 +56,19 @@ public class CreateCustomerPanel extends JPanel {
         getCustomerAddressTextField();
         getCustomerPhoneNumberLabel();
         getCustomerPhoneNumberTextField();
+        getMessageLabel();
         getCreateCustomerButton();
     }
 
     /* Initialize the Customer Panel components */
+    private void getPanelLabel() {
+        panelLabel = new JLabel("CREATE CUSTOMER");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
+    }
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(mainFrame.bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
@@ -118,11 +141,17 @@ public class CreateCustomerPanel extends JPanel {
         this.add(customerPinLabel,null);
     }
     private void getCustomerPinTextField() {
-        customerPinTextField = new JTextField();
+        customerPinTextField = new JPasswordField();
         customerPinTextField.setBounds(675,150,200,30);
         this.add(customerPinTextField,null);
     }
-
+    private void getMessageLabel() {
+        messageLabel = new JLabel("");
+        messageLabel.setBounds(100,250,550,30);
+        messageLabel.setHorizontalAlignment(JLabel.CENTER);
+        messageLabel.setForeground(Color.RED);
+        this.add(messageLabel);
+    }
     private void getCreateCustomerButton() {
         createCustomerButton = new JButton("Create Customer");
         createCustomerButton.setBounds(675,250,200,30);
@@ -130,9 +159,122 @@ public class CreateCustomerPanel extends JPanel {
         createCustomerButton.setFocusable(false);
         // Update action for the button click event
         createCustomerButton.addActionListener(event -> {
-            /*  */
+            if (isValidData()) {
+                result = new Return();
+                newCustomer = new Customer(
+                        getPinText().trim(),
+                        customerFirstNameTextField.getText().trim(),
+                        customerLastNameTextField.getText().trim(),
+                        customerAddressTextField.getText().trim(),
+                        customerPhoneNumberTextField.getText().trim(),
+                        customerEmailTextField.getText().trim(),
+                        Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant())
+                );
+                bankAgent.agentCreateCustomer(newCustomer, bankAgent, result);
 
+                if(result.getCode().equals("00")) {
+                    customerFirstNameTextField.setText("");
+                    customerLastNameTextField.setText("");
+                    customerAddressTextField.setText("");
+                    customerPhoneNumberTextField.setText("");
+                    customerPhoneNumberTextField.setText("");
+                    customerEmailTextField.setText("");
+                    customerPinTextField.setText("");
+                    mainFrame.getCustomerPanel(newCustomer);
+                } else {
+                    messageLabel.setText(result.getMessage());
+                }
+            }
         });
+    }
+
+    private boolean isValidData() {
+        String firstName = customerFirstNameTextField.getText().trim();
+        String lastName = customerLastNameTextField.getText().trim();
+        String address = customerAddressTextField.getText().trim();
+        String phoneNumber = customerPhoneNumberTextField.getText().trim();
+        String email = customerEmailTextField.getText().trim();
+        String pin = getPinText().trim();
+        if (firstName.length() < 2) {
+            messageLabel.setText("Error! First Name cannot be less than 2 characters.");
+            return false;
+        }
+        if (lastName.length() < 2) {
+            messageLabel.setText("Error! Last Name cannot be less than 2 characters.");
+            return false;
+        }
+        if (address.length() < 1) {
+            messageLabel.setText("Error! Address field cannot be empty.");
+            return false;
+        }
+        if (phoneNumber.length() < 1) {
+            messageLabel.setText("Error! Phone Number field cannot be empty.");
+            return false;
+        }
+        if (!isValidPhoneNumber(phoneNumber)) {
+            return false;
+        }
+        if (email.length() < 1) {
+            messageLabel.setText("Error! Email field cannot be empty.");
+            return false;
+        }
+        if (!isValidEmail(email)) {
+            messageLabel.setText("Error! Email field was in an incorrect format.");
+            return false;
+        }
+        if (pin.length() < 1) {
+            messageLabel.setText("Error! Pin number field cannot be empty.");
+            return false;
+        }
+        if (!isValidPin(pin)) {
+            return false;
+        }
+        messageLabel.setText("");
+        return true;
+    }
+    private boolean isValidPhoneNumber(String phoneNumberString) {
+        boolean isValid = false;
+        try {
+            long phoneNumber =  Long.parseLong(phoneNumberString);
+            if (phoneNumber > 999999999L && phoneNumber <= 9999999999L) {
+                isValid = true;
+            } else {
+                messageLabel.setText("Error! Phone number must be 10 characters");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("Error! Phone number was in an incorrect format.");
+        }
+        return isValid;
+    }
+    private boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile(
+                "[a-zA-Z\\d._-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,4}?$",
+                Pattern.CASE_INSENSITIVE
+        );
+        Matcher matcher = pattern.matcher(email);
+        return matcher.find();
+    }
+    public String getPinText() {
+        StringBuilder pinString = new StringBuilder();
+        char[] pin = customerPinTextField.getPassword();
+        for (char pinChar : pin) {
+            pinString.append(pinChar);
+        }
+        return pinString.toString();
+    }
+    private boolean isValidPin(String pinString) {
+        boolean isValid = false;
+        try {
+            int pin =  Integer.parseInt(pinString);
+            if (pin > 999 && pin < 10000){
+                isValid = true;
+            } else {
+                messageLabel.setText("Error! Pin number must be 4 characters");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("Error! Pin number was in an incorrect format.");
+        }
+        return isValid;
     }
 
 }
