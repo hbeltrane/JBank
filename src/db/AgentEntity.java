@@ -150,7 +150,7 @@ public class AgentEntity {
             		+ "(acc_number, acc_type, balance, transfer_amount, transfer_quantity, customer_id, open_date, agent_id) "
             		+ "VALUES (?, ?, ?, ?, ?, ?, SYSDATE, ?) ");
             statement.setString(1, activeAccount.getAccNumber());
-            statement.setString(2, activeAccount.getAccType());
+            statement.setInt(2, activeAccount.getAccTypeID());
             statement.setDouble(3, activeAccount.getBalance());
             statement.setDouble(4, activeAccount.getTransferAmount());
             statement.setInt(5, activeAccount.getTransferQuantity());

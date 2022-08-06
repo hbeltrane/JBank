@@ -101,14 +101,14 @@ public class CustomerEntity {
             		+ "first_name = ?, "
             		+ "last_name = ?, "
             		+ "address = ?, "
-            		+ "phone_number = ?, "
+            		+ "phone_number = ? "
             		+ "WHERE customer_id = ? ");
             statement.setString(1, activeCustomer.getPin());
             statement.setString(2, activeCustomer.getFirstName());
             statement.setString(3, activeCustomer.getLastName());
             statement.setString(4, activeCustomer.getAddress());
             statement.setString(5, activeCustomer.getPhoneNumber());
-            statement.setInt(7, activeCustomer.getCustomerId());
+            statement.setInt(6, activeCustomer.getCustomerId());
             System.out.println("\nUpdating customers table\n");
             statement.executeUpdate();
         	result.setCode("00");

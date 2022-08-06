@@ -35,6 +35,14 @@ public class Account {
 		this.customerId = customerId;
 		this.openDate = openDate;
 	}
+	public Account(String accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
+		this.accType = accType;
+		this.balance = balance;
+		this.transferAmount = transferAmount;
+		this.transferQuantity = transferQuantity;
+		this.customerId = customerId;
+		this.openDate = openDate;
+	}
 	
 	public Account(Account inAccount) {
 		this.accNumber = inAccount.accNumber;
@@ -78,8 +86,14 @@ public class Account {
 		return accNumber;
 	}
 	
-	public String getAccType() {
-		return accType;
+	public String getAccType() { return accType; }
+	public int getAccTypeID() {
+		return switch (accType) {
+			case ("Checking") -> 1;
+			case ("Saving") -> 2;
+			case ("Investing") -> 3;
+			default -> 0;
+		};
 	}
 	
 	public double getBalance() {
