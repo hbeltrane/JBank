@@ -82,10 +82,10 @@ public class AccountPanel extends JPanel {
 
     /* Initialize the Customer Panel components */
     private void getPanelLabel() {
-        agentIdLabel = new JLabel("ACCOUNT");
-        agentIdLabel.setBounds(100,0,200,30);
-        agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
-        this.add(agentIdLabel,null);
+        panelLabel = new JLabel("ACCOUNT");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
     }
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
@@ -104,6 +104,7 @@ public class AccountPanel extends JPanel {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(225,50,150,30);
+        customerIdTextField.setEditable(false);
         this.add(customerIdTextField,null);
     }
 
@@ -117,6 +118,7 @@ public class AccountPanel extends JPanel {
         String firstName = bankCustomer.getFirstName();
         customerFirstNameTextField = new JTextField(firstName);
         customerFirstNameTextField.setBounds(525,50,150,30);
+        customerFirstNameTextField.setEditable(false);
         this.add(customerFirstNameTextField,null);
     }
 
@@ -130,6 +132,7 @@ public class AccountPanel extends JPanel {
         String lastName = bankCustomer.getLastName();
         customerLastNameTextField = new JTextField(lastName);
         customerLastNameTextField.setBounds(825,50,150,30);
+        customerLastNameTextField.setEditable(false);
         this.add(customerLastNameTextField,null);
     }
 
@@ -143,6 +146,7 @@ public class AccountPanel extends JPanel {
         String accountNumber = customerAccount.getAccNumber();
         accountNumberTextField = new JTextField(accountNumber);
         accountNumberTextField.setBounds(225,100,150,30);
+        accountNumberTextField.setEditable(false);
         this.add(accountNumberTextField,null);
     }
 
@@ -156,6 +160,7 @@ public class AccountPanel extends JPanel {
         String accountType = customerAccount.getAccType();
         accountTypeTextField = new JTextField(accountType);
         accountTypeTextField.setBounds(525,100,150,30);
+        accountTypeTextField.setEditable(false);
         this.add(accountTypeTextField,null);
     }
 
@@ -169,6 +174,7 @@ public class AccountPanel extends JPanel {
         String accountBalance = String.valueOf(customerAccount.getBalance());
         accountBalanceTextField = new JTextField(accountBalance);
         accountBalanceTextField.setBounds(825,100,150,30);
+        accountBalanceTextField.setEditable(false);
         this.add(accountBalanceTextField,null);
     }
 
@@ -182,6 +188,7 @@ public class AccountPanel extends JPanel {
         String transferAmount = String.valueOf(customerAccount.getTransferAmount());
         transferAmountTextField = new JTextField(transferAmount);
         transferAmountTextField.setBounds(250,150,200,30);
+        transferAmountTextField.setEditable(false);
         this.add(transferAmountTextField,null);
     }
 
@@ -195,6 +202,7 @@ public class AccountPanel extends JPanel {
         String transferQuantity = String.valueOf(customerAccount.getTransferQuantity());
         transferQuantityTextField = new JTextField(transferQuantity);
         transferQuantityTextField.setBounds(650,150,200,30);
+        transferQuantityTextField.setEditable(false);
         this.add(transferQuantityTextField,null);
     }
     private void getDepositButton() {

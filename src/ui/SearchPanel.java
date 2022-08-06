@@ -72,8 +72,7 @@ public class SearchPanel extends JPanel {
         // Search action for the button click event
         searchButton.addActionListener(event -> {
             /* Search customers or accounts */
-            System.out.println("\n\n***** SEARCH TEST *****");
-            bankAgent.agentSearchCustomers(searchTextField.getText(), resultCustomers, result);
+            bankAgent.agentSearchCustomers(searchTextField.getText().trim(), resultCustomers, result);
             if (Objects.equals(result.getCode(), "00")) {
                 updateCustomerTable();
             }
@@ -81,7 +80,7 @@ public class SearchPanel extends JPanel {
                 System.out.println(result.getCode() + " - " + result.getMessage());
             }
             result = new Return();
-            bankAgent.agentSearchAccounts(searchTextField.getText(), resultAccounts, result);
+            bankAgent.agentSearchAccounts(searchTextField.getText().trim(), resultAccounts, result);
             if (Objects.equals(result.getCode(), "00")) {
                 updateAccountTable();
             }

@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.regex.*;
 
 
-public class CreateCustomerPanel extends JPanel {
+public class UpdateCustomerPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
@@ -31,11 +31,11 @@ public class CreateCustomerPanel extends JPanel {
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
     ZoneId defaultZoneId;
-    Customer newCustomer;
+    Customer bankCustomer;
     Agent bankAgent;
     Return result;
     MainFrame mainFrame;
-    public CreateCustomerPanel(MainFrame mainFrame) {
+    public UpdateCustomerPanel(MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.mainFrame = mainFrame;
         this.bankAgent = mainFrame.bankAgent;
@@ -161,7 +161,7 @@ public class CreateCustomerPanel extends JPanel {
         createCustomerButton.addActionListener(event -> {
             if (isValidData()) {
                 result = new Return();
-                newCustomer = new Customer(
+                bankCustomer = new Customer(
                         getPinText().trim(),
                         customerFirstNameTextField.getText().trim(),
                         customerLastNameTextField.getText().trim(),
@@ -170,7 +170,7 @@ public class CreateCustomerPanel extends JPanel {
                         customerEmailTextField.getText().trim(),
                         Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant())
                 );
-                bankAgent.agentCreateCustomer(newCustomer, bankAgent, result);
+                bankAgent.agentCreateCustomer(bankCustomer, bankAgent, result);
 
                 if(result.getCode().equals("00")) {
                     customerFirstNameTextField.setText("");
@@ -180,7 +180,7 @@ public class CreateCustomerPanel extends JPanel {
                     customerPhoneNumberTextField.setText("");
                     customerEmailTextField.setText("");
                     customerPinTextField.setText("");
-                    mainFrame.getCustomerPanel(newCustomer);
+                    mainFrame.getCustomerPanel(bankCustomer);
                 } else {
                     messageLabel.setText(result.getMessage());
                 }
