@@ -171,8 +171,7 @@ public class CustomerPanel extends JPanel {
         updateCustomerButton.setFocusable(false);
         // Update action for the button click event
         updateCustomerButton.addActionListener(event -> {
-            /*  */
-
+            mainFrame.getUpdateCustomerPanel(bankCustomer);
         });
     }
     private void getDeleteCustomerButton() {
@@ -182,8 +181,15 @@ public class CustomerPanel extends JPanel {
         deleteCustomerButton.setFocusable(false);
         // Delete action for the button click event
         deleteCustomerButton.addActionListener(event -> {
-            /*  */
-
+            if (JOptionPane.showConfirmDialog(
+                    mainFrame,
+                    "Click YES to confirm deleting this customer",
+                    "Delete Customer",
+                    JOptionPane.YES_NO_OPTION) == 0
+            ) {
+                bankCustomer.deleteCustomer(bankCustomer, bankAgent, result);
+                mainFrame.getSearchPanel();
+            }
         });
     }
     private void getOpenAccountButton() {
@@ -194,7 +200,7 @@ public class CustomerPanel extends JPanel {
         // Open Account action for the button click event
         openAccountButton.addActionListener(event -> {
             /*  */
-
+            mainFrame.getOpenAccountPanel(bankCustomer);
         });
     }
     private void getCustomerData() {

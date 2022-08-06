@@ -16,6 +16,7 @@ public class MainFrame extends JFrame {
     CustomerPanel customerPanel;
     AccountPanel accountPanel;
     CreateCustomerPanel createCustomerPanel;
+    UpdateCustomerPanel updateCustomerPanel;
     OpenAccountPanel openAccountPanel;
     DepositPanel depositPanel;
     TransferOwnPanel transferOwnPanel;
@@ -67,8 +68,13 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(event -> {
+            System.exit(0);
+        });
         agentMenu.add(loginMenuItem);
         agentMenu.add(logoutMenuItem);
+        agentMenu.add(exitMenuItem);
     }
     private void getCustomerMenu() {
         customerMenu = new JMenu("Customer");
@@ -76,10 +82,7 @@ public class MainFrame extends JFrame {
         searchMenuItem.addActionListener(event -> {
             if (searchPanel != null) {
                 if (searchPanel.getParent() == null) {
-                    getContentPane().removeAll();
-                    add(searchPanel);
-                    revalidate();
-                    repaint();
+                    getSearchPanel();
                 }
             }
         });
@@ -131,6 +134,8 @@ public class MainFrame extends JFrame {
     }
     public void getSearchPanel() {
         searchPanel = new SearchPanel(this);
+        searchPanel.resetTablesResult();
+        getContentPane().removeAll();
         add(searchPanel);
         revalidate();
         repaint();
@@ -157,9 +162,19 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
     }
-    public JPanel getOpenAccountPanel(){
-        openAccountPanel = new OpenAccountPanel();
-        return openAccountPanel;
+    public void getUpdateCustomerPanel(Customer customer){
+        updateCustomerPanel = new UpdateCustomerPanel(customer,this);
+        getContentPane().removeAll();
+        add(updateCustomerPanel);
+        revalidate();
+        repaint();
+    }
+    public void getOpenAccountPanel(Customer bankCustomer){
+        openAccountPanel = new OpenAccountPanel(bankCustomer,this);
+        getContentPane().removeAll();
+        add(openAccountPanel);
+        revalidate();
+        repaint();
     }
     public JPanel getDepositPanel(){
         depositPanel = new DepositPanel();

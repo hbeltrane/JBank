@@ -120,14 +120,14 @@ public class Agent {
 		AgentEntity.checkExistingAccounts(activeAccount, existingAccounts, Integer.toString(accTypeA), Integer.toString(accTypeB), Integer.toString(accTypeC), result);
 		if (result.getCode() == "00") {
 			Collections.sort(existingAccounts);
-			Integer tempAccountNumber = (accTypeA * 1000000000) + (1 + (int) (Math.random() * 100000000));
+			Integer tempAccountNumber = (accTypeA * 100000000) + (1 + (int) (Math.random() * 10000000));
 			while (existingAccounts.contains(tempAccountNumber)) {
 				Random randNum = new Random();
 				if (randNum.nextBoolean()) {
-					tempAccountNumber = (accTypeB * 1000000000) + (1 + (int) (Math.random() * 100000000));
+					tempAccountNumber = (accTypeB * 100000000) + (1 + (int) (Math.random() * 10000000));
 				}
 				else {
-					tempAccountNumber = (accTypeC * 1000000000) + (1 + (int) (Math.random() * 100000000));
+					tempAccountNumber = (accTypeC * 100000000) + (1 + (int) (Math.random() * 10000000));
 				}
 			}
 			activeAccount.setAccNumber(Integer.toString(tempAccountNumber));

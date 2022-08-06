@@ -1,6 +1,13 @@
 package entity;
 
+import db.*;
+
+import java.util.*;
+
+import static db.ProductEntity.viewProductsDetail;
+
 public class Product {
+
 	private String productType;
 	private double interestRate;
 	private double amountLimit;
@@ -22,7 +29,8 @@ public class Product {
 		this.quantityLimit = quantityLimit;
 		this.minimumBalance = minimumBalance;
 	}
-	
+	public String getProductType() { return productType; }
+	public double getInterestRate() { return interestRate; }
 	public double getAmountLimit() {
 		return amountLimit;
 	}
@@ -31,7 +39,27 @@ public class Product {
 		return quantityLimit;
 	}
 	
-	public double getMinimumBalance() {
-		return minimumBalance;
+	public double getMinimumBalance() { return minimumBalance; }
+	public static String[] getProductsList(Return result) {
+		ArrayList<String> productsType = new ArrayList<>();
+		ProductEntity.viewProductsType(productsType, result);
+
+		String[] productsTypeList = new String[productsType.size()];
+		if (Objects.equals(result.getCode(), "00")) {
+			for (int i = 0; i < productsType.size(); i++) {
+				productsTypeList[i] = productsType.get(i);
+			}
+		}
+		return productsTypeList;
+	}
+	public static String[] getProductsDetail(ArrayList<Product> products, Return result) {
+		viewProductsDetail(products, result);
+		String[] productsTypeList = new String[products.size()];
+		if (Objects.equals(result.getCode(), "00")) {
+			for (int i = 0; i < products.size(); i++) {
+				productsTypeList[i] = products.get(i).getProductType();
+			}
+		}
+		return productsTypeList;
 	}
 }

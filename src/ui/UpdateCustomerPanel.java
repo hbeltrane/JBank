@@ -4,9 +4,7 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.*;
 import java.util.*;
-import java.util.regex.*;
 
 
 public class UpdateCustomerPanel extends JPanel {
@@ -27,19 +25,17 @@ public class UpdateCustomerPanel extends JPanel {
     JTextField customerEmailTextField;
     JLabel customerPinLabel;
     JPasswordField customerPinTextField;
-    JButton createCustomerButton;
+    JButton cancelUpdateButton;
+    JButton updateCustomerButton;
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    ZoneId defaultZoneId;
     Customer bankCustomer;
-    Agent bankAgent;
     Return result;
     MainFrame mainFrame;
-    public UpdateCustomerPanel(MainFrame mainFrame) {
+    public UpdateCustomerPanel(Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.bankCustomer = bankCustomer;
         this.mainFrame = mainFrame;
-        this.bankAgent = mainFrame.bankAgent;
-        defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
         getPanelLabel();
@@ -57,12 +53,13 @@ public class UpdateCustomerPanel extends JPanel {
         getCustomerPhoneNumberLabel();
         getCustomerPhoneNumberTextField();
         getMessageLabel();
-        getCreateCustomerButton();
+        getCancelUpdateButton();
+        getUpdateCustomerButton();
     }
 
     /* Initialize the Customer Panel components */
     private void getPanelLabel() {
-        panelLabel = new JLabel("CREATE CUSTOMER");
+        panelLabel = new JLabel("UPDATE CUSTOMER");
         panelLabel.setBounds(100,0,200,30);
         panelLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(panelLabel,null);
@@ -81,7 +78,8 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerFirstNameLabel,null);
     }
     private void getCustomerFirstNameTextField() {
-        customerFirstNameTextField = new JTextField();
+        String firstName = bankCustomer.getFirstName();
+        customerFirstNameTextField = new JTextField(firstName);
         customerFirstNameTextField.setBounds(200,50,200,30);
         this.add(customerFirstNameTextField,null);
     }
@@ -93,7 +91,8 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerLastNameLabel,null);
     }
     private void getCustomerLastNameTextField() {
-        customerLastNameTextField = new JTextField();
+        String lastName = bankCustomer.getLastName();
+        customerLastNameTextField = new JTextField(lastName);
         customerLastNameTextField.setBounds(675,50,200,30);
         this.add(customerLastNameTextField,null);
     }
@@ -105,7 +104,8 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerAddressLabel,null);
     }
     private void getCustomerAddressTextField() {
-        customerAddressTextField = new JTextField();
+        String address = bankCustomer.getAddress();
+        customerAddressTextField = new JTextField(address);
         customerAddressTextField.setBounds(200,100,200,30);
         this.add(customerAddressTextField,null);
     }
@@ -117,7 +117,8 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerPhoneNumberLabel,null);
     }
     private void getCustomerPhoneNumberTextField() {
-        customerPhoneNumberTextField = new JTextField();
+        String phoneNumber = bankCustomer.getPhoneNumber();
+        customerPhoneNumberTextField = new JTextField(phoneNumber);
         customerPhoneNumberTextField.setBounds(675,100,200,30);
         this.add(customerPhoneNumberTextField,null);
     }
@@ -129,7 +130,9 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerEmailLabel,null);
     }
     private void getCustomerEmailTextField() {
-        customerEmailTextField = new JTextField();
+        String email = bankCustomer.getEmail();
+        customerEmailTextField = new JTextField(email);
+        customerEmailTextField.setEditable(false);
         customerEmailTextField.setBounds(200,150,200,30);
         this.add(customerEmailTextField,null);
     }
@@ -141,38 +144,57 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerPinLabel,null);
     }
     private void getCustomerPinTextField() {
-        customerPinTextField = new JPasswordField();
+        String pin = bankCustomer.getPin();
+        customerPinTextField = new JPasswordField(pin);
         customerPinTextField.setBounds(675,150,200,30);
         this.add(customerPinTextField,null);
     }
     private void getMessageLabel() {
         messageLabel = new JLabel("");
-        messageLabel.setBounds(100,250,550,30);
+        messageLabel.setBounds(100,200,600,30);
         messageLabel.setHorizontalAlignment(JLabel.CENTER);
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
-    private void getCreateCustomerButton() {
-        createCustomerButton = new JButton("Create Customer");
-        createCustomerButton.setBounds(675,250,200,30);
-        this.add(createCustomerButton, null);
-        createCustomerButton.setFocusable(false);
+    private void getCancelUpdateButton() {
+        cancelUpdateButton = new JButton("Cancel");
+        cancelUpdateButton.setBounds(100,250,200,30);
+        this.add(cancelUpdateButton, null);
+        cancelUpdateButton.setFocusable(false);
         // Update action for the button click event
-        createCustomerButton.addActionListener(event -> {
+        cancelUpdateButton.addActionListener(event -> {
+            /* Go back to customer panel */
+            mainFrame.getCustomerPanel(bankCustomer);
+
+        });
+    }
+    private void getUpdateCustomerButton() {
+        updateCustomerButton = new JButton("Update Customer");
+        updateCustomerButton.setBounds(675,250,200,30);
+        this.add(updateCustomerButton, null);
+        updateCustomerButton.setFocusable(false);
+        // Update action for the button click event
+        updateCustomerButton.addActionListener(event -> {
             if (isValidData()) {
                 result = new Return();
-                bankCustomer = new Customer(
+                Customer updatedCustomer = new Customer(
+                        bankCustomer.getCustomerId(),
                         getPinText().trim(),
                         customerFirstNameTextField.getText().trim(),
                         customerLastNameTextField.getText().trim(),
                         customerAddressTextField.getText().trim(),
                         customerPhoneNumberTextField.getText().trim(),
                         customerEmailTextField.getText().trim(),
-                        Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant())
+                        new Date()
                 );
-                bankAgent.agentCreateCustomer(bankCustomer, bankAgent, result);
+                updatedCustomer.updateCustomer(updatedCustomer, result);
 
                 if(result.getCode().equals("00")) {
+                    JOptionPane.showMessageDialog(
+                            mainFrame,
+                            "Customer data has been successfully edited and saved",
+                            "Update Customer",
+                            JOptionPane.INFORMATION_MESSAGE);
                     customerFirstNameTextField.setText("");
                     customerLastNameTextField.setText("");
                     customerAddressTextField.setText("");
@@ -180,7 +202,7 @@ public class UpdateCustomerPanel extends JPanel {
                     customerPhoneNumberTextField.setText("");
                     customerEmailTextField.setText("");
                     customerPinTextField.setText("");
-                    mainFrame.getCustomerPanel(bankCustomer);
+                    mainFrame.getCustomerPanel(updatedCustomer);
                 } else {
                     messageLabel.setText(result.getMessage());
                 }
@@ -193,7 +215,6 @@ public class UpdateCustomerPanel extends JPanel {
         String lastName = customerLastNameTextField.getText().trim();
         String address = customerAddressTextField.getText().trim();
         String phoneNumber = customerPhoneNumberTextField.getText().trim();
-        String email = customerEmailTextField.getText().trim();
         String pin = getPinText().trim();
         if (firstName.length() < 2) {
             messageLabel.setText("Error! First Name cannot be less than 2 characters.");
@@ -212,14 +233,6 @@ public class UpdateCustomerPanel extends JPanel {
             return false;
         }
         if (!isValidPhoneNumber(phoneNumber)) {
-            return false;
-        }
-        if (email.length() < 1) {
-            messageLabel.setText("Error! Email field cannot be empty.");
-            return false;
-        }
-        if (!isValidEmail(email)) {
-            messageLabel.setText("Error! Email field was in an incorrect format.");
             return false;
         }
         if (pin.length() < 1) {
@@ -246,14 +259,6 @@ public class UpdateCustomerPanel extends JPanel {
         }
         return isValid;
     }
-    private boolean isValidEmail(String email) {
-        Pattern pattern = Pattern.compile(
-                "[a-zA-Z\\d._-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,4}?$",
-                Pattern.CASE_INSENSITIVE
-        );
-        Matcher matcher = pattern.matcher(email);
-        return matcher.find();
-    }
     public String getPinText() {
         StringBuilder pinString = new StringBuilder();
         char[] pin = customerPinTextField.getPassword();
@@ -276,5 +281,4 @@ public class UpdateCustomerPanel extends JPanel {
         }
         return isValid;
     }
-
 }

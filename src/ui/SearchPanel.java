@@ -102,14 +102,19 @@ public class SearchPanel extends JPanel {
             }
         };
         customerTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent event) {
-                JTable table = (JTable)event.getSource();
-                if (event.getClickCount() == 2) {
-                    int row = table.rowAtPoint(event.getPoint());
-                    Customer searchedCustomer = resultCustomers.get(row);
-                    mainFrame.getCustomerPanel(searchedCustomer);
+                public void mouseClicked(MouseEvent event) {
+                    try {
+                        JTable table = (JTable)event.getSource();
+                        if (event.getClickCount() == 2) {
+                            int row = table.rowAtPoint(event.getPoint());
+                            Customer searchedCustomer = resultCustomers.get(row);
+                            mainFrame.getCustomerPanel(searchedCustomer);
+                        }
+                    } catch (IndexOutOfBoundsException ie) {
+                        System.out.println(ie.getMessage());
+                    }
                 }
-            }
+
         });
         customerTable.setRowHeight(25);
         customerTable.setPreferredScrollableViewportSize(new Dimension(500,100));
@@ -156,11 +161,15 @@ public class SearchPanel extends JPanel {
         };
         accountTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
-                JTable table = (JTable)event.getSource();
-                if (event.getClickCount() == 2) {
-                    int row = table.rowAtPoint(event.getPoint());
-                    Account searchedAccount = resultAccounts.get(row);
-                    mainFrame.getAccountPanel(searchedAccount);
+                try {
+                    JTable table = (JTable)event.getSource();
+                    if (event.getClickCount() == 2) {
+                        int row = table.rowAtPoint(event.getPoint());
+                        Account searchedAccount = resultAccounts.get(row);
+                        mainFrame.getAccountPanel(searchedAccount);
+                    }
+                } catch (IndexOutOfBoundsException ie) {
+                    System.out.println(ie.getMessage());
                 }
             }
         });
@@ -191,6 +200,18 @@ public class SearchPanel extends JPanel {
             tableModel.addRow(data);
         }
         accountTable.setModel(tableModel);
+        accountTable.repaint();
+    }
+
+    public void resetTablesResult() {
+        DefaultTableModel customerTableModel = (DefaultTableModel) customerTable.getModel();
+        customerTableModel.getDataVector().removeAllElements();
+        customerTableModel.fireTableDataChanged();
+        customerTable.setModel(customerTableModel);
+        customerTable.repaint();
+        DefaultTableModel accountTableModel = (DefaultTableModel) accountTable.getModel();
+        accountTableModel.setRowCount(0);
+        accountTable.setModel(accountTableModel);
         accountTable.repaint();
     }
 }
