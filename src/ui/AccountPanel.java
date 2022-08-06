@@ -104,7 +104,7 @@ public class AccountPanel extends JPanel {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(225,50,150,30);
-        customerIdTextField.setEnabled(false);
+        customerIdTextField.setEditable(false);
         this.add(customerIdTextField,null);
     }
 
@@ -118,7 +118,7 @@ public class AccountPanel extends JPanel {
         String firstName = bankCustomer.getFirstName();
         customerFirstNameTextField = new JTextField(firstName);
         customerFirstNameTextField.setBounds(525,50,150,30);
-        customerFirstNameTextField.setEnabled(false);
+        customerFirstNameTextField.setEditable(false);
         this.add(customerFirstNameTextField,null);
     }
 
@@ -132,7 +132,7 @@ public class AccountPanel extends JPanel {
         String lastName = bankCustomer.getLastName();
         customerLastNameTextField = new JTextField(lastName);
         customerLastNameTextField.setBounds(825,50,150,30);
-        customerLastNameTextField.setEnabled(false);
+        customerLastNameTextField.setEditable(false);
         this.add(customerLastNameTextField,null);
     }
 
@@ -146,7 +146,7 @@ public class AccountPanel extends JPanel {
         String accountNumber = customerAccount.getAccNumber();
         accountNumberTextField = new JTextField(accountNumber);
         accountNumberTextField.setBounds(225,100,150,30);
-        accountNumberTextField.setEnabled(false);
+        accountNumberTextField.setEditable(false);
         this.add(accountNumberTextField,null);
     }
 
@@ -160,7 +160,7 @@ public class AccountPanel extends JPanel {
         String accountType = customerAccount.getAccType();
         accountTypeTextField = new JTextField(accountType);
         accountTypeTextField.setBounds(525,100,150,30);
-        accountTypeTextField.setEnabled(false);
+        accountTypeTextField.setEditable(false);
         this.add(accountTypeTextField,null);
     }
 
@@ -174,7 +174,7 @@ public class AccountPanel extends JPanel {
         String accountBalance = String.valueOf(customerAccount.getBalance());
         accountBalanceTextField = new JTextField(accountBalance);
         accountBalanceTextField.setBounds(825,100,150,30);
-        accountBalanceTextField.setEnabled(false);
+        accountBalanceTextField.setEditable(false);
         this.add(accountBalanceTextField,null);
     }
 
@@ -188,7 +188,7 @@ public class AccountPanel extends JPanel {
         String transferAmount = String.valueOf(customerAccount.getTransferAmount());
         transferAmountTextField = new JTextField(transferAmount);
         transferAmountTextField.setBounds(250,150,200,30);
-        transferAmountTextField.setEnabled(false);
+        transferAmountTextField.setEditable(false);
         this.add(transferAmountTextField,null);
     }
 
@@ -202,7 +202,7 @@ public class AccountPanel extends JPanel {
         String transferQuantity = String.valueOf(customerAccount.getTransferQuantity());
         transferQuantityTextField = new JTextField(transferQuantity);
         transferQuantityTextField.setBounds(650,150,200,30);
-        transferQuantityTextField.setEnabled(false);
+        transferQuantityTextField.setEditable(false);
         this.add(transferQuantityTextField,null);
     }
     private void getDepositButton() {

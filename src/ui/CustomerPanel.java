@@ -90,7 +90,7 @@ public class CustomerPanel extends JPanel {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(200,50,200,30);
-        customerIdTextField.setEnabled(false);
+        customerIdTextField.setEditable(false);
         this.add(customerIdTextField,null);
     }
 
@@ -104,7 +104,7 @@ public class CustomerPanel extends JPanel {
         String firstName = bankCustomer.getFirstName();
         customerFirstNameTextField = new JTextField(firstName);
         customerFirstNameTextField.setBounds(200,100,200,30);
-        customerFirstNameTextField.setEnabled(false);
+        customerFirstNameTextField.setEditable(false);
         this.add(customerFirstNameTextField,null);
     }
 
@@ -118,7 +118,7 @@ public class CustomerPanel extends JPanel {
         String lastName = bankCustomer.getLastName();
         customerLastNameTextField = new JTextField(lastName);
         customerLastNameTextField.setBounds(675,100,200,30);
-        customerLastNameTextField.setEnabled(false);
+        customerLastNameTextField.setEditable(false);
         this.add(customerLastNameTextField,null);
     }
 
@@ -132,7 +132,7 @@ public class CustomerPanel extends JPanel {
         String address = bankCustomer.getAddress();
         customerAddressTextField = new JTextField(address);
         customerAddressTextField.setBounds(200,150,200,30);
-        customerAddressTextField.setEnabled(false);
+        customerAddressTextField.setEditable(false);
         this.add(customerAddressTextField,null);
     }
 
@@ -146,7 +146,7 @@ public class CustomerPanel extends JPanel {
         String phoneNumber = bankCustomer.getPhoneNumber();
         customerPhoneNumberTextField = new JTextField(phoneNumber);
         customerPhoneNumberTextField.setBounds(675,150,200,30);
-        customerPhoneNumberTextField.setEnabled(false);
+        customerPhoneNumberTextField.setEditable(false);
         this.add(customerPhoneNumberTextField,null);
     }
 
@@ -160,7 +160,7 @@ public class CustomerPanel extends JPanel {
         String email = bankCustomer.getEmail();
         customerEmailTextField = new JTextField(email);
         customerEmailTextField.setBounds(675,50,200,30);
-        customerEmailTextField.setEnabled(false);
+        customerEmailTextField.setEditable(false);
         this.add(customerEmailTextField,null);
     }
 
