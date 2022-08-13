@@ -183,7 +183,12 @@ public class Account {
 				}
 			}
 			else {
-				result.setCode("06");
+				if (transferOwn) {
+					result.setCode("11");
+				}
+				else {
+					result.setCode("10");
+				}
 			}
 		}
 		else {
