@@ -1,5 +1,7 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,10 +21,20 @@ public class DepositPanel extends JPanel {
     JTextField accountNumberTextField;
     JLabel amountLabel;
     JTextField amountTextField;
+    JButton cancelDepositButton;
     JButton depositButton;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    public DepositPanel() {
+    Agent bankAgent;
+    Account customerAccount;
+    Customer bankCustomer;
+    Return result;
+    MainFrame mainFrame;
+    public DepositPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.customerAccount = customerAccount;
+        this.bankCustomer = bankCustomer;
+        this.mainFrame = mainFrame;
+        this.bankAgent = mainFrame.bankAgent;
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
         getAgentIdLabel();
@@ -41,7 +53,7 @@ public class DepositPanel extends JPanel {
 
     /* Initialize the Customer Panel components */
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
@@ -106,7 +118,17 @@ public class DepositPanel extends JPanel {
         amountTextField.setBounds(200,150,200,30);
         this.add(amountTextField,null);
     }
-
+    private void getCancelDepositButton() {
+        cancelDepositButton = new JButton("Cancel");
+        cancelDepositButton.setBounds(100,200,200,30);
+        this.add(cancelDepositButton, null);
+        cancelDepositButton.setFocusable(false);
+        // Update action for the button click event
+        cancelDepositButton.addActionListener(event -> {
+            /* Go back to account panel */
+            mainFrame.getAccountPanel(customerAccount);
+        });
+    }
     private void getDepositButton() {
         depositButton = new JButton("Deposit");
         depositButton.setBounds(675,200,200,30);

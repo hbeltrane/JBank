@@ -44,6 +44,11 @@ public class AccountPanel extends JPanel {
     Return result;
     ArrayList<Movement> accountMovements;
     MainFrame mainFrame;
+
+    /**
+     * @param customerAccount
+     * @param mainFrame
+     */
     public AccountPanel(Account customerAccount, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.customerAccount = customerAccount;
@@ -213,7 +218,7 @@ public class AccountPanel extends JPanel {
         // Update action for the button click event
         depositButton.addActionListener(event -> {
             /*  */
-
+            mainFrame.getDepositPanel(customerAccount, bankCustomer);
         });
     }
     private void getWithdrawalButton() {

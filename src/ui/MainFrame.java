@@ -1,9 +1,11 @@
 package ui;
 
+import db.*;
 import entity.*;
 
 import javax.swing.*;
-import java.util.*;
+import java.awt.event.*;
+import java.sql.*;
 
 public class MainFrame extends JFrame {
     // Graphical User Interface components
@@ -31,10 +33,24 @@ public class MainFrame extends JFrame {
         this.setSize(960,640);
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ends program when exit the window
+        addCloseFrameEvent();
         this.setVisible(true);
         getLoginFrame();
     }
-
+    private void addCloseFrameEvent() {
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                try {
+                    DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+                    databaseConnection.closeConnection();
+                    event.getWindow().dispose();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
     private void setMenuBar() {
         menuBar = new JMenuBar();
         getAgentMenu();
@@ -176,9 +192,12 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
     }
-    public JPanel getDepositPanel(){
-        depositPanel = new DepositPanel();
-        return depositPanel;
+    public void getDepositPanel(Account customerAccount, Customer bankCustomer) {
+        depositPanel = new DepositPanel(customerAccount, bankCustomer, this);
+        getContentPane().removeAll();
+        add(depositPanel);
+        revalidate();
+        repaint();
     }
     public JPanel getTransferOwnPanel(){
         transferOwnPanel = new TransferOwnPanel();

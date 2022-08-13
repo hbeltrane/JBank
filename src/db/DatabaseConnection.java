@@ -38,4 +38,13 @@ public class DatabaseConnection {
         }
         return connectionManager;
     }
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
 }
