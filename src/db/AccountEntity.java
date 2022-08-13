@@ -126,30 +126,32 @@ public class AccountEntity {
         }
 	}
 	
-	public static int searchAccount(String destinationAccount, Return result) {
+	public static void searchAccount(Account destinationAccount, Return result) {
         try {
-        	int customerId = 0;
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
-            		+ "SELECT customer_id "
+            		+ "SELECT * "
             		+ "FROM accounts "
             		+ "WHERE account_number = ? ");
-            statement.setString(1, destinationAccount);
+            statement.setString(1, destinationAccount.getAccNumber());
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-            	customerId = resultSet.getInt("customer_id");
+            	destinationAccount.setAccType(resultSet.getString("product_type"));
+            	destinationAccount.setBalance(resultSet.getDouble("balance"));
+            	destinationAccount.setTransferAmount(resultSet.getDouble("transfer_amount"));
+            	destinationAccount.setTransferQuantity(resultSet.getInt("transfer_quantity"));
+            	destinationAccount.setCustomerId(resultSet.getInt("customer_id"));
+            	destinationAccount.setOpenDate(resultSet.getDate("open_date"));
             }
             else {
             	result.setCode("09");
             }
             result.setCode("00");
-            return customerId;
         } catch (SQLException | NullPointerException ex) {
             System.out.println(ex.getMessage());
             result.setCode("99");
-            return 0;
         } finally {
             try {
                 if (resultSet != null) {
