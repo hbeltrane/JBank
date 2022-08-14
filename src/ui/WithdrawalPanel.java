@@ -12,6 +12,7 @@ public class WithdrawalPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel customerIdLabel;
     JTextField customerIdTextField;
@@ -44,6 +45,7 @@ public class WithdrawalPanel extends JPanel {
         defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAgentIdLabel();
         getCustomerIdLabel();
         getCustomerPinLabel();
@@ -63,6 +65,12 @@ public class WithdrawalPanel extends JPanel {
     }
 
     /* Initialize the Customer Panel components */
+    private void getPanelLabel() {
+        panelLabel = new JLabel("WITHDRAW");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
+    }
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -135,7 +143,7 @@ public class WithdrawalPanel extends JPanel {
         this.add(amountTextField,null);
     }
     private void getCustomerPinLabel() {
-        customerPinLabel = new JLabel("Customer Pin");
+        customerPinLabel = new JLabel("Customer PIN");
         customerPinLabel.setBounds(550,150,100,30);
         customerPinLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerPinLabel,null);
@@ -165,17 +173,21 @@ public class WithdrawalPanel extends JPanel {
         withdrawButton.addActionListener(event -> {
             /*  */
             if (isValidData()) {
-                Movement deposit = new Movement(
-                        "",
-                        customerAccount.getAccNumber(),
-                        Double.parseDouble(amountTextField.getText()),
-                        0d,
-                        0d,
-                        Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
-                        "");
-                customerAccount.withdraw(deposit, customerAccount, bankAgent, result);
-                amountTextField.setText("");
-                mainFrame.getAccountPanel(customerAccount);
+                if (getPinText().trim().equals(bankCustomer.getPin())) {
+                    Movement deposit = new Movement(
+                            "",
+                            customerAccount.getAccNumber(),
+                            Double.parseDouble(amountTextField.getText()),
+                            0d,
+                            0d,
+                            Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
+                            "");
+                    customerAccount.withdraw(deposit, customerAccount, bankAgent, result);
+                    amountTextField.setText("");
+                    mainFrame.getAccountPanel(customerAccount);
+                } else {
+                    messageLabel.setText("Error! The PIN is incorrect.");
+                }
             }
         });
     }
@@ -197,7 +209,7 @@ public class WithdrawalPanel extends JPanel {
             return false;
         }
         if (pin.length() < 1) {
-            messageLabel.setText("Error! Pin number field cannot be empty.");
+            messageLabel.setText("Error! PIN field cannot be empty.");
             return false;
         }
         if (!isValidPin(pin)) {
@@ -235,10 +247,10 @@ public class WithdrawalPanel extends JPanel {
             if (pin > 999 && pin < 10000){
                 isValid = true;
             } else {
-                messageLabel.setText("Error! Pin number must be 4 characters");
+                messageLabel.setText("Error! PIN must be 4 characters");
             }
         } catch (NumberFormatException ex) {
-            messageLabel.setText("Error! Pin number was in an incorrect format.");
+            messageLabel.setText("Error! PIN number was in an incorrect format.");
         }
         return isValid;
     }

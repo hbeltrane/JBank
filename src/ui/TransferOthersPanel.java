@@ -4,12 +4,14 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.*;
 
 
 public class TransferOthersPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel customerIdLabel;
     JTextField customerIdTextField;
@@ -25,10 +27,22 @@ public class TransferOthersPanel extends JPanel {
     JTextField amountTextField;
     JButton transferButton;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
+    ZoneId defaultZoneId;
+    Agent bankAgent;
+    Account customerAccount;
+    Customer bankCustomer;
+    Return result;
+    MainFrame mainFrame;
     public TransferOthersPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.customerAccount = customerAccount;
+        this.bankCustomer = bankCustomer;
+        this.mainFrame = mainFrame;
+        this.bankAgent = mainFrame.bankAgent;
+        defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAgentIdLabel();
         getCustomerIdLabel();
         getCustomerIdTextField();
@@ -46,8 +60,14 @@ public class TransferOthersPanel extends JPanel {
     }
 
     /* Initialize the Customer Panel components */
+    private void getPanelLabel() {
+        panelLabel = new JLabel("TRANSFER OTHERS");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
+    }
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);

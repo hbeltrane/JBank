@@ -12,6 +12,7 @@ public class DepositPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel customerIdLabel;
     JTextField customerIdTextField;
@@ -42,6 +43,7 @@ public class DepositPanel extends JPanel {
         defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAgentIdLabel();
         getCustomerIdLabel();
         getCustomerIdTextField();
@@ -59,6 +61,12 @@ public class DepositPanel extends JPanel {
     }
 
     /* Initialize the Customer Panel components */
+    private void getPanelLabel() {
+        panelLabel = new JLabel("DEPOSIT");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
+    }
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -150,6 +158,7 @@ public class DepositPanel extends JPanel {
         depositButton.addActionListener(event -> {
             /*  */
             if (isValidData()) {
+                result = new Return();
                 Movement deposit = new Movement(
                         "",
                         customerAccount.getAccNumber(),
