@@ -92,6 +92,7 @@ public class TransferOthersPanel extends JPanel {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(225,50,200,30);
+        customerIdTextField.setEditable(false);
         this.add(customerIdTextField,null);
     }
 
@@ -104,6 +105,7 @@ public class TransferOthersPanel extends JPanel {
     private void getAccountNumberTextField() {
         accountNumberTextField = new JTextField(customerAccount.getAccNumber());
         accountNumberTextField.setBounds(675,50,200,30);
+        accountNumberTextField.setEditable(false);
         this.add(accountNumberTextField,null);
     }
 
@@ -116,6 +118,7 @@ public class TransferOthersPanel extends JPanel {
     private void getCustomerFirstNameTextField() {
         customerFirstNameTextField = new JTextField(bankCustomer.getFirstName());
         customerFirstNameTextField.setBounds(225,100,200,30);
+        customerFirstNameTextField.setEditable(false);
         this.add(customerFirstNameTextField,null);
     }
 
@@ -128,6 +131,7 @@ public class TransferOthersPanel extends JPanel {
     private void getCustomerLastNameTextField() {
         customerLastNameTextField = new JTextField(bankCustomer.getLastName());
         customerLastNameTextField.setBounds(675,100,200,30);
+        customerLastNameTextField.setEditable(false);
         this.add(customerLastNameTextField,null);
     }
 
@@ -179,7 +183,7 @@ public class TransferOthersPanel extends JPanel {
 
     private void getTransferButton() {
         transferButton = new JButton("Transfer");
-        transferButton.setBounds(675, 200, 200, 30);
+        transferButton.setBounds(675, 275, 200, 30);
         this.add(transferButton, null);
         transferButton.setFocusable(false);
         // Update action for the button click event
