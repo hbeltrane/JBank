@@ -191,6 +191,7 @@ public class TransferOthersPanel extends JPanel {
             /*  */
             if (isValidData()) {
                 if (getPinText().trim().equals(bankCustomer.getPin())) {
+                    result = new Return();
                     Movement withdraw = new Movement(
                             customerAccount.getAccNumber(),
                             destinationAccountJTextField.getText(),
@@ -251,7 +252,7 @@ public class TransferOthersPanel extends JPanel {
         boolean isValid = false;
         try {
             long accountNumber =  Long.parseLong(accountNumberString);
-            if (accountNumber > 999999999L && accountNumber <= 9999999999L) {
+            if (accountNumber > 99999999L && accountNumber <= 999999999L) {
                 isValid = true;
             } else {
                 messageLabel.setText("Error! Destination Account Number must be 9 characters");
