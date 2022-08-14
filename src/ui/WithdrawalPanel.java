@@ -174,6 +174,7 @@ public class WithdrawalPanel extends JPanel {
             /*  */
             if (isValidData()) {
                 if (getPinText().trim().equals(bankCustomer.getPin())) {
+                    result = new Return();
                     Movement withdraw = new Movement(
                             "",
                             customerAccount.getAccNumber(),

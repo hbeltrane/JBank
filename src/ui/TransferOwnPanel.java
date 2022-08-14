@@ -209,6 +209,7 @@ public class TransferOwnPanel extends JPanel {
             /*  */
             if (isValidData()) {
                 if (getPinText().trim().equals(bankCustomer.getPin())) {
+                    result = new Return();
                     String selectedAccount = destinationAccountComboBox.getSelectedItem().toString();
                     Movement transfer = new Movement(
                             customerAccount.getAccNumber(),
