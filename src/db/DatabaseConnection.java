@@ -8,8 +8,8 @@ public class DatabaseConnection {
     // Private instance, so that it can be accessed by only by getInstance() method
     private static DatabaseConnection connectionManager = null;
     private Connection connection = null;
-    String url = "jdbc:oracle:thin:@//localhost:1521/xe";
-    //String url = "jdbc:oracle:thin:@//localhost:1521/ORCLCDB";
+    //String url = "jdbc:oracle:thin:@//localhost:1521/xe";
+    String url = "jdbc:oracle:thin:@//localhost:1521/ORCLCDB";
     String username = "jbank";
     String password = "Lambton2022S";
     // private constructor

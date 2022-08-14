@@ -4,12 +4,15 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.*;
+import java.util.*;
 
 
 public class TransferOthersPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel customerIdLabel;
     JTextField customerIdTextField;
@@ -23,12 +26,28 @@ public class TransferOthersPanel extends JPanel {
     JTextField destinationAccountJTextField;
     JLabel amountLabel;
     JTextField amountTextField;
+    JLabel customerPinLabel;
+    JPasswordField customerPinTextField;
+    JButton cancelTransferButton;
     JButton transferButton;
+    JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
+    ZoneId defaultZoneId;
+    Agent bankAgent;
+    Account customerAccount;
+    Customer bankCustomer;
+    Return result;
+    MainFrame mainFrame;
     public TransferOthersPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
+        this.customerAccount = customerAccount;
+        this.bankCustomer = bankCustomer;
+        this.mainFrame = mainFrame;
+        this.bankAgent = mainFrame.bankAgent;
+        defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAgentIdLabel();
         getCustomerIdLabel();
         getCustomerIdTextField();
@@ -42,12 +61,22 @@ public class TransferOthersPanel extends JPanel {
         getDestinationAccountJTextField();
         getAmountLabel();
         getAmountTextField();
+        getMessageLabel();
+        getCustomerPinLabel();
+        getCustomerPinTextField();
+        getCancelTransferButton();
         getTransferButton();
     }
 
     /* Initialize the Customer Panel components */
+    private void getPanelLabel() {
+        panelLabel = new JLabel("TRANSFER OTHERS");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
+    }
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
@@ -60,7 +89,8 @@ public class TransferOthersPanel extends JPanel {
         this.add(customerIdLabel,null);
     }
     private void getCustomerIdTextField() {
-        customerIdTextField = new JTextField();
+        String customerId = String.valueOf(bankCustomer.getCustomerId());
+        customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(225,50,200,30);
         this.add(customerIdTextField,null);
     }
@@ -72,7 +102,7 @@ public class TransferOthersPanel extends JPanel {
         this.add(accountNumberLabel,null);
     }
     private void getAccountNumberTextField() {
-        accountNumberTextField = new JTextField();
+        accountNumberTextField = new JTextField(customerAccount.getAccNumber());
         accountNumberTextField.setBounds(675,50,200,30);
         this.add(accountNumberTextField,null);
     }
@@ -84,7 +114,7 @@ public class TransferOthersPanel extends JPanel {
         this.add(customerFirstNameLabel,null);
     }
     private void getCustomerFirstNameTextField() {
-        customerFirstNameTextField = new JTextField();
+        customerFirstNameTextField = new JTextField(bankCustomer.getFirstName());
         customerFirstNameTextField.setBounds(225,100,200,30);
         this.add(customerFirstNameTextField,null);
     }
@@ -96,7 +126,7 @@ public class TransferOthersPanel extends JPanel {
         this.add(customerLastNameLabel,null);
     }
     private void getCustomerLastNameTextField() {
-        customerLastNameTextField = new JTextField();
+        customerLastNameTextField = new JTextField(bankCustomer.getLastName());
         customerLastNameTextField.setBounds(675,100,200,30);
         this.add(customerLastNameTextField,null);
     }
@@ -124,64 +154,143 @@ public class TransferOthersPanel extends JPanel {
         amountTextField.setBounds(675,150,200,30);
         this.add(amountTextField,null);
     }
+    private void getCustomerPinLabel() {
+        customerPinLabel = new JLabel("Customer PIN");
+        customerPinLabel.setBounds(550,200,100,30);
+        customerPinLabel.setHorizontalAlignment(JLabel.LEFT);
+        this.add(customerPinLabel,null);
+    }
+    private void getCustomerPinTextField() {
+        customerPinTextField = new JPasswordField();
+        customerPinTextField.setBounds(675,200,200,30);
+        this.add(customerPinTextField,null);
+    }
+    private void getCancelTransferButton() {
+        cancelTransferButton = new JButton("Cancel");
+        cancelTransferButton.setBounds(100,275,200,30);
+        this.add(cancelTransferButton, null);
+        cancelTransferButton.setFocusable(false);
+        // Update action for the button click event
+        cancelTransferButton.addActionListener(event -> {
+            /* Go back to account panel */
+            mainFrame.getAccountPanel(customerAccount);
+        });
+    }
 
     private void getTransferButton() {
         transferButton = new JButton("Transfer");
-        transferButton.setBounds(675,200,200,30);
+        transferButton.setBounds(675, 200, 200, 30);
         this.add(transferButton, null);
         transferButton.setFocusable(false);
         // Update action for the button click event
         transferButton.addActionListener(event -> {
             /*  */
-
+            if (isValidData()) {
+                if (getPinText().trim().equals(bankCustomer.getPin())) {
+                    Movement withdraw = new Movement(
+                            customerAccount.getAccNumber(),
+                            destinationAccountJTextField.getText(),
+                            Double.parseDouble(amountTextField.getText()),
+                            0d,
+                            0d,
+                            Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
+                            "");
+                    customerAccount.transfer(false, withdraw, customerAccount, destinationAccountJTextField.getText(), bankAgent, result);
+                    if (result.getCode().equals("00")) {
+                        amountTextField.setText("");
+                        mainFrame.getAccountPanel(customerAccount);
+                    } else {
+                        messageLabel.setText(result.getMessage());
+                    }
+                } else {
+                    messageLabel.setText("Error! The PIN is incorrect.");
+                }
+            }
         });
     }
-//    private boolean isValidData() {
-//        String accountNumber = accountNumberTextField.getText().trim();
-//        String amount = amountTextField.getText().trim();
-//        if (accountNumber.length() < 9) {
-//            messageLabel.setText("Error! Account Number must be 9 characters length.");
-//            return false;
-//        }
-//        if (amount.length() < 1) {
-//            messageLabel.setText("Error! Deposit Amount cannot be empty.");
-//            return false;
-//        }
-//        if (!isValidAccountNumber(accountNumber)) {
-//            return false;
-//        }
-//        if (!isValidAmount(amount)) {
-//            return false;
-//        }
-//        messageLabel.setText("");
-//        return true;
-//    }
-//    private boolean isValidAccountNumber(String accountNumberString) {
-//        boolean isValid = false;
-//        try {
-//            long accountNumber =  Long.parseLong(accountNumberString);
-//            if (accountNumber > 999999999L && accountNumber <= 9999999999L) {
-//                isValid = true;
-//            } else {
-//                messageLabel.setText("Error! Phone number must be 10 characters");
-//            }
-//        } catch (NumberFormatException ex) {
-//            messageLabel.setText("Error! Phone number was in an incorrect format.");
-//        }
-//        return isValid;
-//    }
-//    private boolean isValidAmount(String amountString) {
-//        boolean isValid = false;
-//        try {
-//            double amount =  Double.parseDouble(amountString);
-//            if (amount >= 0d && amount < 100000000d) {
-//                isValid = true;
-//            } else {
-//                messageLabel.setText("Error! The Deposit Amount is out of range");
-//            }
-//        } catch (NumberFormatException ex) {
-//            messageLabel.setText("Error! Deposit Amount was in an incorrect format.");
-//        }
-//        return isValid;
-//    }
+    private void getMessageLabel() {
+        messageLabel = new JLabel("");
+        messageLabel.setBounds(100,450,800,30);
+        messageLabel.setHorizontalAlignment(JLabel.CENTER);
+        messageLabel.setForeground(Color.RED);
+        this.add(messageLabel);
+    }
+    private boolean isValidData() {
+        String destinationAccountNumber = destinationAccountJTextField.getText().trim();
+        String amount = amountTextField.getText().trim();
+        String pin = getPinText().trim();
+        if (destinationAccountNumber.length() != 9) {
+            messageLabel.setText("Error! Account Number must be 9 characters length.");
+            return false;
+        }
+        if (amount.length() < 1) {
+            messageLabel.setText("Error! Deposit Amount cannot be empty.");
+            return false;
+        }
+        if (!isValidAccountNumber(destinationAccountNumber)) {
+            return false;
+        }
+        if (!isValidAmount(amount)) {
+            return false;
+        }
+        if (pin.length() < 1) {
+            messageLabel.setText("Error! PIN field cannot be empty.");
+            return false;
+        }
+        if (!isValidPin(pin)) {
+            return false;
+        }
+        messageLabel.setText("");
+        return true;
+    }
+    private boolean isValidAccountNumber(String accountNumberString) {
+        boolean isValid = false;
+        try {
+            long accountNumber =  Long.parseLong(accountNumberString);
+            if (accountNumber > 999999999L && accountNumber <= 9999999999L) {
+                isValid = true;
+            } else {
+                messageLabel.setText("Error! Account Number must be 9 characters");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("Error! Account Number was in an incorrect format.");
+        }
+        return isValid;
+    }
+    private boolean isValidAmount(String amountString) {
+        boolean isValid = false;
+        try {
+            double amount =  Double.parseDouble(amountString);
+            if (amount >= 0d && amount < 100000000d) {
+                isValid = true;
+            } else {
+                messageLabel.setText("Error! Transfer Amount is out of range");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("Error! Transfer Amount was in an incorrect format.");
+        }
+        return isValid;
+    }
+    public String getPinText() {
+        StringBuilder pinString = new StringBuilder();
+        char[] pin = customerPinTextField.getPassword();
+        for (char pinChar : pin) {
+            pinString.append(pinChar);
+        }
+        return pinString.toString();
+    }
+    private boolean isValidPin(String pinString) {
+        boolean isValid = false;
+        try {
+            int pin =  Integer.parseInt(pinString);
+            if (pin > 999 && pin < 10000){
+                isValid = true;
+            } else {
+                messageLabel.setText("Error! PIN must be 4 characters");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("Error! PIN number was in an incorrect format.");
+        }
+        return isValid;
+    }
 }
