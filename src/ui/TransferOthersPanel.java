@@ -223,7 +223,7 @@ public class TransferOthersPanel extends JPanel {
         String destinationAccountNumber = destinationAccountJTextField.getText().trim();
         String amount = amountTextField.getText().trim();
         String pin = getPinText().trim();
-        if (destinationAccountNumber.length() > 0) {
+        if (destinationAccountNumber.length() < 1) {
             messageLabel.setText("Error! Destination Account cannot be empty");
             return false;
         }
