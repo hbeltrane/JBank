@@ -28,6 +28,7 @@ public class TransferOwnPanel extends JPanel {
     JTextField amountTextField;
     JLabel customerPinLabel;
     JPasswordField customerPinTextField;
+    JButton cancelTransferButton;
     JButton transferButton;
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
@@ -65,6 +66,7 @@ public class TransferOwnPanel extends JPanel {
         getMessageLabel();
         getCustomerPinLabel();
         getCustomerPinTextField();
+        getCancelTransferButton();
         getTransferButton();
     }
 
@@ -76,7 +78,7 @@ public class TransferOwnPanel extends JPanel {
         this.add(panelLabel,null);
     }
     private void getAgentIdLabel() {
-        agentIdLabel = new JLabel("@AgentID");
+        agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
@@ -89,8 +91,10 @@ public class TransferOwnPanel extends JPanel {
         this.add(customerIdLabel,null);
     }
     private void getCustomerIdTextField() {
-        customerIdTextField = new JTextField();
+        String customerId = String.valueOf(bankCustomer.getCustomerId());
+        customerIdTextField = new JTextField(customerId);
         customerIdTextField.setBounds(225,50,200,30);
+        customerIdTextField.setEditable(false);
         this.add(customerIdTextField,null);
     }
 
@@ -101,8 +105,9 @@ public class TransferOwnPanel extends JPanel {
         this.add(accountNumberLabel,null);
     }
     private void getAccountNumberTextField() {
-        accountNumberTextField = new JTextField();
+        accountNumberTextField = new JTextField(customerAccount.getAccNumber());
         accountNumberTextField.setBounds(675,50,200,30);
+        accountNumberTextField.setEditable(false);
         this.add(accountNumberTextField,null);
     }
 
@@ -113,8 +118,9 @@ public class TransferOwnPanel extends JPanel {
         this.add(customerFirstNameLabel,null);
     }
     private void getCustomerFirstNameTextField() {
-        customerFirstNameTextField = new JTextField();
+        customerFirstNameTextField = new JTextField(bankCustomer.getFirstName());
         customerFirstNameTextField.setBounds(225,100,200,30);
+        customerFirstNameTextField.setEditable(false);
         this.add(customerFirstNameTextField,null);
     }
 
@@ -125,8 +131,9 @@ public class TransferOwnPanel extends JPanel {
         this.add(customerLastNameLabel,null);
     }
     private void getCustomerLastNameTextField() {
-        customerLastNameTextField = new JTextField();
+        customerLastNameTextField = new JTextField(bankCustomer.getLastName());
         customerLastNameTextField.setBounds(675,100,200,30);
+        customerLastNameTextField.setEditable(false);
         this.add(customerLastNameTextField,null);
     }
 
@@ -161,13 +168,13 @@ public class TransferOwnPanel extends JPanel {
     }
     private void getCustomerPinLabel() {
         customerPinLabel = new JLabel("Customer PIN");
-        customerPinLabel.setBounds(100,200,100,30);
+        customerPinLabel.setBounds(550,200,100,30);
         customerPinLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerPinLabel,null);
     }
     private void getCustomerPinTextField() {
         customerPinTextField = new JPasswordField();
-        customerPinTextField.setBounds(175,200,200,30);
+        customerPinTextField.setBounds(675,200,200,30);
         this.add(customerPinTextField,null);
     }
     private void getCustomerData() {
@@ -176,25 +183,57 @@ public class TransferOwnPanel extends JPanel {
         result = new Return();
         bankCustomer.viewCustomer(bankCustomer, allCustomerAccounts, result);
         for (Account account : allCustomerAccounts) {
-            if (account.getAccNumber().equals(customerAccount.getAccNumber())) {
+            if (!account.getAccNumber().equals(customerAccount.getAccNumber())) {
                 customerAccounts.add(account);
             }
         }
     }
+    private void getCancelTransferButton() {
+        cancelTransferButton = new JButton("Cancel");
+        cancelTransferButton.setBounds(100,275,200,30);
+        this.add(cancelTransferButton, null);
+        cancelTransferButton.setFocusable(false);
+        // Update action for the button click event
+        cancelTransferButton.addActionListener(event -> {
+            /* Go back to account panel */
+            mainFrame.getAccountPanel(customerAccount);
+        });
+    }
     private void getTransferButton() {
         transferButton = new JButton("Transfer");
-        transferButton.setBounds(675,200,200,30);
+        transferButton.setBounds(675,275,200,30);
         this.add(transferButton, null);
         transferButton.setFocusable(false);
         // Update action for the button click event
         transferButton.addActionListener(event -> {
             /*  */
-
+            if (isValidData()) {
+                if (getPinText().trim().equals(bankCustomer.getPin())) {
+                    String selectedAccount = destinationAccountComboBox.getSelectedItem().toString();
+                    Movement transfer = new Movement(
+                            customerAccount.getAccNumber(),
+                            selectedAccount,
+                            Double.parseDouble(amountTextField.getText()),
+                            0d,
+                            0d,
+                            Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
+                            "");
+                    customerAccount.transfer(true,transfer, customerAccount, selectedAccount, bankAgent, result);
+                    if (result.getCode().equals("00")){
+                        amountTextField.setText("");
+                        mainFrame.getAccountPanel(customerAccount);
+                    } else {
+                        messageLabel.setText(result.getMessage());
+                    }
+                } else {
+                    messageLabel.setText("Error! The PIN is incorrect.");
+                }
+            }
         });
     }
     private void getMessageLabel() {
         messageLabel = new JLabel("");
-        messageLabel.setBounds(100,250,800,30);
+        messageLabel.setBounds(100,230,800,30);
         messageLabel.setHorizontalAlignment(JLabel.CENTER);
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
@@ -203,7 +242,7 @@ public class TransferOwnPanel extends JPanel {
         String amount = amountTextField.getText().trim();
         String pin = getPinText().trim();
         if (amount.length() < 1) {
-            messageLabel.setText("Error! Deposit Amount cannot be empty.");
+            messageLabel.setText("Error! Transfer Amount cannot be empty.");
             return false;
         }
         if (!isValidAmount(amount)) {
@@ -226,10 +265,10 @@ public class TransferOwnPanel extends JPanel {
             if (amount > 0d && amount < 100000000d) {
                 isValid = true;
             } else {
-                messageLabel.setText("Error! The Deposit Amount is out of range");
+                messageLabel.setText("Error! The Transfer Amount is out of range");
             }
         } catch (NumberFormatException ex) {
-            messageLabel.setText("Error! Deposit Amount was in an incorrect format.");
+            messageLabel.setText("Error! Transfer Amount was in an incorrect format.");
         }
         return isValid;
     }

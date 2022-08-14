@@ -24,8 +24,6 @@ public class MainFrame extends JFrame {
     WithdrawalPanel withdrawalPanel;
     TransferOwnPanel transferOwnPanel;
     TransferOthersPanel transferOthersPanel;
-    DeleteCustomerPanel deleteCustomerPanel;
-    DeleteAccountPanel deleteAccountPanel;
     // Class properties
     Agent bankAgent;
     public MainFrame() {
@@ -220,13 +218,5 @@ public class MainFrame extends JFrame {
         add(transferOthersPanel);
         revalidate();
         repaint();
-    }
-    public JPanel getDeleteCustomer(){
-        deleteCustomerPanel = new DeleteCustomerPanel();
-        return deleteCustomerPanel;
-    }
-    public JPanel getDeleteAccountPanel(){
-        deleteAccountPanel = new DeleteAccountPanel();
-        return deleteAccountPanel;
     }
 }

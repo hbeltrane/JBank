@@ -132,7 +132,7 @@ public class WithdrawalPanel extends JPanel {
     }
 
     private void getAmountLabel() {
-        amountLabel = new JLabel("Deposit Amount");
+        amountLabel = new JLabel("Withdrawal Amount");
         amountLabel.setBounds(100,150,100,30);
         amountLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(amountLabel,null);
@@ -174,7 +174,7 @@ public class WithdrawalPanel extends JPanel {
             /*  */
             if (isValidData()) {
                 if (getPinText().trim().equals(bankCustomer.getPin())) {
-                    Movement deposit = new Movement(
+                    Movement withdraw = new Movement(
                             "",
                             customerAccount.getAccNumber(),
                             Double.parseDouble(amountTextField.getText()),
@@ -182,9 +182,13 @@ public class WithdrawalPanel extends JPanel {
                             0d,
                             Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
                             "");
-                    customerAccount.withdraw(deposit, customerAccount, bankAgent, result);
-                    amountTextField.setText("");
-                    mainFrame.getAccountPanel(customerAccount);
+                    customerAccount.withdraw(withdraw, customerAccount, bankAgent, result);
+                    if (result.getCode().equals("00")){
+                        amountTextField.setText("");
+                        mainFrame.getAccountPanel(customerAccount);
+                    } else {
+                        messageLabel.setText(result.getMessage());
+                    }
                 } else {
                     messageLabel.setText("Error! The PIN is incorrect.");
                 }
@@ -202,7 +206,7 @@ public class WithdrawalPanel extends JPanel {
         String amount = amountTextField.getText().trim();
         String pin = getPinText().trim();
         if (amount.length() < 1) {
-            messageLabel.setText("Error! Deposit Amount cannot be empty.");
+            messageLabel.setText("Error! Withdrawal Amount cannot be empty.");
             return false;
         }
         if (!isValidAmount(amount)) {
@@ -225,7 +229,7 @@ public class WithdrawalPanel extends JPanel {
             if (amount > 0d && amount < 100000000d) {
                 isValid = true;
             } else {
-                messageLabel.setText("Error! The Deposit Amount is out of range");
+                messageLabel.setText("Error! Deposit Amount is out of range");
             }
         } catch (NumberFormatException ex) {
             messageLabel.setText("Error! Deposit Amount was in an incorrect format.");
