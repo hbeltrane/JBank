@@ -175,7 +175,7 @@ public class AccountEntity {
             		+ "SET balance = ?, "
             		+ "transfer_amount = ?, "
             		+ "transfer_quantity = ? "
-            		+ "WHERE account_number = ? ");
+            		+ "WHERE acc_number = ? ");
             statement.setDouble(1, activeAccount.getBalance());
             statement.setDouble(2, activeAccount.getTransferAmount());
             statement.setInt(3, activeAccount.getTransferQuantity());

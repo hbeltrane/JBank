@@ -22,12 +22,12 @@ public class MovementEntity {
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
             		+ "SELECT * "
-            		+ "FROM transaction "
+            		+ "FROM transactions "
             		+ "WHERE transaction_id = ? ");
             statement.setInt(1, txId);
             System.out.println("\nQuerying transactions table\n");
             resultSet = statement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
             	activeMovement.setDescription(resultSet.getString("transaction_desc"));
             }
             result.setCode("00");
@@ -57,7 +57,7 @@ public class MovementEntity {
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
             		+ "INSERT INTO movements "
-            		+ "(movement_id, source_account, destination_account, amount, prev_balance, new_balance, creation_date, transaction_id, agent_id) "
+            		+ "(movement_id, source_account, destination_account, amount, prev_balance, new_balance, movement_date, transaction_id, agent_id) "
             		+ "VALUES (DEFAULT, ?, ?, ?, ?, ?, SYSDATE, ?, ?) ");
             statement.setString(1, activeMovement.getSourceAccount());
             statement.setString(2, activeMovement.getDestinationAccount());
