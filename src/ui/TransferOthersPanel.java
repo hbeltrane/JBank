@@ -1,5 +1,7 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,7 +25,7 @@ public class TransferOthersPanel extends JPanel {
     JTextField amountTextField;
     JButton transferButton;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    public TransferOthersPanel() {
+    public TransferOthersPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
@@ -134,4 +136,52 @@ public class TransferOthersPanel extends JPanel {
 
         });
     }
+//    private boolean isValidData() {
+//        String accountNumber = accountNumberTextField.getText().trim();
+//        String amount = amountTextField.getText().trim();
+//        if (accountNumber.length() < 9) {
+//            messageLabel.setText("Error! Account Number must be 9 characters length.");
+//            return false;
+//        }
+//        if (amount.length() < 1) {
+//            messageLabel.setText("Error! Deposit Amount cannot be empty.");
+//            return false;
+//        }
+//        if (!isValidAccountNumber(accountNumber)) {
+//            return false;
+//        }
+//        if (!isValidAmount(amount)) {
+//            return false;
+//        }
+//        messageLabel.setText("");
+//        return true;
+//    }
+//    private boolean isValidAccountNumber(String accountNumberString) {
+//        boolean isValid = false;
+//        try {
+//            long accountNumber =  Long.parseLong(accountNumberString);
+//            if (accountNumber > 999999999L && accountNumber <= 9999999999L) {
+//                isValid = true;
+//            } else {
+//                messageLabel.setText("Error! Phone number must be 10 characters");
+//            }
+//        } catch (NumberFormatException ex) {
+//            messageLabel.setText("Error! Phone number was in an incorrect format.");
+//        }
+//        return isValid;
+//    }
+//    private boolean isValidAmount(String amountString) {
+//        boolean isValid = false;
+//        try {
+//            double amount =  Double.parseDouble(amountString);
+//            if (amount >= 0d && amount < 100000000d) {
+//                isValid = true;
+//            } else {
+//                messageLabel.setText("Error! The Deposit Amount is out of range");
+//            }
+//        } catch (NumberFormatException ex) {
+//            messageLabel.setText("Error! Deposit Amount was in an incorrect format.");
+//        }
+//        return isValid;
+//    }
 }

@@ -31,6 +31,7 @@ public class CustomerPanel extends JPanel {
     JButton deleteCustomerButton;
     JButton openAccountButton;
     JTable accountTable;
+    JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
     Agent bankAgent;
     Customer bankCustomer;
@@ -62,7 +63,7 @@ public class CustomerPanel extends JPanel {
         getUpdateCustomerButton();
         getDeleteCustomerButton();
         getOpenAccountButton();
-
+        getMessageLabel();
         getAccountScrollPane();  // Gets the table inside a scrollable panel
     }
 
@@ -188,7 +189,11 @@ public class CustomerPanel extends JPanel {
                     JOptionPane.YES_NO_OPTION) == 0
             ) {
                 bankCustomer.deleteCustomer(bankCustomer, bankAgent, result);
-                mainFrame.getSearchPanel();
+                if (result.getCode().equals("00")){
+                    mainFrame.getSearchPanel();
+                } else {
+                    messageLabel.setText(result.getMessage());
+                }
             }
         });
     }
@@ -202,6 +207,13 @@ public class CustomerPanel extends JPanel {
             /*  */
             mainFrame.getOpenAccountPanel(bankCustomer);
         });
+    }
+    private void getMessageLabel() {
+        messageLabel = new JLabel("");
+        messageLabel.setBounds(100,450,800,30);
+        messageLabel.setHorizontalAlignment(JLabel.CENTER);
+        messageLabel.setForeground(Color.RED);
+        this.add(messageLabel);
     }
     private void getCustomerData() {
         customerAccounts = new ArrayList<>();

@@ -37,6 +37,7 @@ public class AccountPanel extends JPanel {
     JButton changeTypeButton;
     JButton deleteAccountButton;
     JTable movementsTable;
+    JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
     Agent bankAgent;
     Account customerAccount;
@@ -44,6 +45,11 @@ public class AccountPanel extends JPanel {
     Return result;
     ArrayList<Movement> accountMovements;
     MainFrame mainFrame;
+
+    /**
+     * @param customerAccount Customer Account
+     * @param mainFrame Main Frame
+     */
     public AccountPanel(Account customerAccount, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.customerAccount = customerAccount;
@@ -76,7 +82,7 @@ public class AccountPanel extends JPanel {
         getTransferOthersButton();
         getChangeTypeButton();
         getDeleteAccountButton();
-
+        getMessageLabel();
         getAccountScrollPane();  // Gets the table inside a scrollable panel
     }
 
@@ -205,74 +211,92 @@ public class AccountPanel extends JPanel {
         transferQuantityTextField.setEditable(false);
         this.add(transferQuantityTextField,null);
     }
+    private void getMessageLabel() {
+        messageLabel = new JLabel("");
+        messageLabel.setBounds(100,400,900,30);
+        messageLabel.setHorizontalAlignment(JLabel.CENTER);
+        messageLabel.setForeground(Color.RED);
+        this.add(messageLabel);
+    }
     private void getDepositButton() {
         depositButton = new JButton("Deposit");
-        depositButton.setBounds(100,500,200,30);
+        depositButton.setBounds(100,450,200,30);
         this.add(depositButton, null);
         depositButton.setFocusable(false);
         // Update action for the button click event
         depositButton.addActionListener(event -> {
             /*  */
-
+            mainFrame.getDepositPanel(customerAccount, bankCustomer);
         });
     }
     private void getWithdrawalButton() {
         withdrawalButton = new JButton("Withdrawal");
-        withdrawalButton.setBounds(400,500,200,30);
+        withdrawalButton.setBounds(400,450,200,30);
         this.add(withdrawalButton, null);
         withdrawalButton.setFocusable(false);
         // Delete action for the button click event
         withdrawalButton.addActionListener(event -> {
             /*  */
-
+            mainFrame.getWithdrawalPanel(customerAccount, bankCustomer);
         });
     }
     private void getTransferOwnButton() {
         transferOwnButton = new JButton("Transfer own");
-        transferOwnButton.setBounds(700,500,200,30);
+        transferOwnButton.setBounds(700,450,200,30);
         this.add(transferOwnButton, null);
         transferOwnButton.setFocusable(false);
         // Open Account action for the button click event
         transferOwnButton.addActionListener(event -> {
             /*  */
-
+            mainFrame.getTransferOwnPanel(customerAccount, bankCustomer);
         });
     }
 
     private void getTransferOthersButton() {
         transferOthersButton = new JButton("Transfer Others");
-        transferOthersButton.setBounds(100,550,200,30);
+        transferOthersButton.setBounds(100,500,200,30);
         this.add(transferOthersButton, null);
         transferOthersButton.setFocusable(false);
         // Update action for the button click event
         transferOthersButton.addActionListener(event -> {
             /*  */
-
+            mainFrame.getTransferOthersPanel(customerAccount, bankCustomer);
         });
     }
     private void getChangeTypeButton() {
         changeTypeButton = new JButton("ChangeType");
-        changeTypeButton.setBounds(400,550,200,30);
+        changeTypeButton.setBounds(400,500,200,30);
         this.add(changeTypeButton, null);
         changeTypeButton.setFocusable(false);
         // Delete action for the button click event
         changeTypeButton.addActionListener(event -> {
             /*  */
-
+            //TODO
         });
     }
     private void getDeleteAccountButton() {
         deleteAccountButton = new JButton("Delete Account");
-        deleteAccountButton.setBounds(700,550,200,30);
+        deleteAccountButton.setBounds(700,500,200,30);
         this.add(deleteAccountButton, null);
         deleteAccountButton.setFocusable(false);
         // Open Account action for the button click event
         deleteAccountButton.addActionListener(event -> {
             /*  */
-
+            if (JOptionPane.showConfirmDialog(
+                    mainFrame,
+                    "Click YES to confirm deleting this customer",
+                    "Delete Customer",
+                    JOptionPane.YES_NO_OPTION) == 0
+            ) {
+                customerAccount.deleteAccount(customerAccount, bankAgent, result);
+                if (result.getCode().equals("00")){
+                    mainFrame.getSearchPanel();
+                } else {
+                    messageLabel.setText(result.getMessage());
+                }
+            }
         });
     }
-
     private void getAccountData() {
         accountMovements = new ArrayList<>();
         bankCustomer = new Customer();

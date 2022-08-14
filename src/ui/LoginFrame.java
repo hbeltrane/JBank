@@ -1,5 +1,6 @@
 package ui;
 
+import db.*;
 import entity.*;
 
 import javax.swing.*;
@@ -29,6 +30,15 @@ public class LoginFrame extends JFrame {
         this.setResizable(false);
         this.setContentPane(loginPanel);
         this.setLocationRelativeTo(loginPanel);
+        openDatabaseConnection();
+    }
+
+    private void openDatabaseConnection() {
+        try {
+            DatabaseConnection.getInstance();
+        } catch (Exception ex) {
+            messageLabel.setText(result.getMessage());
+        }
     }
 
     private JPanel getLoginPanel() {
