@@ -8,7 +8,7 @@ import java.time.*;
 import java.util.*;
 
 
-public class DepositPanel extends JPanel {
+public class WithdrawalPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
@@ -23,8 +23,10 @@ public class DepositPanel extends JPanel {
     JTextField accountNumberTextField;
     JLabel amountLabel;
     JTextField amountTextField;
+    JLabel customerPinLabel;
+    JPasswordField customerPinTextField;
     JButton cancelDepositButton;
-    JButton depositButton;
+    JButton withdrawButton;
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
     ZoneId defaultZoneId;
@@ -33,7 +35,7 @@ public class DepositPanel extends JPanel {
     Customer bankCustomer;
     Return result;
     MainFrame mainFrame;
-    public DepositPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
+    public WithdrawalPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.customerAccount = customerAccount;
         this.bankCustomer = bankCustomer;
@@ -44,6 +46,8 @@ public class DepositPanel extends JPanel {
         this.setBackground(LIGHT_CYAN); // Change the panel background color
         getAgentIdLabel();
         getCustomerIdLabel();
+        getCustomerPinLabel();
+        getCustomerPinTextField();
         getCustomerIdTextField();
         getCustomerFirstNameLabel();
         getCustomerFirstNameTextField();
@@ -54,7 +58,7 @@ public class DepositPanel extends JPanel {
         getAmountLabel();
         getAmountTextField();
         getCancelDepositButton();
-        getDepositButton();
+        getWithdrawButton();
         getMessageLabel();
     }
 
@@ -130,6 +134,17 @@ public class DepositPanel extends JPanel {
         amountTextField.setBounds(200,150,200,30);
         this.add(amountTextField,null);
     }
+    private void getCustomerPinLabel() {
+        customerPinLabel = new JLabel("Customer Pin");
+        customerPinLabel.setBounds(550,150,100,30);
+        customerPinLabel.setHorizontalAlignment(JLabel.LEFT);
+        this.add(customerPinLabel,null);
+    }
+    private void getCustomerPinTextField() {
+        customerPinTextField = new JPasswordField();
+        customerPinTextField.setBounds(675,150,200,30);
+        this.add(customerPinTextField,null);
+    }
     private void getCancelDepositButton() {
         cancelDepositButton = new JButton("Cancel");
         cancelDepositButton.setBounds(100,200,200,30);
@@ -141,13 +156,13 @@ public class DepositPanel extends JPanel {
             mainFrame.getAccountPanel(customerAccount);
         });
     }
-    private void getDepositButton() {
-        depositButton = new JButton("Deposit");
-        depositButton.setBounds(675,200,200,30);
-        this.add(depositButton, null);
-        depositButton.setFocusable(false);
+    private void getWithdrawButton() {
+        withdrawButton = new JButton("Withdraw");
+        withdrawButton.setBounds(675,200,200,30);
+        this.add(withdrawButton, null);
+        withdrawButton.setFocusable(false);
         // Update action for the button click event
-        depositButton.addActionListener(event -> {
+        withdrawButton.addActionListener(event -> {
             /*  */
             if (isValidData()) {
                 Movement deposit = new Movement(
@@ -158,7 +173,7 @@ public class DepositPanel extends JPanel {
                         0d,
                         Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
                         "");
-                customerAccount.deposit(deposit, customerAccount, bankAgent, result);
+                customerAccount.withdraw(deposit, customerAccount, bankAgent, result);
                 amountTextField.setText("");
                 mainFrame.getAccountPanel(customerAccount);
             }
@@ -173,11 +188,19 @@ public class DepositPanel extends JPanel {
     }
     private boolean isValidData() {
         String amount = amountTextField.getText().trim();
+        String pin = getPinText().trim();
         if (amount.length() < 1) {
             messageLabel.setText("Error! Deposit Amount cannot be empty.");
             return false;
         }
         if (!isValidAmount(amount)) {
+            return false;
+        }
+        if (pin.length() < 1) {
+            messageLabel.setText("Error! Pin number field cannot be empty.");
+            return false;
+        }
+        if (!isValidPin(pin)) {
             return false;
         }
         messageLabel.setText("");
@@ -194,6 +217,28 @@ public class DepositPanel extends JPanel {
             }
         } catch (NumberFormatException ex) {
             messageLabel.setText("Error! Deposit Amount was in an incorrect format.");
+        }
+        return isValid;
+    }
+    public String getPinText() {
+        StringBuilder pinString = new StringBuilder();
+        char[] pin = customerPinTextField.getPassword();
+        for (char pinChar : pin) {
+            pinString.append(pinChar);
+        }
+        return pinString.toString();
+    }
+    private boolean isValidPin(String pinString) {
+        boolean isValid = false;
+        try {
+            int pin =  Integer.parseInt(pinString);
+            if (pin > 999 && pin < 10000){
+                isValid = true;
+            } else {
+                messageLabel.setText("Error! Pin number must be 4 characters");
+            }
+        } catch (NumberFormatException ex) {
+            messageLabel.setText("Error! Pin number was in an incorrect format.");
         }
         return isValid;
     }

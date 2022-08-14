@@ -1,5 +1,7 @@
 package ui;
 
+import entity.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,7 +25,7 @@ public class TransferOwnPanel extends JPanel {
     JTextField amountTextField;
     JButton transferButton;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
-    public TransferOwnPanel() {
+    public TransferOwnPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color

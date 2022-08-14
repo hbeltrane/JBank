@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
     UpdateCustomerPanel updateCustomerPanel;
     OpenAccountPanel openAccountPanel;
     DepositPanel depositPanel;
+    WithdrawalPanel withdrawalPanel;
     TransferOwnPanel transferOwnPanel;
     TransferOthersPanel transferOthersPanel;
     DeleteCustomerPanel deleteCustomerPanel;
@@ -199,13 +200,26 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
     }
-    public JPanel getTransferOwnPanel(){
-        transferOwnPanel = new TransferOwnPanel();
-        return transferOwnPanel;
+    public void getWithdrawalPanel(Account customerAccount, Customer bankCustomer) {
+        withdrawalPanel = new WithdrawalPanel(customerAccount, bankCustomer, this);
+        getContentPane().removeAll();
+        add(withdrawalPanel);
+        revalidate();
+        repaint();
     }
-    public JPanel getTransferOthersPanel(){
-        transferOthersPanel = new TransferOthersPanel();
-        return transferOthersPanel;
+    public void getTransferOwnPanel(Account customerAccount, Customer bankCustomer){
+        transferOwnPanel = new TransferOwnPanel(customerAccount, bankCustomer, this);
+        getContentPane().removeAll();
+        add(transferOwnPanel);
+        revalidate();
+        repaint();
+    }
+    public void getTransferOthersPanel(Account customerAccount, Customer bankCustomer){
+        transferOthersPanel = new TransferOthersPanel(customerAccount, bankCustomer, this);
+        getContentPane().removeAll();
+        add(transferOthersPanel);
+        revalidate();
+        repaint();
     }
     public JPanel getDeleteCustomer(){
         deleteCustomerPanel = new DeleteCustomerPanel();

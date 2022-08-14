@@ -85,13 +85,13 @@ public class Agent {
 	
 	public void agentSearchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
 		customersResult.clear();
-		if (searchString.length() > 2)
+		if (searchString.length() > 1)
 			AgentEntity.searchCustomers(searchString, customersResult, result);
 	}
 	
 	public void agentSearchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
 		accountsResult.clear();
-		if (searchString.length() > 2)
+		if (searchString.length() > 1)
 			AgentEntity.searchAccounts(searchString, accountsResult, result);
 	}
 	

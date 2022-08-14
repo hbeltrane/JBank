@@ -22,7 +22,15 @@ public class Movement {
 		this.movementDate = null;
 		this.description = null;
 	}
-	
+	public Movement(String sourceAccount, String destinationAccount, double amount, double previousBalance, double newBalance, Date movementDate, String description) {
+		this.sourceAccount = sourceAccount;
+		this.destinationAccount = destinationAccount;
+		this.amount = amount;
+		this.previousBalance = previousBalance;
+		this.newBalance = newBalance;
+		this.movementDate = movementDate;
+		this.description = description;
+	}
 	public Movement(int movementId, String sourceAccount, String destinationAccount, double amount, double previousBalance, double newBalance, Date movementDate, String description) {
 		this.movementId = movementId;
 		this.sourceAccount = sourceAccount;

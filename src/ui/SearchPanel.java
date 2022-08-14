@@ -18,9 +18,14 @@ public class SearchPanel extends JPanel {
     JLabel searchLabel;
     JTextField searchTextField;
     JButton searchButton;
+    JLabel messageLabel;
     JTable customerTable;
     JTable accountTable;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
+    final Color ERROR_COLOR = Color.RED;
+    final Color INFO_COLOR = Color.GRAY;
+    int customerTableHintCounter = 0;
+    int accountTableHintCounter = 0;
     Agent bankAgent;
     Return result;
     ArrayList<Customer> resultCustomers;
@@ -39,6 +44,7 @@ public class SearchPanel extends JPanel {
         getSearchLabel();
         getSearchTextField();
         getSearchButton();
+        getMessageLabel();
         getCustomerScrollPane();  // Gets the table inside a scrollable panel
         getAccountScrollPane();
     }
@@ -62,6 +68,13 @@ public class SearchPanel extends JPanel {
         searchTextField = new JTextField();
         searchTextField.setBounds(375,50,250,30);
         this.add(searchTextField,null);
+    }
+    private void getMessageLabel() {
+        messageLabel = new JLabel("");
+        messageLabel.setBounds(100,300,800,30);
+        messageLabel.setHorizontalAlignment(JLabel.CENTER);
+        //messageLabel.setForeground(Color.RED);
+        this.add(messageLabel);
     }
 
     private void getSearchButton() {
@@ -105,13 +118,27 @@ public class SearchPanel extends JPanel {
                 public void mouseClicked(MouseEvent event) {
                     try {
                         JTable table = (JTable)event.getSource();
+                        if (event.getClickCount() == 1) {
+                            if (customerTableHintCounter > 1 && customerTableHintCounter < 4) {
+                                messageLabel.setText("Double click over a customer to view more details.");
+                                messageLabel.setForeground(INFO_COLOR);
+                                customerTableHintCounter++;
+                            } else {
+                                customerTableHintCounter++;
+                                messageLabel.setText("");
+                            }
+                        }
                         if (event.getClickCount() == 2) {
                             int row = table.rowAtPoint(event.getPoint());
                             Customer searchedCustomer = resultCustomers.get(row);
                             mainFrame.getCustomerPanel(searchedCustomer);
+                            messageLabel.setText("");
+                            customerTableHintCounter = 99;
                         }
                     } catch (IndexOutOfBoundsException ie) {
                         System.out.println(ie.getMessage());
+                        messageLabel.setForeground(ERROR_COLOR);
+                        messageLabel.setText("Invalid selection.");
                     }
                 }
 
@@ -163,13 +190,27 @@ public class SearchPanel extends JPanel {
             public void mouseClicked(MouseEvent event) {
                 try {
                     JTable table = (JTable)event.getSource();
+                    if (event.getClickCount() == 1) {
+                        if (accountTableHintCounter > 1 && accountTableHintCounter < 4) {
+                            messageLabel.setText("Double click over an account to view more details.");
+                            messageLabel.setForeground(INFO_COLOR);
+                            accountTableHintCounter++;
+                        } else {
+                            accountTableHintCounter++;
+                            messageLabel.setText("");
+                        }
+                    }
                     if (event.getClickCount() == 2) {
                         int row = table.rowAtPoint(event.getPoint());
                         Account searchedAccount = resultAccounts.get(row);
                         mainFrame.getAccountPanel(searchedAccount);
+                        messageLabel.setText("");
+                        accountTableHintCounter = 99;
                     }
                 } catch (IndexOutOfBoundsException ie) {
                     System.out.println(ie.getMessage());
+                    messageLabel.setText("Invalid selection.");
+                    messageLabel.setForeground(ERROR_COLOR);
                 }
             }
         });
