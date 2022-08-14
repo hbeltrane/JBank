@@ -107,7 +107,7 @@ public class AccountEntity {
             statement.executeUpdate();
             statement = connection.prepareStatement(""
             		+ "DELETE FROM accounts "
-            		+ "WHERE account_number = ? ");
+            		+ "WHERE acc_number = ? ");
             statement.setString(1, activeAccount.getAccNumber());
             System.out.println("\nDeleting from accounts table\n");
             statement.executeUpdate();
@@ -133,7 +133,7 @@ public class AccountEntity {
             statement = connection.prepareStatement(""
             		+ "SELECT * "
             		+ "FROM accounts "
-            		+ "WHERE account_number = ? ");
+            		+ "WHERE acc_number = ? ");
             statement.setString(1, destinationAccount.getAccNumber());
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
