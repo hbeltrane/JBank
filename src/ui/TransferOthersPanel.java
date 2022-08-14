@@ -223,8 +223,8 @@ public class TransferOthersPanel extends JPanel {
         String destinationAccountNumber = destinationAccountJTextField.getText().trim();
         String amount = amountTextField.getText().trim();
         String pin = getPinText().trim();
-        if (destinationAccountNumber.length() != 9) {
-            messageLabel.setText("Error! Account Number must be 9 characters length.");
+        if (destinationAccountNumber.length() > 0) {
+            messageLabel.setText("Error! Destination Account cannot be empty");
             return false;
         }
         if (amount.length() < 1) {
@@ -254,10 +254,10 @@ public class TransferOthersPanel extends JPanel {
             if (accountNumber > 999999999L && accountNumber <= 9999999999L) {
                 isValid = true;
             } else {
-                messageLabel.setText("Error! Account Number must be 9 characters");
+                messageLabel.setText("Error! Destination Account Number must be 9 characters");
             }
         } catch (NumberFormatException ex) {
-            messageLabel.setText("Error! Account Number was in an incorrect format.");
+            messageLabel.setText("Error! Destination Account Number was in an incorrect format.");
         }
         return isValid;
     }
