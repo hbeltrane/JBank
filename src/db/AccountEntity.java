@@ -31,7 +31,11 @@ public class AccountEntity {
             System.out.println("\nQuerying products table\n");
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-            	activeProduct = new Product(resultSet.getString("product_type"), resultSet.getDouble("interest_rate"), resultSet.getDouble("amount_limit"), resultSet.getInt("quantity_limit"), resultSet.getDouble("minimum_balance"));
+            	activeProduct.setProductType(resultSet.getString("product_type"));
+            	activeProduct.setInterestRate(resultSet.getDouble("interest_rate"));
+            	activeProduct.setAmountLimit(resultSet.getDouble("amount_limit"));
+            	activeProduct.setQuantityLimit(resultSet.getInt("quantity_limit"));
+            	activeProduct.setMinimumBalance(resultSet.getDouble("minimum_balance"));
             }
             result.setCode("00");
         } catch (SQLException | NullPointerException ex) {
@@ -95,11 +99,11 @@ public class AccountEntity {
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
             		+ "INSERT INTO accounts_hist "
-            		+ "(acc_number, account_type, customer_id, open_date, close_date, agent_id) " 
+            		+ "(acc_number, acc_type, customer_id, open_date, close_date, agent_id) " 
             		+ "VALUES "
             		+ "(?, ?, ?, ?, SYSDATE, ?)");
             statement.setString(1, activeAccount.getAccNumber());
-            statement.setString(2, activeAccount.getAccType());
+            statement.setInt(2, activeAccount.getAccTypeId());
             statement.setInt(3, activeAccount.getCustomerId());
             statement.setDate(4,  (Date)activeAccount.getOpenDate());
             statement.setString(5, activeAgent.getUsername());
@@ -131,9 +135,11 @@ public class AccountEntity {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
-            		+ "SELECT * "
-            		+ "FROM accounts "
-            		+ "WHERE acc_number = ? ");
+            		+ "SELECT accounts.*, products.product_type " 
+            		+ "FROM accounts " 
+            		+ "JOIN products " 
+            		+ "ON accounts.acc_type = products.product_id " 
+            		+ "WHERE accounts.acc_number = ? ");
             statement.setString(1, destinationAccount.getAccNumber());
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();

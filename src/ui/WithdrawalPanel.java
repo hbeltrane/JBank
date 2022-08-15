@@ -132,7 +132,7 @@ public class WithdrawalPanel extends JPanel {
     }
 
     private void getAmountLabel() {
-        amountLabel = new JLabel("Withdrawal Amount");
+        amountLabel = new JLabel("Amount");
         amountLabel.setBounds(100,150,100,30);
         amountLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(amountLabel,null);

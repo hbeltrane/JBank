@@ -200,7 +200,7 @@ public class TransferOthersPanel extends JPanel {
                             0d,
                             Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
                             "");
-                    customerAccount.transfer(false, withdraw, customerAccount, destinationAccountJTextField.getText(), bankAgent, result);
+                    customerAccount.transfer(false, withdraw, customerAccount, bankAgent, result);
                     if (result.getCode().equals("00")) {
                         amountTextField.setText("");
                         mainFrame.getAccountPanel(customerAccount);

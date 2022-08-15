@@ -150,7 +150,7 @@ public class AgentEntity {
             		+ "(acc_number, acc_type, balance, transfer_amount, transfer_quantity, customer_id, open_date, agent_id) "
             		+ "VALUES (?, ?, ?, ?, ?, ?, SYSDATE, ?) ");
             statement.setString(1, activeAccount.getAccNumber());
-            statement.setInt(2, activeAccount.getAccTypeID());
+            statement.setInt(2, activeAccount.getAccTypeId());
             statement.setDouble(3, activeAccount.getBalance());
             statement.setDouble(4, activeAccount.getTransferAmount());
             statement.setInt(5, activeAccount.getTransferQuantity());
@@ -233,7 +233,7 @@ public class AgentEntity {
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
+            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getInt("acc_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
             	accountsResult.add(queryResult);
             }
         	result.setCode("00");

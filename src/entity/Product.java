@@ -29,6 +29,21 @@ public class Product {
 		this.quantityLimit = quantityLimit;
 		this.minimumBalance = minimumBalance;
 	}
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+	public void setInterestRate(double interestRate) {
+		this.interestRate = interestRate;
+	}
+	public void setAmountLimit(double amountLimit) {
+		this.amountLimit = amountLimit;
+	}
+	public void setQuantityLimit(int quantityLimit) {
+		this.quantityLimit = quantityLimit;
+	}
+	public void setMinimumBalance(double minimumBalance) {
+		this.minimumBalance = minimumBalance;
+	}
 	public String getProductType() { return productType; }
 	public double getInterestRate() { return interestRate; }
 	public double getAmountLimit() {

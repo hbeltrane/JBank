@@ -10,6 +10,7 @@ import db.MovementEntity;
 public class Account {
 	private String accNumber;
 	private String accType;
+	private int accTypeId;
 	private double balance;
 	private double transferAmount;
 	private int transferQuantity;
@@ -26,6 +27,17 @@ public class Account {
 		this.openDate = null;
 	}
 	
+	public Account(String accNumber, String accType, int accTypeId, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
+		this.accNumber = accNumber;
+		this.accType = accType;
+		this.accTypeId = accTypeId;
+		this.balance = balance;
+		this.transferAmount = transferAmount;
+		this.transferQuantity = transferQuantity;
+		this.customerId = customerId;
+		this.openDate = openDate;
+	}
+	
 	public Account(String accNumber, String accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
 		this.accNumber = accNumber;
 		this.accType = accType;
@@ -35,6 +47,7 @@ public class Account {
 		this.customerId = customerId;
 		this.openDate = openDate;
 	}
+	
 	public Account(String accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
 		this.accType = accType;
 		this.balance = balance;
@@ -62,6 +75,10 @@ public class Account {
 		this.accType = accType;
 	}
 	
+	public void setAccTypeId(int accTypeId) {
+		this.accTypeId = accTypeId;
+	}
+	
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
@@ -87,13 +104,9 @@ public class Account {
 	}
 	
 	public String getAccType() { return accType; }
-	public int getAccTypeID() {
-		return switch (accType) {
-			case ("Checking") -> 1;
-			case ("Saving") -> 2;
-			case ("Investing") -> 3;
-			default -> 0;
-		};
+	
+	public int getAccTypeId() {
+		return accTypeId;
 	}
 	
 	public double getBalance() {
@@ -170,19 +183,19 @@ public class Account {
 		}
 	}
 	
-	public void transfer(boolean transferOwn, Movement activeMovement, Account activeAccount, String destination, Agent activeAgent, Return result) {
+	public void transfer(boolean transferOwn, Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
 		Account destinationAccount = new Account();
-		Movement destinationMovement = new Movement();
-		destinationAccount.setAccNumber(destination);
+		//Movement destinationMovement = new Movement();
+		destinationAccount.setAccNumber(activeMovement.getDestinationAccount());
 		AccountEntity.searchAccount(destinationAccount, result);
 		if (result.getCode() == "00") {
-			if ((activeAccount.getCustomerId() == destinationAccount.getCustomerId() && transferOwn) || (activeAccount.getCustomerId() != destinationAccount.getCustomerId() && !transferOwn)) {
-				if (result.getCode() == "00") {
-					activeMovement.setSourceAccount(activeAccount.getAccNumber());
-					activeMovement.setDestinationAccount(destinationAccount.getAccNumber());
-				}
-			}
-			else {
+			if (!(activeAccount.getCustomerId() == destinationAccount.getCustomerId() && transferOwn) && !(activeAccount.getCustomerId() != destinationAccount.getCustomerId() && !transferOwn)) {
+//				if (result.getCode() == "00") {
+//					//activeMovement.setSourceAccount(activeAccount.getAccNumber());
+//					//activeMovement.setDestinationAccount(destinationAccount.getAccNumber());
+//				}
+//			}
+//			else {
 				if (transferOwn) {
 					result.setCode("11");
 				}
@@ -201,7 +214,7 @@ public class Account {
 			if (result.getCode() == "00") {
 				AccountEntity.checkLimits(activeAccount, activeProduct, result);
 				if (result.getCode() == "00") {
-					activeMovement.setAmount(activeMovement.getAmount());
+					//activeMovement.setAmount(activeMovement.getAmount());
 					activeMovement.setPreviousBalance(activeAccount.getBalance());
 					activeMovement.setNewBalance(activeAccount.getBalance() - activeMovement.getAmount() - fee);
 					if (activeMovement.getNewBalance() < activeProduct.getMinimumBalance()) {
@@ -220,14 +233,14 @@ public class Account {
 						MovementEntity.createTransaction(txId, activeMovement, activeAgent, result);
 						AccountEntity.updateAccount(activeAccount, result);
 						// Update destination account
-						destinationMovement.setSourceAccount(activeAccount.getAccNumber());
-						destinationMovement.setDestinationAccount(destinationAccount.getAccNumber());
-						destinationMovement.setAmount(activeMovement.getAmount());
-						destinationMovement.setPreviousBalance(destinationAccount.getBalance());
-						destinationMovement.setNewBalance(destinationAccount.getBalance() + destinationMovement.getAmount());
-						destinationMovement.setDescription(activeMovement.getDescription());
-						destinationAccount.setBalance(destinationAccount.getBalance() + destinationMovement.getAmount());
-						MovementEntity.createTransaction(txId, destinationMovement, activeAgent, result);
+						//destinationMovement.setSourceAccount(activeAccount.getAccNumber());
+						//destinationMovement.setDestinationAccount(destinationAccount.getAccNumber());
+						//destinationMovement.setAmount(activeMovement.getAmount());
+						//destinationMovement.setPreviousBalance(destinationAccount.getBalance());
+						//destinationMovement.setNewBalance(destinationAccount.getBalance() + destinationMovement.getAmount());
+						//destinationMovement.setDescription(activeMovement.getDescription());
+						destinationAccount.setBalance(destinationAccount.getBalance() + activeMovement.getAmount());
+						//MovementEntity.createTransaction(txId, destinationMovement, activeAgent, result);
 						AccountEntity.updateAccount(destinationAccount, result);
 					}
 				}

@@ -284,7 +284,7 @@ public class AccountPanel extends JPanel {
             /*  */
             if (JOptionPane.showConfirmDialog(
                     mainFrame,
-                    "Click YES to confirm deleting this customer",
+                    "Click YES to confirm deleting this account",
                     "Delete Customer",
                     JOptionPane.YES_NO_OPTION) == 0
             ) {
