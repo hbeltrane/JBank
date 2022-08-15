@@ -1,15 +1,10 @@
 package db;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import entity.Account;
-import entity.Agent;
-import entity.Customer;
-import entity.Movement;
 import entity.Product;
 import entity.Return;
 /**
@@ -74,6 +69,7 @@ public class ProductEntity {
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Product queryResult = new Product(
+                		resultSet.getInt("product_id"),
                         resultSet.getString("product_type"),
                         resultSet.getDouble("interest_rate"),
                         resultSet.getDouble("amount_limit"),

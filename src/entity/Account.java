@@ -83,8 +83,9 @@ public class Account {
  * @param customerId
  * @param openDate
  */
-	public Account(String accType, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
+	public Account(String accType, int accTypeId, double balance, double transferAmount, int transferQuantity, int customerId, Date openDate) {
 		this.accType = accType;
+		this.accTypeId = accTypeId;
 		this.balance = balance;
 		this.transferAmount = transferAmount;
 		this.transferQuantity = transferQuantity;

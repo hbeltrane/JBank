@@ -12,7 +12,7 @@ import static db.ProductEntity.viewProductsDetail;
  *
  */
 public class Product {
-
+	private int productId;
 	private String productType;
 	private double interestRate;
 	private double amountLimit;
@@ -23,6 +23,7 @@ public class Product {
  * Class constructor
  */
 	public Product() {
+		this.productId = 0;
 		this.productType = "";
 		this.interestRate = 0;
 		this.amountLimit = 0;
@@ -38,7 +39,8 @@ public class Product {
  * @param quantityLimit
  * @param minimumBalance
  */
-	public Product(String productType, double interestRate, double amountLimit, int quantityLimit, double minimumBalance) {
+	public Product(int productId, String productType, double interestRate, double amountLimit, int quantityLimit, double minimumBalance) {
+		this.productId = productId;
 		this.productType = productType;
 		this.interestRate = interestRate;
 		this.amountLimit = amountLimit;
@@ -91,6 +93,12 @@ public class Product {
  * @return
  */
 	public String getProductType() { return productType; }
+	
+/**
+ * Gets product type ID
+ * @return
+ */
+	public int getProductId() { return productId; }
 	
 /**
  * Gets interest rate

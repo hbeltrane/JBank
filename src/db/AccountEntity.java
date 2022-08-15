@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import entity.Account;
 import entity.Agent;
-import entity.Customer;
 import entity.Movement;
 import entity.Product;
 import entity.Return;
@@ -127,7 +126,7 @@ public class AccountEntity {
             statement.setString(1, activeAccount.getAccNumber());
             statement.setInt(2, activeAccount.getAccTypeId());
             statement.setInt(3, activeAccount.getCustomerId());
-            statement.setDate(4,  (Date)activeAccount.getOpenDate());
+            statement.setDate(4, (Date)activeAccount.getOpenDate());
             statement.setString(5, activeAgent.getUsername());
             System.out.println("\nInserting into accounts_hist table\n");
             statement.executeUpdate();

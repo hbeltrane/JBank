@@ -185,6 +185,7 @@ public class OpenAccountPanel extends JPanel {
             result = new Return();
             newAccount = new Account(
                     products.get(accountTypeComboBox.getSelectedIndex()).getProductType(),
+                    products.get(accountTypeComboBox.getSelectedIndex()).getProductId(),
                     0,
                     0,
                     0,

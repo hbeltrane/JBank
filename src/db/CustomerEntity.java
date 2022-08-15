@@ -42,7 +42,7 @@ public class CustomerEntity {
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
+            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getInt("acc_type") ,resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
             	customerAccounts.add(queryResult);
             }
             result.setCode("00");
@@ -171,7 +171,7 @@ public class CustomerEntity {
             statement.setInt(1, activeCustomer.getCustomerId());
             statement.setString(2, activeCustomer.getFirstName());
             statement.setString(3, activeCustomer.getLastName());
-            statement.setDate(4,  (Date)activeCustomer.getCreationDate());
+            statement.setDate(4, (Date)activeCustomer.getCreationDate());
             statement.setString(5, activeAgent.getUsername());
             System.out.println("\nInserting into customers_hist table\n");
             statement.executeUpdate();
