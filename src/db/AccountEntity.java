@@ -14,11 +14,22 @@ import entity.Movement;
 import entity.Product;
 import entity.Return;
 
+/**
+ * 
+ * DB interactions to accounts table
+ *
+ */
 public class AccountEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
-    
+
+/**
+ * Selects limits parameters for a product
+ * @param activeAccount
+ * @param activeProduct
+ * @param result
+ */
     public static void checkLimits(Account activeAccount, Product activeProduct, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -54,7 +65,12 @@ public class AccountEntity {
             }
         }
     }
-
+/**
+ * Selects the movements for an account
+ * @param activeAccount
+ * @param accountMovements
+ * @param result
+ */
     public static void viewAccount(Account activeAccount, ArrayList<Movement> accountMovements, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -92,7 +108,13 @@ public class AccountEntity {
             }
         }
     }
-	
+    
+/**
+ * Deletes an account and inserts it into history
+ * @param activeAccount
+ * @param activeAgent
+ * @param result
+ */
 	public static void deleteAccount(Account activeAccount, Agent activeAgent, Return result) {
 		try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -129,7 +151,12 @@ public class AccountEntity {
             }
         }
 	}
-	
+
+/**
+ * Selects the information for an account 
+ * @param destinationAccount
+ * @param result
+ */
 	public static void searchAccount(Account destinationAccount, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -171,7 +198,12 @@ public class AccountEntity {
             }
         }
 	}
-	
+
+/**
+ * Updates an account
+ * @param activeAccount
+ * @param result
+ */
 	public static void updateAccount(Account activeAccount, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

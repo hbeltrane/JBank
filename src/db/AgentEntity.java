@@ -11,12 +11,23 @@ import entity.Agent;
 import entity.Customer;
 import entity.Return;
 
+/**
+ * 
+ * DB interactions to agents table
+ *
+ */
 public class AgentEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
     static ResultSet keys = null;
-
+    
+/**
+ * Selects the data for agent login
+ * @param inUsername
+ * @param activeAgent
+ * @param result
+ */
     public static void validateAgent(String inUsername, Agent activeAgent, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -56,6 +67,12 @@ public class AgentEntity {
         }
     }
     
+/**
+ * Inserts a new customer
+ * @param activeCustomer
+ * @param activeAgent
+ * @param result
+ */
     public static void createCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -96,6 +113,15 @@ public class AgentEntity {
         }
     }
     
+/**
+ * Selects existing account numbers
+ * @param activeAccount
+ * @param existingAccounts
+ * @param likeA
+ * @param likeB
+ * @param likeC
+ * @param result
+ */
     public static void checkExistingAccounts(Account activeAccount, ArrayList<String> existingAccounts, String likeA, String likeB, String likeC, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -140,7 +166,13 @@ public class AgentEntity {
             }
         }
     }
-        
+    
+/**
+ * Inserts a new account
+ * @param activeAccount
+ * @param activeAgent
+ * @param result
+ */
     public static void openAccount(Account activeAccount, Agent activeAgent, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -178,6 +210,12 @@ public class AgentEntity {
         }
     }
     
+/**
+ * Selects customers by a given search string
+ * @param searchString
+ * @param customersResult
+ * @param result
+ */
     public static void searchCustomers(String searchString, ArrayList<Customer> customersResult, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -219,6 +257,12 @@ public class AgentEntity {
         }
     }
     
+/**
+ * Selects accounts by a given search string
+ * @param searchString
+ * @param accountsResult
+ * @param result
+ */
     public static void searchAccounts(String searchString, ArrayList<Account> accountsResult, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

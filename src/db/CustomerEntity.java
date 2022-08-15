@@ -12,11 +12,22 @@ import entity.Agent;
 import entity.Customer;
 import entity.Return;
 
+/**
+ * 
+ * DB interactions to customers table
+ *
+ */
 public class CustomerEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
+/**
+ * Selects active accounts for a customer
+ * @param activeCustomer
+ * @param customerAccounts
+ * @param result
+ */
     public static void viewCustomer(Customer activeCustomer, ArrayList<Account> customerAccounts, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -52,6 +63,12 @@ public class CustomerEntity {
         }
     }
 
+/**
+ * Selects a customer by ID
+ * @param activeCustomer
+ * @param customerId
+ * @param result
+ */
     public static void getCustomerById(Customer activeCustomer, int customerId, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -90,7 +107,12 @@ public class CustomerEntity {
             }
         }
     }
-    
+
+/**
+ * Updates customer information
+ * @param activeCustomer
+ * @param result
+ */
     public static void updateCustomer(Customer activeCustomer, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -131,6 +153,12 @@ public class CustomerEntity {
         }
     }
     
+/**
+ * Deletes a customer
+ * @param activeCustomer
+ * @param activeAgent
+ * @param result
+ */
     public static void deleteCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

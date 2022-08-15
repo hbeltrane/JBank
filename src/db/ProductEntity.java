@@ -12,12 +12,21 @@ import entity.Customer;
 import entity.Movement;
 import entity.Product;
 import entity.Return;
-
+/**
+ * 
+ * DB interactions to movements table
+ *
+ */
 public class ProductEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
+/**
+ * Selects product types
+ * @param productsType
+ * @param result
+ */
     public static void viewProductsType(ArrayList<String> productsType, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -49,6 +58,11 @@ public class ProductEntity {
         }
     }
 
+/**
+ * Selects products parameters
+ * @param products
+ * @param result
+ */
     public static void viewProductsDetail(ArrayList<Product> products, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
