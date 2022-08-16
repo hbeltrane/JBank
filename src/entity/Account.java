@@ -259,6 +259,7 @@ public class Account {
 		if (activeAccount.getBalance() != 0) {
 			int txId = 7;
 			double fee = MovementEntity.checkFee(txId, activeMovement, result);
+			activeMovement.setSourceAccount(activeAccount.getAccNumber());
 			activeMovement.setAmount(activeAccount.getBalance() - fee);
 			withdraw(activeMovement, activeAccount, activeAgent, result);
 			activeMovement.setAmount(activeAccount.getBalance() - fee);
