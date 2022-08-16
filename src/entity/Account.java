@@ -255,18 +255,21 @@ public class Account {
  * @param result
  */
 	public void deleteAccount(Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
-		result.setCode("00");
 		if (activeAccount.getBalance() != 0) {
-			int txId = 7;
+			int txId = 8;
 			double fee = MovementEntity.checkFee(txId, activeMovement, result);
 			activeMovement.setSourceAccount(activeAccount.getAccNumber());
 			activeMovement.setAmount(activeAccount.getBalance() - fee);
 			withdraw(activeMovement, activeAccount, activeAgent, result);
-			activeMovement.setAmount(activeAccount.getBalance() - fee);
-			result.setCode("05");
+			activeMovement.setAmount(activeMovement.getPreviousBalance() - fee);
+			AccountEntity.deleteAccount(activeAccount, activeAgent, result);
+			if (result.getCode() == "00") {
+				result.setCode("05");
+			}
 		}
-		if (activeAccount.getBalance() == 0)
-		AccountEntity.deleteAccount(activeAccount, activeAgent, result);
+		else {
+			AccountEntity.deleteAccount(activeAccount, activeAgent, result);
+		}
 	}
 
 /**
