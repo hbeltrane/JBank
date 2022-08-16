@@ -119,6 +119,16 @@ public class AccountEntity {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
+            		+ "SELECT open_date "
+            		+ "FROM accounts "
+            		+ "WHERE acc_number = ?");
+            statement.setString(1, activeAccount.getAccNumber());
+            System.out.println("\nQuerying accounts table\n");
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+            	activeAccount.setOpenDate(resultSet.getDate("open_date"));
+            }
+            statement = connection.prepareStatement(""
             		+ "INSERT INTO accounts_hist "
             		+ "(acc_number, acc_type, customer_id, open_date, close_date, agent_id) " 
             		+ "VALUES "

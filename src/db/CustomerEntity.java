@@ -164,6 +164,16 @@ public class CustomerEntity {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
             statement = connection.prepareStatement(""
+            		+ "SELECT creation_date "
+            		+ "FROM customers "
+            		+ "WHERE customer_id = ?");
+            statement.setInt(1, activeCustomer.getCustomerId());
+            System.out.println("\nQuerying customers table\n");
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+            	activeCustomer.setCreationDate(resultSet.getDate("creation_date"));
+            }
+            statement = connection.prepareStatement(""
             		+ "INSERT INTO customers_hist "
             		+ "(customer_id, first_name, last_name, creation_date, delete_date, agent_id) " 
             		+ "VALUES "
