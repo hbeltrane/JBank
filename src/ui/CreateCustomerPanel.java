@@ -30,6 +30,7 @@ public class CreateCustomerPanel extends JPanel {
     JTextField customerEmailTextField;
     JLabel customerPinLabel;
     JPasswordField customerPinTextField;
+    JButton cancelCreateCustomerButton;
     JButton createCustomerButton;
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
@@ -65,6 +66,7 @@ public class CreateCustomerPanel extends JPanel {
         getCustomerPhoneNumberLabel();
         getCustomerPhoneNumberTextField();
         getMessageLabel();
+        getCancelCreateCustomerButton();
         getCreateCustomerButton();
     }
 
@@ -212,7 +214,20 @@ public class CreateCustomerPanel extends JPanel {
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
-
+    /**
+     * Initialize Cancel Create Customer Button and add it an Event Listener
+     */
+    private void getCancelCreateCustomerButton() {
+        cancelCreateCustomerButton = new JButton("Cancel");
+        cancelCreateCustomerButton.setBounds(100,250,200,30);
+        this.add(cancelCreateCustomerButton, null);
+        cancelCreateCustomerButton.setFocusable(false);
+        // Update action for the button click event
+        cancelCreateCustomerButton.addActionListener(event -> {
+            /* Go back to customer panel */
+            mainFrame.getSearchPanel();
+        });
+    }
     /**
      * Initialize the Create Customer Button and add it an Event Listener
      */

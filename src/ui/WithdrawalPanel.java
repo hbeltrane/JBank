@@ -226,8 +226,8 @@ public class WithdrawalPanel extends JPanel {
                 if (getPinText().trim().equals(bankCustomer.getPin())) {
                     result = new Return();
                     Movement withdraw = new Movement(
-                            "",
                             customerAccount.getAccNumber(),
+                            "",
                             Double.parseDouble(amountTextField.getText()),
                             0d,
                             0d,
