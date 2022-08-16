@@ -400,8 +400,8 @@ public class AccountPanel extends JPanel {
                 } else if (result.getCode().equals("05")) {
                     JOptionPane.showMessageDialog(
                             mainFrame,
-                            "This Account had a balance of $"+accountBalanceTextField.getText()
-                            +", $"+closing.getAmount()+" were refunded to the customer."
+                            "This Account had a balance of $" + closing.getPreviousBalance()
+                            + ", a fee was charged.\n$" + closing.getAmount() + " were refunded to the customer."
                                     + "\nThe Account has been closed.",
                             "Delete Account",
                             JOptionPane.WARNING_MESSAGE
