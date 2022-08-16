@@ -6,55 +6,133 @@ import java.util.*;
 
 import static db.ProductEntity.viewProductsDetail;
 
+/**
+ * 
+ * Product entity business rules
+ *
+ */
 public class Product {
-
+	private int productId;
 	private String productType;
 	private double interestRate;
 	private double amountLimit;
 	private int quantityLimit;
 	private double minimumBalance;
-	
+
+/**
+ * Class constructor
+ */
 	public Product() {
+		this.productId = 0;
 		this.productType = "";
 		this.interestRate = 0;
 		this.amountLimit = 0;
 		this.quantityLimit = 0;
 		this.minimumBalance = 0;
 	}
-	
-	public Product(String productType, double interestRate, double amountLimit, int quantityLimit, double minimumBalance) {
+
+/**
+ * Class constructor
+ * @param productType
+ * @param interestRate
+ * @param amountLimit
+ * @param quantityLimit
+ * @param minimumBalance
+ */
+	public Product(int productId, String productType, double interestRate, double amountLimit, int quantityLimit, double minimumBalance) {
+		this.productId = productId;
 		this.productType = productType;
 		this.interestRate = interestRate;
 		this.amountLimit = amountLimit;
 		this.quantityLimit = quantityLimit;
 		this.minimumBalance = minimumBalance;
 	}
+	
+/**
+ * Sets product type
+ * @param productType
+ */
 	public void setProductType(String productType) {
 		this.productType = productType;
 	}
+	
+/**
+ * Sets interest rate
+ * @param interestRate
+ */
 	public void setInterestRate(double interestRate) {
 		this.interestRate = interestRate;
 	}
+	
+/**
+ * Sets amount limit
+ * @param amountLimit
+ */
 	public void setAmountLimit(double amountLimit) {
 		this.amountLimit = amountLimit;
 	}
+	
+/**
+ * Sets quantity limit
+ * @param quantityLimit
+ */
 	public void setQuantityLimit(int quantityLimit) {
 		this.quantityLimit = quantityLimit;
 	}
+	
+/**
+ * Sets minimum balance
+ * @param minimumBalance
+ */
 	public void setMinimumBalance(double minimumBalance) {
 		this.minimumBalance = minimumBalance;
 	}
+	
+/**
+ * Gets product type
+ * @return
+ */
 	public String getProductType() { return productType; }
+	
+/**
+ * Gets product type ID
+ * @return
+ */
+	public int getProductId() { return productId; }
+	
+/**
+ * Gets interest rate
+ * @return
+ */
 	public double getInterestRate() { return interestRate; }
+	
+/**
+ * Gets amount limit
+ * @return
+ */
 	public double getAmountLimit() {
 		return amountLimit;
 	}
-	
+
+/**
+ * Gets quantity limit
+ * @return
+ */
 	public int getQuantityLimit() {
 		return quantityLimit;
 	}
-	
+
+/**
+ * Gets minimum balance
+ * @return
+ */
 	public double getMinimumBalance() { return minimumBalance; }
+	
+/**
+ * Gets products list
+ * @param result
+ * @return
+ */
 	public static String[] getProductsList(Return result) {
 		ArrayList<String> productsType = new ArrayList<>();
 		ProductEntity.viewProductsType(productsType, result);
@@ -67,6 +145,13 @@ public class Product {
 		}
 		return productsTypeList;
 	}
+	
+/**
+ * Gets product details
+ * @param products
+ * @param result
+ * @return
+ */
 	public static String[] getProductsDetail(ArrayList<Product> products, Return result) {
 		viewProductsDetail(products, result);
 		String[] productsTypeList = new String[products.size()];

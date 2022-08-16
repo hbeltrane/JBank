@@ -12,11 +12,22 @@ import entity.Agent;
 import entity.Customer;
 import entity.Return;
 
+/**
+ * 
+ * DB interactions to customers table
+ *
+ */
 public class CustomerEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
+/**
+ * Selects active accounts for a customer
+ * @param activeCustomer
+ * @param customerAccounts
+ * @param result
+ */
     public static void viewCustomer(Customer activeCustomer, ArrayList<Account> customerAccounts, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -31,7 +42,7 @@ public class CustomerEntity {
             System.out.println("\nQuerying accounts table\n");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
+            	Account queryResult = new Account(resultSet.getString("acc_number"), resultSet.getString("product_type"), resultSet.getInt("acc_type") ,resultSet.getDouble("balance"), resultSet.getDouble("transfer_amount"), resultSet.getInt("transfer_quantity"), resultSet.getInt("customer_id"), resultSet.getDate("open_date"));
             	customerAccounts.add(queryResult);
             }
             result.setCode("00");
@@ -52,6 +63,12 @@ public class CustomerEntity {
         }
     }
 
+/**
+ * Selects a customer by ID
+ * @param activeCustomer
+ * @param customerId
+ * @param result
+ */
     public static void getCustomerById(Customer activeCustomer, int customerId, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -90,7 +107,12 @@ public class CustomerEntity {
             }
         }
     }
-    
+
+/**
+ * Updates customer information
+ * @param activeCustomer
+ * @param result
+ */
     public static void updateCustomer(Customer activeCustomer, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -131,10 +153,26 @@ public class CustomerEntity {
         }
     }
     
+/**
+ * Deletes a customer
+ * @param activeCustomer
+ * @param activeAgent
+ * @param result
+ */
     public static void deleteCustomer(Customer activeCustomer, Agent activeAgent, Return result) {
     	try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "SELECT creation_date "
+            		+ "FROM customers "
+            		+ "WHERE customer_id = ?");
+            statement.setInt(1, activeCustomer.getCustomerId());
+            System.out.println("\nQuerying customers table\n");
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+            	activeCustomer.setCreationDate(resultSet.getDate("creation_date"));
+            }
             statement = connection.prepareStatement(""
             		+ "INSERT INTO customers_hist "
             		+ "(customer_id, first_name, last_name, creation_date, delete_date, agent_id) " 
@@ -143,7 +181,7 @@ public class CustomerEntity {
             statement.setInt(1, activeCustomer.getCustomerId());
             statement.setString(2, activeCustomer.getFirstName());
             statement.setString(3, activeCustomer.getLastName());
-            statement.setDate(4,  (Date)activeCustomer.getCreationDate());
+            statement.setDate(4, (Date)activeCustomer.getCreationDate());
             statement.setString(5, activeAgent.getUsername());
             System.out.println("\nInserting into customers_hist table\n");
             statement.executeUpdate();

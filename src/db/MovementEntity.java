@@ -4,18 +4,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import entity.Account;
 import entity.Agent;
 import entity.Movement;
 import entity.Return;
-
+/**
+ * 
+ * DB interactions to movements table
+ *
+ */
 public class MovementEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
 
+/**
+ * Selects the fee of a transaction
+ * @param txId
+ * @param activeMovement
+ * @param result
+ * @return
+ */
     public static double checkFee(int txId, Movement activeMovement, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -51,6 +59,13 @@ public class MovementEntity {
         }
     }
 
+/**
+ * Inserts a new transaction
+ * @param txId
+ * @param activeMovement
+ * @param activeAgent
+ * @param result
+ */
     public static void createTransaction(int txId, Movement activeMovement, Agent activeAgent, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

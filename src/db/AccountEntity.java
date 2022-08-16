@@ -9,16 +9,26 @@ import java.util.ArrayList;
 
 import entity.Account;
 import entity.Agent;
-import entity.Customer;
 import entity.Movement;
 import entity.Product;
 import entity.Return;
 
+/**
+ * 
+ * DB interactions to accounts table
+ *
+ */
 public class AccountEntity {
     static Connection connection = null;
     static PreparedStatement statement = null;
     static ResultSet resultSet = null;
-    
+
+/**
+ * Selects limits parameters for a product
+ * @param activeAccount
+ * @param activeProduct
+ * @param result
+ */
     public static void checkLimits(Account activeAccount, Product activeProduct, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -54,7 +64,12 @@ public class AccountEntity {
             }
         }
     }
-
+/**
+ * Selects the movements for an account
+ * @param activeAccount
+ * @param accountMovements
+ * @param result
+ */
     public static void viewAccount(Account activeAccount, ArrayList<Movement> accountMovements, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -92,11 +107,27 @@ public class AccountEntity {
             }
         }
     }
-	
+    
+/**
+ * Deletes an account and inserts it into history
+ * @param activeAccount
+ * @param activeAgent
+ * @param result
+ */
 	public static void deleteAccount(Account activeAccount, Agent activeAgent, Return result) {
 		try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             connection = databaseConnection.getConnection();
+            statement = connection.prepareStatement(""
+            		+ "SELECT open_date "
+            		+ "FROM accounts "
+            		+ "WHERE acc_number = ?");
+            statement.setString(1, activeAccount.getAccNumber());
+            System.out.println("\nQuerying accounts table\n");
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+            	activeAccount.setOpenDate(resultSet.getDate("open_date"));
+            }
             statement = connection.prepareStatement(""
             		+ "INSERT INTO accounts_hist "
             		+ "(acc_number, acc_type, customer_id, open_date, close_date, agent_id) " 
@@ -105,7 +136,7 @@ public class AccountEntity {
             statement.setString(1, activeAccount.getAccNumber());
             statement.setInt(2, activeAccount.getAccTypeId());
             statement.setInt(3, activeAccount.getCustomerId());
-            statement.setDate(4,  (Date)activeAccount.getOpenDate());
+            statement.setDate(4, (Date)activeAccount.getOpenDate());
             statement.setString(5, activeAgent.getUsername());
             System.out.println("\nInserting into accounts_hist table\n");
             statement.executeUpdate();
@@ -129,7 +160,12 @@ public class AccountEntity {
             }
         }
 	}
-	
+
+/**
+ * Selects the information for an account 
+ * @param destinationAccount
+ * @param result
+ */
 	public static void searchAccount(Account destinationAccount, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -171,7 +207,12 @@ public class AccountEntity {
             }
         }
 	}
-	
+
+/**
+ * Updates an account
+ * @param activeAccount
+ * @param result
+ */
 	public static void updateAccount(Account activeAccount, Return result) {
         try {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();

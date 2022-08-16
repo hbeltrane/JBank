@@ -3,17 +3,28 @@ package entity;
 import java.util.Hashtable;
 import java.util.Map;
 
+/**
+ * 
+ * Messaging handling between front end and back end
+ *
+ */
 public class Return {
 	private String code;
 	private String cause;
 	private String message;
 	Map<String, String[]> errorTable = new Hashtable<>();
-	
+
+/**
+ * Class constructor
+ */
 	public Return() {
 		createErrorTable();
 		setCode("99");
 	}
-	
+
+/**
+ * Initializes the error list
+ */
 	private void createErrorTable() {
 		errorTable.put("00", new String[] {"OK", "Operation successful"});
 		errorTable.put("01", new String[] {"Agent username nof found", "Invalid username or password"});
@@ -29,21 +40,37 @@ public class Return {
 		errorTable.put("11", new String[] {"Destination account not valid", "Use transfer others option"});
 		errorTable.put("99", new String[] {"Unknown error", "Try again or contact system administrator"});
 	}
-	
+
+/**
+ * Sets the error code
+ * @param code
+ */
 	public void setCode(String code) {
 		this.code = code;
 		this.cause = errorTable.get(code)[0];
 		this.message = errorTable.get(code)[1];
 	}
-	
+
+/**
+ * Gets the error code
+ * @return
+ */
 	public String getCode() {
 		return code;
 	}
-	
+
+/**
+ * Gets the error cause
+ * @return
+ */
 	public String getCause() {
 		return cause;
 	}
-	
+
+/**
+ * Gets the error message
+ * @return
+ */
 	public String getMessage() {
 		return message;
 	}
