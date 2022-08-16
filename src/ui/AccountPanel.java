@@ -8,6 +8,9 @@ import java.awt.*;
 import java.util.*;
 
 
+/**
+ * Account Panel class
+ */
 public class AccountPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
@@ -47,6 +50,7 @@ public class AccountPanel extends JPanel {
     MainFrame mainFrame;
 
     /**
+     * Account Panel Constructor
      * @param customerAccount Customer Account
      * @param mainFrame Main Frame
      */
@@ -86,13 +90,19 @@ public class AccountPanel extends JPanel {
         getAccountScrollPane();  // Gets the table inside a scrollable panel
     }
 
-    /* Initialize the Customer Panel components */
+    /**
+     * Initialize the Customer Panel Label
+     */
     private void getPanelLabel() {
         panelLabel = new JLabel("ACCOUNT");
         panelLabel.setBounds(100,0,200,30);
         panelLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(panelLabel,null);
     }
+
+    /**
+     * Initialize the Agent Label
+     */
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -100,12 +110,19 @@ public class AccountPanel extends JPanel {
         this.add(agentIdLabel,null);
     }
 
+    /**
+     * Initialize the Customer ID Label
+     */
     private void getCustomerIdLabel() {
         customerIdLabel = new JLabel("Customer ID");
         customerIdLabel.setBounds(100,50,100,30);
         customerIdLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerIdLabel,null);
     }
+
+    /**
+     * Initialize the Customer ID Text Field
+     */
     private void getCustomerIdTextField() {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
@@ -114,12 +131,19 @@ public class AccountPanel extends JPanel {
         this.add(customerIdTextField,null);
     }
 
+    /**
+     * Initialize the Customer First Name Label
+     */
     private void getCustomerFirstNameLabel() {
         customerFirstNameLabel = new JLabel("First Name");
         customerFirstNameLabel.setBounds(400,50,100,30);
         customerFirstNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerFirstNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer First Name Text Field
+     */
     private void getCustomerFirstNameTextField() {
         String firstName = bankCustomer.getFirstName();
         customerFirstNameTextField = new JTextField(firstName);
@@ -128,12 +152,19 @@ public class AccountPanel extends JPanel {
         this.add(customerFirstNameTextField,null);
     }
 
+    /**
+     * Initialize the Customer Last Name Label
+     */
     private void getCustomerLastNameLabel() {
         customerLastNameLabel = new JLabel("Last Name");
         customerLastNameLabel.setBounds(700,50,100,30);
         customerLastNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerLastNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer Last Name Text Field
+     */
     private void getCustomerLastNameTextField() {
         String lastName = bankCustomer.getLastName();
         customerLastNameTextField = new JTextField(lastName);
@@ -142,12 +173,19 @@ public class AccountPanel extends JPanel {
         this.add(customerLastNameTextField,null);
     }
 
+    /**
+     * Initialize the Account Label
+     */
     private void getAccountNumberLabel() {
         accountNumberLabel = new JLabel("Account Number");
         accountNumberLabel.setBounds(100,100,100,30);
         accountNumberLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(accountNumberLabel,null);
     }
+
+    /**
+     * Initialize the Customer Address Text Field
+     */
     private void getAccountNumberTextField() {
         String accountNumber = customerAccount.getAccNumber();
         accountNumberTextField = new JTextField(accountNumber);
@@ -156,12 +194,19 @@ public class AccountPanel extends JPanel {
         this.add(accountNumberTextField,null);
     }
 
+    /**
+     * Initialize the Account Type Label
+     */
     private void getAccountTypeLabel() {
         accountTypeLabel = new JLabel("Account Type");
         accountTypeLabel.setBounds(400,100,100,30);
         accountTypeLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(accountTypeLabel,null);
     }
+
+    /**
+     * Initialize the Account Type Text Field
+     */
     private void getAccountTypeTextField() {
         String accountType = customerAccount.getAccType();
         accountTypeTextField = new JTextField(accountType);
@@ -170,12 +215,19 @@ public class AccountPanel extends JPanel {
         this.add(accountTypeTextField,null);
     }
 
+    /**
+     * Initialize the Account Balance Label
+     */
     private void getAccountBalanceLabel() {
         accountBalanceLabel = new JLabel("Account Balance");
         accountBalanceLabel.setBounds(700,100,100,30);
         accountBalanceLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(accountBalanceLabel,null);
     }
+
+    /**
+     * Initialize the Account Balance Text Field
+     */
     private void getAccountBalanceTextField() {
         String accountBalance = String.valueOf(customerAccount.getBalance());
         accountBalanceTextField = new JTextField(accountBalance);
@@ -184,12 +236,19 @@ public class AccountPanel extends JPanel {
         this.add(accountBalanceTextField,null);
     }
 
+    /**
+     * Initialize the Transfer Amount Label
+     */
     private void getTransferAmountLabel() {
         transferAmountLabel = new JLabel("Transfer Amount");
         transferAmountLabel.setBounds(100,150,125,30);
         transferAmountLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(transferAmountLabel,null);
     }
+
+    /**
+     * Initialize the Transfer Amount Text Field
+     */
     private void getTransferAmountTextField() {
         String transferAmount = String.valueOf(customerAccount.getTransferAmount());
         transferAmountTextField = new JTextField(transferAmount);
@@ -198,12 +257,19 @@ public class AccountPanel extends JPanel {
         this.add(transferAmountTextField,null);
     }
 
+    /**
+     * Initialize the Transfer Quantity Label
+     */
     private void getTransferQuantityLabel() {
         transferQuantityLabel = new JLabel("Transfer Quantity");
         transferQuantityLabel.setBounds(500,150,125,30);
         transferQuantityLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(transferQuantityLabel,null);
     }
+
+    /**
+     * Initialize the Transfer Quantity
+     */
     private void getTransferQuantityTextField() {
         String transferQuantity = String.valueOf(customerAccount.getTransferQuantity());
         transferQuantityTextField = new JTextField(transferQuantity);
@@ -211,6 +277,10 @@ public class AccountPanel extends JPanel {
         transferQuantityTextField.setEditable(false);
         this.add(transferQuantityTextField,null);
     }
+
+    /**
+     * Initialize the Window Message Label
+     */
     private void getMessageLabel() {
         messageLabel = new JLabel("");
         messageLabel.setBounds(100,400,900,30);
@@ -218,6 +288,10 @@ public class AccountPanel extends JPanel {
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
+
+    /**
+     * Initialize the Window Message Label
+     */
     private void getDepositButton() {
         depositButton = new JButton("Deposit");
         depositButton.setBounds(100,450,200,30);
@@ -229,6 +303,10 @@ public class AccountPanel extends JPanel {
             mainFrame.getDepositPanel(customerAccount, bankCustomer);
         });
     }
+
+    /**
+     * Initialize the Withdraw Button and add it an Event Listener
+     */
     private void getWithdrawalButton() {
         withdrawalButton = new JButton("Withdrawal");
         withdrawalButton.setBounds(400,450,200,30);
@@ -240,6 +318,10 @@ public class AccountPanel extends JPanel {
             mainFrame.getWithdrawalPanel(customerAccount, bankCustomer);
         });
     }
+
+    /**
+     * Initialize the Transfer Own Button and add it an Event Listener
+     */
     private void getTransferOwnButton() {
         transferOwnButton = new JButton("Transfer own");
         transferOwnButton.setBounds(700,450,200,30);
@@ -252,6 +334,9 @@ public class AccountPanel extends JPanel {
         });
     }
 
+    /**
+     * Initialize the Transfer Other Button and add it an Event Listener
+     */
     private void getTransferOthersButton() {
         transferOthersButton = new JButton("Transfer Others");
         transferOthersButton.setBounds(100,500,200,30);
@@ -263,6 +348,10 @@ public class AccountPanel extends JPanel {
             mainFrame.getTransferOthersPanel(customerAccount, bankCustomer);
         });
     }
+
+    /**
+     * Initialize the Change Account Type Button and add it an Event Listener
+     */
     private void getChangeTypeButton() {
         changeTypeButton = new JButton("ChangeType");
         changeTypeButton.setBounds(400,500,200,30);
@@ -274,6 +363,10 @@ public class AccountPanel extends JPanel {
             //TODO
         });
     }
+
+    /**
+     * Initialize Delete Account Button and add it an Event Listener
+     */
     private void getDeleteAccountButton() {
         deleteAccountButton = new JButton("Delete Account");
         deleteAccountButton.setBounds(700,500,200,30);
@@ -297,6 +390,10 @@ public class AccountPanel extends JPanel {
             }
         });
     }
+
+    /**
+     * Retrieve a list of movement from a Bank Account
+     */
     private void getAccountData() {
         accountMovements = new ArrayList<>();
         bankCustomer = new Customer();
@@ -304,6 +401,9 @@ public class AccountPanel extends JPanel {
         customerAccount.viewAccount(bankCustomer, customerAccount, accountMovements,result);
     }
 
+    /**
+     * Initialize and populate the Movement table
+     */
     private void getMovementsTable() {
         String [] columnNames = {
                 "Movement Date", "Transaction Type", "Source Account", "Destination Account",
@@ -332,6 +432,9 @@ public class AccountPanel extends JPanel {
         movementsTable.setFillsViewportHeight(true);
     }
 
+    /**
+     * Create a Scrollable Pane for the Movement Table
+     */
     private void getAccountScrollPane() {
         getMovementsTable();
         JScrollPane AccountScrollPane = new JScrollPane(movementsTable);

@@ -8,6 +8,9 @@ import java.time.*;
 import java.util.*;
 
 
+/**
+ * Transfer Other Accounts class
+ */
 public class TransferOthersPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
@@ -38,6 +41,13 @@ public class TransferOthersPanel extends JPanel {
     Customer bankCustomer;
     Return result;
     MainFrame mainFrame;
+
+    /**
+     * Transfer Other Panel Constructor method
+     * @param customerAccount Customer Account
+     * @param bankCustomer Bank Customer
+     * @param mainFrame Main Window
+     */
     public TransferOthersPanel(Account customerAccount, Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.customerAccount = customerAccount;
@@ -68,13 +78,19 @@ public class TransferOthersPanel extends JPanel {
         getTransferButton();
     }
 
-    /* Initialize the Customer Panel components */
+    /**
+     * Initialize the Customer Panel Label
+     */
     private void getPanelLabel() {
         panelLabel = new JLabel("TRANSFER OTHERS");
         panelLabel.setBounds(100,0,200,30);
         panelLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(panelLabel,null);
     }
+
+    /**
+     * Initialize the Agent Label
+     */
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -82,12 +98,19 @@ public class TransferOthersPanel extends JPanel {
         this.add(agentIdLabel,null);
     }
 
+    /**
+     * Initialize the Customer ID Label
+     */
     private void getCustomerIdLabel() {
         customerIdLabel = new JLabel("Customer ID");
         customerIdLabel.setBounds(100,50,100,30);
         customerIdLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerIdLabel,null);
     }
+
+    /**
+     * Initialize the Customer ID Text Field
+     */
     private void getCustomerIdTextField() {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
@@ -96,12 +119,19 @@ public class TransferOthersPanel extends JPanel {
         this.add(customerIdTextField,null);
     }
 
+    /**
+     * Initialize the Account Number Label
+     */
     private void getAccountNumber() {
         accountNumberLabel = new JLabel("Account Number");
         accountNumberLabel.setBounds(550,50,100,30);
         accountNumberLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(accountNumberLabel,null);
     }
+
+    /**
+     * Initialize the Account Number Text Field
+     */
     private void getAccountNumberTextField() {
         accountNumberTextField = new JTextField(customerAccount.getAccNumber());
         accountNumberTextField.setBounds(675,50,200,30);
@@ -109,12 +139,19 @@ public class TransferOthersPanel extends JPanel {
         this.add(accountNumberTextField,null);
     }
 
+    /**
+     * Initialize the Customer First Name Label
+     */
     private void getCustomerFirstNameLabel() {
         customerFirstNameLabel = new JLabel("First Name");
         customerFirstNameLabel.setBounds(100,100,100,30);
         customerFirstNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerFirstNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer First Name Text Field
+     */
     private void getCustomerFirstNameTextField() {
         customerFirstNameTextField = new JTextField(bankCustomer.getFirstName());
         customerFirstNameTextField.setBounds(225,100,200,30);
@@ -122,12 +159,19 @@ public class TransferOthersPanel extends JPanel {
         this.add(customerFirstNameTextField,null);
     }
 
+    /**
+     * Initialize the Customer Last Name Label
+     */
     private void getCustomerLastNameLabel() {
         customerLastNameLabel = new JLabel("Last Name");
         customerLastNameLabel.setBounds(550,100,100,30);
         customerLastNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerLastNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer Last Name Text Field
+     */
     private void getCustomerLastNameTextField() {
         customerLastNameTextField = new JTextField(bankCustomer.getLastName());
         customerLastNameTextField.setBounds(675,100,200,30);
@@ -135,40 +179,66 @@ public class TransferOthersPanel extends JPanel {
         this.add(customerLastNameTextField,null);
     }
 
+    /**
+     *  Initialize the Destination Account Label
+     */
     private void getDestinationAccountLabel() {
         destinationAccountLabel = new JLabel("Destination Account");
         destinationAccountLabel.setBounds(100,150,125,30);
         destinationAccountLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(destinationAccountLabel,null);
     }
+
+    /**
+     * Initialize the Destination Account Text Field
+     */
     private void getDestinationAccountJTextField() {
         destinationAccountJTextField = new JTextField();
         destinationAccountJTextField.setBounds(225,150,200,30);
         this.add(destinationAccountJTextField,null);
     }
 
+    /**
+     * Initialize the Amount Label
+     */
     private void getAmountLabel() {
         amountLabel = new JLabel("Transfer Amount");
         amountLabel.setBounds(550,150,100,30);
         amountLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(amountLabel,null);
     }
+
+    /**
+     *  Initialize the Amount Text Field
+     */
     private void getAmountTextField() {
         amountTextField = new JTextField();
         amountTextField.setBounds(675,150,200,30);
         this.add(amountTextField,null);
     }
+
+    /**
+     * Initialize the PIN Label
+     */
     private void getCustomerPinLabel() {
         customerPinLabel = new JLabel("Customer PIN");
         customerPinLabel.setBounds(550,200,100,30);
         customerPinLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerPinLabel,null);
     }
+
+    /**
+     * Initialize the PIN Text Field
+     */
     private void getCustomerPinTextField() {
         customerPinTextField = new JPasswordField();
         customerPinTextField.setBounds(675,200,200,30);
         this.add(customerPinTextField,null);
     }
+
+    /**
+     * Initialize the Cancel Transfer Button
+     */
     private void getCancelTransferButton() {
         cancelTransferButton = new JButton("Cancel");
         cancelTransferButton.setBounds(100,275,200,30);
@@ -181,6 +251,9 @@ public class TransferOthersPanel extends JPanel {
         });
     }
 
+    /**
+     * Initialize the Transfer Button
+     */
     private void getTransferButton() {
         transferButton = new JButton("Transfer");
         transferButton.setBounds(675, 275, 200, 30);
@@ -192,7 +265,7 @@ public class TransferOthersPanel extends JPanel {
             if (isValidData()) {
                 if (getPinText().trim().equals(bankCustomer.getPin())) {
                     result = new Return();
-                    Movement withdraw = new Movement(
+                    Movement transfer = new Movement(
                             customerAccount.getAccNumber(),
                             destinationAccountJTextField.getText(),
                             Double.parseDouble(amountTextField.getText()),
@@ -200,7 +273,7 @@ public class TransferOthersPanel extends JPanel {
                             0d,
                             Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
                             "");
-                    customerAccount.transfer(false, withdraw, customerAccount, bankAgent, result);
+                    customerAccount.transfer(false, transfer, customerAccount, bankAgent, result);
                     if (result.getCode().equals("00")) {
                         amountTextField.setText("");
                         mainFrame.getAccountPanel(customerAccount);
@@ -213,6 +286,10 @@ public class TransferOthersPanel extends JPanel {
             }
         });
     }
+
+    /**
+     * Initialize the Message Label
+     */
     private void getMessageLabel() {
         messageLabel = new JLabel("");
         messageLabel.setBounds(100,450,800,30);
@@ -220,6 +297,11 @@ public class TransferOthersPanel extends JPanel {
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
+
+    /**
+     * Validate the data input from the user
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidData() {
         String destinationAccountNumber = destinationAccountJTextField.getText().trim();
         String amount = amountTextField.getText().trim();
@@ -248,6 +330,12 @@ public class TransferOthersPanel extends JPanel {
         messageLabel.setText("");
         return true;
     }
+
+    /**
+     * Validate if the Destination Account Number is in a correct format
+     * @param accountNumberString Destination Account Number
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidAccountNumber(String accountNumberString) {
         boolean isValid = false;
         try {
@@ -262,6 +350,12 @@ public class TransferOthersPanel extends JPanel {
         }
         return isValid;
     }
+
+    /**
+     * Validate if the Transfer Amount is in a correct format and range
+     * @param amountString Transfer Amount
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidAmount(String amountString) {
         boolean isValid = false;
         try {
@@ -276,6 +370,11 @@ public class TransferOthersPanel extends JPanel {
         }
         return isValid;
     }
+
+    /**
+     * Extract the string representation from the customer PIN
+     * @return The PIN text
+     */
     public String getPinText() {
         StringBuilder pinString = new StringBuilder();
         char[] pin = customerPinTextField.getPassword();
@@ -284,6 +383,12 @@ public class TransferOthersPanel extends JPanel {
         }
         return pinString.toString();
     }
+
+    /**
+     * Check if the Customer PIN is valid
+     * @param pinString pinString Customer PIN
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidPin(String pinString) {
         boolean isValid = false;
         try {
