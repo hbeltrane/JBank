@@ -9,6 +9,9 @@ import java.awt.event.*;
 import java.util.*;
 
 
+/**
+ * Panel to display the Customer info
+ */
 public class CustomerPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
@@ -38,6 +41,12 @@ public class CustomerPanel extends JPanel {
     ArrayList<Account> customerAccounts;
     Return result;
     MainFrame mainFrame;
+
+    /**
+     * Customer Panel constructor
+     * @param bankCustomer Bank Customer
+     * @param mainFrame Main Window
+     */
     public CustomerPanel(Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.bankCustomer = bankCustomer;
@@ -67,13 +76,19 @@ public class CustomerPanel extends JPanel {
         getAccountScrollPane();  // Gets the table inside a scrollable panel
     }
 
-    /* Initialize the Customer Panel components */
+    /**
+     * Initialize the Customer Panel Label
+     */
     private void getPanelLabel() {
         panelLabel = new JLabel("CUSTOMER");
         panelLabel.setBounds(100,0,200,30);
         panelLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(panelLabel,null);
     }
+
+    /**
+     * Initialize the Agent Label
+     */
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -81,12 +96,19 @@ public class CustomerPanel extends JPanel {
         this.add(agentIdLabel,null);
     }
 
+    /**
+     * Initialize the Customer ID Label
+     */
     private void getCustomerIdLabel() {
         customerIdLabel = new JLabel("Customer ID");
         customerIdLabel.setBounds(100,50,75,30);
         customerIdLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerIdLabel,null);
     }
+
+    /**
+     * Initialize the Customer ID Text Field
+     */
     private void getCustomerIdTextField() {
         String customerId = String.valueOf(bankCustomer.getCustomerId());
         customerIdTextField = new JTextField(customerId);
@@ -95,12 +117,19 @@ public class CustomerPanel extends JPanel {
         this.add(customerIdTextField,null);
     }
 
+    /**
+     * Initialize the Customer First Name Label
+     */
     private void getCustomerFirstNameLabel() {
         customerFirstNameLabel = new JLabel("First Name");
         customerFirstNameLabel.setBounds(100,100,75,30);
         customerFirstNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerFirstNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer First Name Text Field
+     */
     private void getCustomerFirstNameTextField() {
         String firstName = bankCustomer.getFirstName();
         customerFirstNameTextField = new JTextField(firstName);
@@ -109,12 +138,19 @@ public class CustomerPanel extends JPanel {
         this.add(customerFirstNameTextField,null);
     }
 
+    /**
+     * Initialize the Customer Last Name Label
+     */
     private void getCustomerLastNameLabel() {
         customerLastNameLabel = new JLabel("Last Name");
         customerLastNameLabel.setBounds(550,100,100,30);
         customerLastNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerLastNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer Last Name Text Field
+     */
     private void getCustomerLastNameTextField() {
         String lastName = bankCustomer.getLastName();
         customerLastNameTextField = new JTextField(lastName);
@@ -123,12 +159,19 @@ public class CustomerPanel extends JPanel {
         this.add(customerLastNameTextField,null);
     }
 
+    /**
+     * Initialize the Customer Address Label
+     */
     private void getCustomerAddressLabel() {
         customerAddressLabel = new JLabel("Address");
         customerAddressLabel.setBounds(100,150,75,30);
         customerAddressLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerAddressLabel,null);
     }
+
+    /**
+     * Initialize the Customer Address Text Field
+     */
     private void getCustomerAddressTextField() {
         String address = bankCustomer.getAddress();
         customerAddressTextField = new JTextField(address);
@@ -137,12 +180,19 @@ public class CustomerPanel extends JPanel {
         this.add(customerAddressTextField,null);
     }
 
+    /**
+     * Initialize the Customer Phone Number Label
+     */
     private void getCustomerPhoneNumberLabel() {
         customerPhoneNumberLabel = new JLabel("Phone Number");
         customerPhoneNumberLabel.setBounds(550,150,100,30);
         customerPhoneNumberLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerPhoneNumberLabel,null);
     }
+
+    /**
+     * Initialize the Customer Phone Number Text Field
+     */
     private void getCustomerPhoneNumberTextField() {
         String phoneNumber = bankCustomer.getPhoneNumber();
         customerPhoneNumberTextField = new JTextField(phoneNumber);
@@ -151,12 +201,19 @@ public class CustomerPanel extends JPanel {
         this.add(customerPhoneNumberTextField,null);
     }
 
+    /**
+     * Initialize the Customer Email Label
+     */
     private void getCustomerEmailLabel() {
         customerEmailLabel = new JLabel("Email Address");
         customerEmailLabel.setBounds(550,50,100,30);
         customerEmailLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerEmailLabel,null);
     }
+
+    /**
+     * Initialize the Customer Email Text Field
+     */
     private void getCustomerEmailTextField() {
         String email = bankCustomer.getEmail();
         customerEmailTextField = new JTextField(email);
@@ -165,6 +222,9 @@ public class CustomerPanel extends JPanel {
         this.add(customerEmailTextField,null);
     }
 
+    /**
+     * Initialize the Update Customer Button and add it an Event Listener
+     */
     private void getUpdateCustomerButton() {
         updateCustomerButton = new JButton("Update Customer");
         updateCustomerButton.setBounds(100,500,200,30);
@@ -175,6 +235,10 @@ public class CustomerPanel extends JPanel {
             mainFrame.getUpdateCustomerPanel(bankCustomer);
         });
     }
+
+    /**
+     * Initialize Delete Customer Button and add it an Event Listener
+     */
     private void getDeleteCustomerButton() {
         deleteCustomerButton = new JButton("Delete Customer");
         deleteCustomerButton.setBounds(400,500,200,30);
@@ -197,6 +261,10 @@ public class CustomerPanel extends JPanel {
             }
         });
     }
+
+    /**
+     * Initialize the Open Customer Button and add it an Event Listener
+     */
     private void getOpenAccountButton() {
         openAccountButton = new JButton("Open Account");
         openAccountButton.setBounds(700,500,200,30);
@@ -208,6 +276,10 @@ public class CustomerPanel extends JPanel {
             mainFrame.getOpenAccountPanel(bankCustomer);
         });
     }
+
+    /**
+     * Initialize the Window Message Label
+     */
     private void getMessageLabel() {
         messageLabel = new JLabel("");
         messageLabel.setBounds(100,450,800,30);
@@ -215,11 +287,19 @@ public class CustomerPanel extends JPanel {
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
+
+    /**
+     * Seek for a list of customer accounts
+     */
     private void getCustomerData() {
         customerAccounts = new ArrayList<>();
         result = new Return();
         bankCustomer.viewCustomer(bankCustomer, customerAccounts, result);
     }
+
+    /**
+     * Initialize and populate the Account table
+     */
     private void getAccountTable() {
         String [] columnNames = {
                 "Account Number", "Account Type", "Balance", "Transfer Amount",
@@ -258,6 +338,9 @@ public class CustomerPanel extends JPanel {
         accountTable.setFillsViewportHeight(true);
     }
 
+    /**
+     * Create a Scrollable Pane for the Accounts Table
+     */
     private void getAccountScrollPane() {
         getAccountTable();
         JScrollPane AccountScrollPane = new JScrollPane(accountTable);

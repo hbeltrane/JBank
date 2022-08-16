@@ -10,6 +10,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
+/**
+ * Search Panel class
+ */
 public class SearchPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
@@ -31,6 +34,11 @@ public class SearchPanel extends JPanel {
     ArrayList<Customer> resultCustomers;
     ArrayList<Account> resultAccounts;
     MainFrame mainFrame;
+
+    /**
+     * Search Panel constructor
+     * @param mainFrame Main Window
+     */
     public SearchPanel(MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.mainFrame = mainFrame;
@@ -49,7 +57,9 @@ public class SearchPanel extends JPanel {
         getAccountScrollPane();
     }
 
-    /* Initialize the Search Panel components */
+    /**
+     * Initialize the Agent ID Label
+     */
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -57,6 +67,9 @@ public class SearchPanel extends JPanel {
         this.add(agentIdLabel,null);
     }
 
+    /**
+     * Initialize the Search Label
+     */
     private void getSearchLabel() {
         searchLabel = new JLabel("Search");
         searchLabel.setBounds(300,50,50,30);
@@ -64,11 +77,18 @@ public class SearchPanel extends JPanel {
         this.add(searchLabel,null);
     }
 
+    /**
+     * Initialize the Search Text Field
+     */
     private void getSearchTextField() {
         searchTextField = new JTextField();
         searchTextField.setBounds(375,50,250,30);
         this.add(searchTextField,null);
     }
+
+    /**
+     * Initialize the Search Panel Message Label
+     */
     private void getMessageLabel() {
         messageLabel = new JLabel("");
         messageLabel.setBounds(100,300,800,30);
@@ -77,6 +97,9 @@ public class SearchPanel extends JPanel {
         this.add(messageLabel);
     }
 
+    /**
+     * Initialize the Search Button and add it an Event Lestener
+     */
     private void getSearchButton() {
         searchButton = new JButton("Find");
         searchButton.setBounds(700,50,200,30);
@@ -103,6 +126,9 @@ public class SearchPanel extends JPanel {
         });
     }
 
+    /**
+     * Initialize the Customer Table
+     */
     private void getCustomerTable() {
         String [] columnNames = {
                 "Customer ID", "First Name", "Last Name", "Address", "Phone Number", "Email", "Creation Date"
@@ -148,6 +174,9 @@ public class SearchPanel extends JPanel {
         customerTable.setFillsViewportHeight(true);
     }
 
+    /**
+     * Initialize the Customer Table Scrollable Pane
+     */
     private void getCustomerScrollPane() {
         getCustomerTable();
         JScrollPane customerScrollPane = new JScrollPane(customerTable);
@@ -155,6 +184,9 @@ public class SearchPanel extends JPanel {
         this.add(customerScrollPane, null);
     }
 
+    /**
+     * Update the Customer Table following Search
+     */
     private void updateCustomerTable() {
         DefaultTableModel tableModel = (DefaultTableModel) customerTable.getModel();
         tableModel.setRowCount(0);
@@ -173,6 +205,9 @@ public class SearchPanel extends JPanel {
         customerTable.repaint();
     }
 
+    /**
+     * Initialize the Account Table
+     */
     private void getAccountTable() {
         String [] columnNames = {
                 "Account Number", "Account Type", "Balance", "Transfer Amount",
@@ -219,6 +254,9 @@ public class SearchPanel extends JPanel {
         accountTable.setFillsViewportHeight(true);
     }
 
+    /**
+     * Initialize the Account Scrollable Pane
+     */
     private void getAccountScrollPane() {
         getAccountTable();
         JScrollPane AccountScrollPane = new JScrollPane(accountTable);
@@ -244,6 +282,9 @@ public class SearchPanel extends JPanel {
         accountTable.repaint();
     }
 
+    /**
+     * Reset Customer and Account Table
+     */
     public void resetTablesResult() {
         DefaultTableModel customerTableModel = (DefaultTableModel) customerTable.getModel();
         customerTableModel.getDataVector().removeAllElements();

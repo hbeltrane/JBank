@@ -7,6 +7,9 @@ import java.awt.*;
 import java.util.*;
 
 
+/**
+ * Update Customer Panel class
+ */
 public class UpdateCustomerPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
@@ -32,6 +35,12 @@ public class UpdateCustomerPanel extends JPanel {
     Customer bankCustomer;
     Return result;
     MainFrame mainFrame;
+
+    /**
+     *  Update Customer Panel constructor
+     * @param bankCustomer Bank Customer
+     * @param mainFrame Main Window in which it is attached
+     */
     public UpdateCustomerPanel(Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.bankCustomer = bankCustomer;
@@ -57,13 +66,19 @@ public class UpdateCustomerPanel extends JPanel {
         getUpdateCustomerButton();
     }
 
-    /* Initialize the Customer Panel components */
+    /**
+     * Initialize the Customer Panel Label
+     */
     private void getPanelLabel() {
         panelLabel = new JLabel("UPDATE CUSTOMER");
         panelLabel.setBounds(100,0,200,30);
         panelLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(panelLabel,null);
     }
+
+    /**
+     * Initialize the Agent Label
+     */
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(mainFrame.bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
@@ -71,12 +86,19 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(agentIdLabel,null);
     }
 
+    /**
+     * Initialize the Customer First Name Label
+     */
     private void getCustomerFirstNameLabel() {
         customerFirstNameLabel = new JLabel("First Name");
         customerFirstNameLabel.setBounds(100,50,75,30);
         customerFirstNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerFirstNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer First Name Text Field
+     */
     private void getCustomerFirstNameTextField() {
         String firstName = bankCustomer.getFirstName();
         customerFirstNameTextField = new JTextField(firstName);
@@ -84,12 +106,19 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerFirstNameTextField,null);
     }
 
+    /**
+     * Initialize the Customer Last Name Label
+     */
     private void getCustomerLastNameLabel() {
         customerLastNameLabel = new JLabel("Last Name");
         customerLastNameLabel.setBounds(550,50,100,30);
         customerLastNameLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerLastNameLabel,null);
     }
+
+    /**
+     * Initialize the Customer Last Name Text Field
+     */
     private void getCustomerLastNameTextField() {
         String lastName = bankCustomer.getLastName();
         customerLastNameTextField = new JTextField(lastName);
@@ -97,38 +126,54 @@ public class UpdateCustomerPanel extends JPanel {
         this.add(customerLastNameTextField,null);
     }
 
+    /**
+     * Initialize the Customer Address Label
+     */
     private void getCustomerAddressLabel() {
         customerAddressLabel = new JLabel("Address");
         customerAddressLabel.setBounds(100,100,75,30);
         customerAddressLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerAddressLabel,null);
     }
+    /**
+     * Initialize the Customer Address Text Field
+     */
     private void getCustomerAddressTextField() {
         String address = bankCustomer.getAddress();
         customerAddressTextField = new JTextField(address);
         customerAddressTextField.setBounds(200,100,200,30);
         this.add(customerAddressTextField,null);
     }
-
+    /**
+     * Initialize the Customer Phone Number Label
+     */
     private void getCustomerPhoneNumberLabel() {
         customerPhoneNumberLabel = new JLabel("Phone Number");
         customerPhoneNumberLabel.setBounds(550,100,100,30);
         customerPhoneNumberLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerPhoneNumberLabel,null);
     }
+    /**
+     * Initialize the Customer Phone Number Text Field
+     */
     private void getCustomerPhoneNumberTextField() {
         String phoneNumber = bankCustomer.getPhoneNumber();
         customerPhoneNumberTextField = new JTextField(phoneNumber);
         customerPhoneNumberTextField.setBounds(675,100,200,30);
         this.add(customerPhoneNumberTextField,null);
     }
-
+    /**
+     * Initialize the Customer Email Label
+     */
     private void getCustomerEmailLabel() {
         customerEmailLabel = new JLabel("Email Address");
         customerEmailLabel.setBounds(100,150,100,30);
         customerEmailLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerEmailLabel,null);
     }
+    /**
+     * Initialize the Customer Email Text Field
+     */
     private void getCustomerEmailTextField() {
         String email = bankCustomer.getEmail();
         customerEmailTextField = new JTextField(email);
@@ -136,19 +181,27 @@ public class UpdateCustomerPanel extends JPanel {
         customerEmailTextField.setBounds(200,150,200,30);
         this.add(customerEmailTextField,null);
     }
-
+    /**
+     * Initialize the Customer PIN Label
+     */
     private void getCustomerPinLabel() {
         customerPinLabel = new JLabel("Customer Pin");
         customerPinLabel.setBounds(550,150,100,30);
         customerPinLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(customerPinLabel,null);
     }
+    /**
+     * Initialize the Customer PIN Text Field
+     */
     private void getCustomerPinTextField() {
         String pin = bankCustomer.getPin();
         customerPinTextField = new JPasswordField(pin);
         customerPinTextField.setBounds(675,150,200,30);
         this.add(customerPinTextField,null);
     }
+    /**
+     * Initialize the Window Message Label
+     */
     private void getMessageLabel() {
         messageLabel = new JLabel("");
         messageLabel.setBounds(100,200,600,30);
@@ -156,6 +209,9 @@ public class UpdateCustomerPanel extends JPanel {
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
+    /**
+     *Initialize the Cancel Update Customer Button and add it an Event Listener
+     */
     private void getCancelUpdateButton() {
         cancelUpdateButton = new JButton("Cancel");
         cancelUpdateButton.setBounds(100,250,200,30);
@@ -168,6 +224,9 @@ public class UpdateCustomerPanel extends JPanel {
 
         });
     }
+    /**
+     * Initialize the Update Customer Button and add it an Event Listener
+     */
     private void getUpdateCustomerButton() {
         updateCustomerButton = new JButton("Update Customer");
         updateCustomerButton.setBounds(675,250,200,30);
@@ -209,7 +268,10 @@ public class UpdateCustomerPanel extends JPanel {
             }
         });
     }
-
+    /**
+     * Validate the data input from the user
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidData() {
         String firstName = customerFirstNameTextField.getText().trim();
         String lastName = customerLastNameTextField.getText().trim();
@@ -245,6 +307,11 @@ public class UpdateCustomerPanel extends JPanel {
         messageLabel.setText("");
         return true;
     }
+    /**
+     * Validate if the Customer Phone Number is in a correct format
+     * @param phoneNumberString Customer Phone Number
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidPhoneNumber(String phoneNumberString) {
         boolean isValid = false;
         try {
@@ -259,6 +326,10 @@ public class UpdateCustomerPanel extends JPanel {
         }
         return isValid;
     }
+    /**
+     * Extract the string representation from the customer PIN
+     * @return The PIN text
+     */
     public String getPinText() {
         StringBuilder pinString = new StringBuilder();
         char[] pin = customerPinTextField.getPassword();
@@ -267,6 +338,11 @@ public class UpdateCustomerPanel extends JPanel {
         }
         return pinString.toString();
     }
+    /**
+     * Check if the Customer PIN is valid
+     * @param pinString Customer PIN
+     * @return True if it is valid, false otherwise
+     */
     private boolean isValidPin(String pinString) {
         boolean isValid = false;
         try {

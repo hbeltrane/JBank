@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 
+/**
+ * Login Window to grant access the user to application
+ */
 public class LoginFrame extends JFrame {
     private JTextField userTextField;
     private JPasswordField passwordField;
@@ -19,6 +22,10 @@ public class LoginFrame extends JFrame {
     Return result;
     MainFrame mainFrame;
 
+    /**
+     * Login Window constructor
+     * @param mainFrame Main Frame to which it belongs
+     */
     LoginFrame(MainFrame mainFrame) {
         super("JBank - Login");
         this.mainFrame = mainFrame;
@@ -33,6 +40,9 @@ public class LoginFrame extends JFrame {
         openDatabaseConnection();
     }
 
+    /**
+     * Start the database connection for the application
+     */
     private void openDatabaseConnection() {
         try {
             DatabaseConnection.getInstance();
@@ -41,6 +51,10 @@ public class LoginFrame extends JFrame {
         }
     }
 
+    /**
+     * Create a Login Panel and add it to the Login Frame
+     * @return A Login Panel with all its components
+     */
     private JPanel getLoginPanel() {
         JPanel contentPane = new JPanel();
         contentPane.setLayout(null);
@@ -73,6 +87,10 @@ public class LoginFrame extends JFrame {
         return contentPane;
     }
 
+    /**
+     * Get the password string entered by the user
+     * @return Return a password text
+     */
     public String getPasswordText(){
         StringBuilder passwordString = new StringBuilder();
         char[] password = passwordField.getPassword();
@@ -81,6 +99,10 @@ public class LoginFrame extends JFrame {
         }
         return passwordString.toString();
     }
+
+    /**
+     * Add a click Action Listener to the Login Button
+     */
     private void setLoginAction() {
         loginButton.setFocusable(false);
         loginButton.addActionListener(event -> {
