@@ -36,6 +36,8 @@ public class CustomerPanel extends JPanel {
     JTable accountTable;
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
+    final Color DELETE_COLOR = new Color(130, 0, 0);
+    final Color CREATE_COLOR = new Color(0, 170, 0);
     Agent bankAgent;
     Customer bankCustomer;
     ArrayList<Account> customerAccounts;
@@ -242,6 +244,7 @@ public class CustomerPanel extends JPanel {
     private void getDeleteCustomerButton() {
         deleteCustomerButton = new JButton("Delete Customer");
         deleteCustomerButton.setBounds(400,500,200,30);
+        deleteCustomerButton.setForeground(DELETE_COLOR);
         this.add(deleteCustomerButton, null);
         deleteCustomerButton.setFocusable(false);
         // Delete action for the button click event
@@ -268,6 +271,7 @@ public class CustomerPanel extends JPanel {
     private void getOpenAccountButton() {
         openAccountButton = new JButton("Open Account");
         openAccountButton.setBounds(700,500,200,30);
+        openAccountButton.setForeground(CREATE_COLOR);
         this.add(openAccountButton, null);
         openAccountButton.setFocusable(false);
         // Open Account action for the button click event

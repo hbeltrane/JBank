@@ -5,6 +5,7 @@ import entity.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.time.*;
 import java.util.*;
 
 
@@ -42,6 +43,8 @@ public class AccountPanel extends JPanel {
     JTable movementsTable;
     JLabel messageLabel;
     final Color LIGHT_CYAN = new Color(224, 240, 255);  // Creates a color based on an RGB code
+    final Color DELETE_COLOR = new Color(130, 0, 0);
+    ZoneId defaultZoneId;
     Agent bankAgent;
     Account customerAccount;
     Customer bankCustomer;
@@ -59,6 +62,7 @@ public class AccountPanel extends JPanel {
         this.customerAccount = customerAccount;
         this.mainFrame = mainFrame;
         this.bankAgent = mainFrame.bankAgent;
+        defaultZoneId = ZoneId.systemDefault();
         getAccountData();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
@@ -370,6 +374,7 @@ public class AccountPanel extends JPanel {
     private void getDeleteAccountButton() {
         deleteAccountButton = new JButton("Delete Account");
         deleteAccountButton.setBounds(700,500,200,30);
+        deleteAccountButton.setForeground(DELETE_COLOR);
         this.add(deleteAccountButton, null);
         deleteAccountButton.setFocusable(false);
         // Open Account action for the button click event
@@ -378,13 +383,32 @@ public class AccountPanel extends JPanel {
             if (JOptionPane.showConfirmDialog(
                     mainFrame,
                     "Click YES to confirm deleting this account",
-                    "Delete Customer",
+                    "Delete Account",
                     JOptionPane.YES_NO_OPTION) == 0
             ) {
-                customerAccount.deleteAccount(customerAccount, bankAgent, result);
+                Movement closing = new Movement(
+                        customerAccount.getAccNumber(),
+                        "",
+                        Double.parseDouble(accountBalanceTextField.getText()),
+                        0d,
+                        0d,
+                        Date.from(LocalDate.now().atStartOfDay(defaultZoneId).toInstant()),
+                        "");
+                customerAccount.deleteAccount(closing, customerAccount, bankAgent, result);
                 if (result.getCode().equals("00")){
-                    mainFrame.getSearchPanel();
-                } else {
+                    mainFrame.getCustomerPanel(bankCustomer);
+                } else if (result.getCode().equals("05")) {
+                    JOptionPane.showMessageDialog(
+                            mainFrame,
+                            "This Account had a balance of $"+accountBalanceTextField.getText()
+                            +", $"+closing.getAmount()+" were refunded to the customer."
+                                    + "\nThe Account has been closed.",
+                            "Delete Account",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    mainFrame.getCustomerPanel(bankCustomer);
+                }
+                else {
                     messageLabel.setText(result.getMessage());
                 }
             }
