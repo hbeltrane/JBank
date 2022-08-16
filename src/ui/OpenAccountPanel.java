@@ -7,11 +7,14 @@ import java.awt.*;
 import java.time.*;
 import java.util.*;
 
-
+/**
+ * Open Account Panel class
+ */
 public class OpenAccountPanel extends JPanel {
     /* Screen Resolution 1280x720
     * Screen Width: 1280 pixels
     * Screen Height: 720 pixels */
+    JLabel panelLabel;
     JLabel agentIdLabel;
     JLabel accountTypeLabel;
     JComboBox <String> accountTypeComboBox;
@@ -34,6 +37,11 @@ public class OpenAccountPanel extends JPanel {
     Account newAccount;
     Return result;
     MainFrame mainFrame;
+    /**
+     * Account Panel Constructor
+     * @param bankCustomer Bank Customer
+     * @param mainFrame Main Frame
+     */
     public OpenAccountPanel(Customer bankCustomer, MainFrame mainFrame) {
         super(); // Initializes a JPanel class instance
         this.bankCustomer = bankCustomer;
@@ -42,6 +50,7 @@ public class OpenAccountPanel extends JPanel {
         defaultZoneId = ZoneId.systemDefault();
         this.setLayout(null);
         this.setBackground(LIGHT_CYAN); // Change the panel background color
+        getPanelLabel();
         getAccountTypeLabel();
         getAccountTypeComboBox();
         getAgentIdLabel();
@@ -54,24 +63,39 @@ public class OpenAccountPanel extends JPanel {
         getQuantityLimitLabel();
         getQuantityLimitTextField();
         getMessageLabel();
-        getCancelUpdateButton();
+        getCancelOpenAccountButton();
         getOpenAccountButton();
     }
-
-    /* Initialize the Customer Panel components */
+    /**
+     * Initialize the Open Account Panel Label
+     */
+    private void getPanelLabel() {
+        panelLabel = new JLabel("ACCOUNT");
+        panelLabel.setBounds(100,0,200,30);
+        panelLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.add(panelLabel,null);
+    }
+    /**
+     * Initialize the Agent Label
+     */
     private void getAgentIdLabel() {
         agentIdLabel = new JLabel(bankAgent.getFullName());
         agentIdLabel.setBounds(700,0,200,30);
         agentIdLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(agentIdLabel,null);
     }
-
+    /**
+     * Initialize the Account Type Label
+     */
     private void getAccountTypeLabel() {
         accountTypeLabel = new JLabel("Account Type");
         accountTypeLabel.setBounds(100,50,100,30);
         accountTypeLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(accountTypeLabel,null);
     }
+    /**
+     * Initialize the Account Type Combo Box
+     */
     private void getAccountTypeComboBox() {
         products = new ArrayList<>();
         result = new Return();
@@ -89,6 +113,9 @@ public class OpenAccountPanel extends JPanel {
             }
         });
     }
+    /**
+     * Set the corresponding values to Product Type Fields
+     */
     private void setAccountType(int id) {
         interestRateTextField.setText(
                 String.valueOf(products.get(id).getInterestRate())
@@ -105,57 +132,81 @@ public class OpenAccountPanel extends JPanel {
         revalidate();
         repaint();
     }
+    /**
+     * Initialize the Interest Rate Label
+     */
     private void getInterestRateLabel() {
         interestRateLabel = new JLabel("Interest Rate");
         interestRateLabel.setBounds(550,50,100,30);
         interestRateLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(interestRateLabel,null);
     }
+    /**
+     * Initialize the Interest Rate Text Field
+     */
     private void getInterestRateTextField() {
         double interestRate = products.get(accountTypeComboBox.getSelectedIndex()).getInterestRate();
         interestRateTextField = new JTextField(String.valueOf(interestRate));
         interestRateTextField.setBounds(675,50,200,30);
         this.add(interestRateTextField,null);
     }
-
+    /**
+     * Initialize the Amount Limit Label
+     */
     private void getAmountLimitLabel() {
         amountLimitLabel = new JLabel("Amount Limit");
         amountLimitLabel.setBounds(100,100,100,30);
         amountLimitLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(amountLimitLabel,null);
     }
+    /**
+     * Initialize the Amount Limit Text Field
+     */
     private void getAmountLimitTextField() {
         double amountLimit = products.get(accountTypeComboBox.getSelectedIndex()).getAmountLimit();
         amountLimitTextField = new JTextField(String.valueOf(amountLimit));
         amountLimitTextField.setBounds(225,100,200,30);
         this.add(amountLimitTextField,null);
     }
-
+    /**
+     * Initialize the Quantity Limit Label
+     */
     private void getQuantityLimitLabel() {
         quantityLimitLabel = new JLabel("Quantity Limit");
         quantityLimitLabel.setBounds(550,100,100,30);
         quantityLimitLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(quantityLimitLabel,null);
     }
+    /**
+     * Initialize the Quantity Limit Text Field
+     */
     private void getQuantityLimitTextField() {
         int quantityLimit = products.get(accountTypeComboBox.getSelectedIndex()).getQuantityLimit();
         quantityLimitTextField = new JTextField(String.valueOf(quantityLimit));
         quantityLimitTextField.setBounds(675,100,200,30);
         this.add(quantityLimitTextField,null);
     }
-
+    /**
+     * Initialize the Minimum Balance Label
+     */
     private void getMinimumBalanceLabel() {
         minimumBalanceLabel = new JLabel("Minimum Balance");
         minimumBalanceLabel.setBounds(100,150,125,30);
         minimumBalanceLabel.setHorizontalAlignment(JLabel.LEFT);
         this.add(minimumBalanceLabel,null);
     }
+    /**
+     * Initialize the Minimum Balance Text Field
+     */
     private void getMinimumBalanceTextField() {
         double minimumBalance = products.get(accountTypeComboBox.getSelectedIndex()).getMinimumBalance();
         minimumBalanceTextField = new JTextField(String.valueOf(minimumBalance));
         minimumBalanceTextField.setBounds(225,150,200,30);
         this.add(minimumBalanceTextField,null);
     }
+    /**
+     * Initialize the Window Message Label
+     */
     private void getMessageLabel() {
         messageLabel = new JLabel("");
         messageLabel.setBounds(100,300,550,30);
@@ -163,7 +214,10 @@ public class OpenAccountPanel extends JPanel {
         messageLabel.setForeground(Color.RED);
         this.add(messageLabel);
     }
-    private void getCancelUpdateButton() {
+    /**
+     * Initialize Cancel Open Account Button and add it an Event Listener
+     */
+    private void getCancelOpenAccountButton() {
         cancelOpenAccountButton = new JButton("Cancel");
         cancelOpenAccountButton.setBounds(100,250,200,30);
         this.add(cancelOpenAccountButton, null);
@@ -174,6 +228,9 @@ public class OpenAccountPanel extends JPanel {
             mainFrame.getCustomerPanel(bankCustomer);
         });
     }
+    /**
+     * Initialize Open Account Button and add it an Event Listener
+     */
     private void getOpenAccountButton() {
         openAccountButton = new JButton("Open Account");
         openAccountButton.setBounds(675,250,200,30);

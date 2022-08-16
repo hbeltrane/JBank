@@ -91,7 +91,7 @@ public class AccountPanel extends JPanel {
     }
 
     /**
-     * Initialize the Customer Panel Label
+     * Initialize the Account Panel Label
      */
     private void getPanelLabel() {
         panelLabel = new JLabel("ACCOUNT");
@@ -290,7 +290,7 @@ public class AccountPanel extends JPanel {
     }
 
     /**
-     * Initialize the Window Message Label
+     * Initialize the Deposit Button and add it an Event Listener
      */
     private void getDepositButton() {
         depositButton = new JButton("Deposit");
