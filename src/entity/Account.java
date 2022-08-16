@@ -254,13 +254,18 @@ public class Account {
  * @param activeAgent
  * @param result
  */
-	public void deleteAccount(Account activeAccount, Agent activeAgent, Return result) {
-		if (activeAccount.getBalance() == 0) {
-			AccountEntity.deleteAccount(activeAccount, activeAgent, result);
-		}
-		else {
+	public void deleteAccount(Movement activeMovement, Account activeAccount, Agent activeAgent, Return result) {
+		result.setCode("00");
+		if (activeAccount.getBalance() != 0) {
+			int txId = 7;
+			double fee = MovementEntity.checkFee(txId, activeMovement, result);
+			activeMovement.setAmount(activeAccount.getBalance() - fee);
+			withdraw(activeMovement, activeAccount, activeAgent, result);
+			activeMovement.setAmount(activeAccount.getBalance() - fee);
 			result.setCode("05");
 		}
+		if (activeAccount.getBalance() == 0)
+		AccountEntity.deleteAccount(activeAccount, activeAgent, result);
 	}
 
 /**
